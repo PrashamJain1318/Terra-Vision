@@ -6,7 +6,7 @@ import GlassCard from '@/components/common/GlassCard';
 import NotificationCard, { NotificationCardProps } from './widgets/NotificationCard';
 
 interface NotificationsPanelProps {
-  notifications?: NotificationCardProps[];
+  notifications?: NotificationCardProps[] | null;
 }
 
 const defaultNotifications: NotificationCardProps[] = [
@@ -14,21 +14,23 @@ const defaultNotifications: NotificationCardProps[] = [
     message: 'Your trip to Shimla starts tomorrow!',
     type: 'info',
     priority: 'high',
-    timestamp: new Date(),
+    timestamp: '2026-07-22T04:00:00.000Z',
     read: false,
   },
   {
     message: 'New local guides recommended in your area.',
     type: 'success',
     priority: 'medium',
-    timestamp: new Date(),
+    timestamp: '2026-07-22T03:00:00.000Z',
     read: true,
   },
 ];
 
 export const NotificationsPanel = ({
-  notifications = defaultNotifications,
+  notifications,
 }: NotificationsPanelProps) => {
+  const displayNotifications = Array.isArray(notifications) ? notifications : defaultNotifications;
+
   return (
     <GlassCard hoverEffect={false} className="space-y-4">
       <div className="flex items-center justify-between">
@@ -39,7 +41,7 @@ export const NotificationsPanel = ({
       </div>
 
       <div className="space-y-2.5">
-        {notifications.map((notif, idx) => (
+        {displayNotifications.map((notif, idx) => (
           <NotificationCard key={idx} {...notif} />
         ))}
       </div>

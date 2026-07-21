@@ -13,15 +13,17 @@ interface ActivityItem {
 }
 
 interface ActivityTimelineWidgetProps {
-  activities?: ActivityItem[];
+  activities?: ActivityItem[] | null;
 }
 
 const defaultActivities: ActivityItem[] = [
-  { activity: 'Logged in to dashboard', timestamp: new Date(), module: 'auth', status: 'success' },
-  { activity: 'Created Himalayan itinerary', timestamp: new Date(Date.now() - 3600000), module: 'planner', status: 'success' },
+  { activity: 'Logged in to dashboard', timestamp: '2026-07-22T04:00:00.000Z', module: 'auth', status: 'success' },
+  { activity: 'Created Himalayan itinerary', timestamp: '2026-07-22T03:00:00.000Z', module: 'planner', status: 'success' },
 ];
 
-export const ActivityTimelineWidget = ({ activities = defaultActivities }: ActivityTimelineWidgetProps) => {
+export const ActivityTimelineWidget = ({ activities }: ActivityTimelineWidgetProps) => {
+  const displayActivities = Array.isArray(activities) ? activities : defaultActivities;
+
   return (
     <GlassCard hoverEffect={false} className="space-y-4">
       <div className="flex items-center justify-between">
@@ -32,7 +34,7 @@ export const ActivityTimelineWidget = ({ activities = defaultActivities }: Activ
       </div>
 
       <div className="space-y-3 relative pl-4 border-l border-border/30 ml-2">
-        {activities.map((item, idx) => (
+        {displayActivities.map((item, idx) => (
           <motion.div
             key={idx}
             initial={{ opacity: 0, x: -10 }}
@@ -45,9 +47,9 @@ export const ActivityTimelineWidget = ({ activities = defaultActivities }: Activ
 
             <p className="text-xs font-semibold text-foreground">{item.activity}</p>
             <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-              <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1" suppressHydrationWarning>
                 <Clock className="w-3 h-3" />
-                {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {item.timestamp ? new Date(item.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '04:00 AM'}
               </span>
               <span>•</span>
               <span className="uppercase font-bold text-primary">{item.module}</span>

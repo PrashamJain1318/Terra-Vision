@@ -41,8 +41,8 @@ export const NotificationCard = ({
       <div className="space-y-1 flex-1">
         <p className="font-medium leading-normal">{message}</p>
         {timestamp && (
-          <span className="text-[10px] text-muted-foreground block">
-            {new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          <span className="text-[10px] text-muted-foreground block" suppressHydrationWarning>
+            {new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
           </span>
         )}
       </div>

@@ -14,7 +14,7 @@ interface MemoryItem {
 }
 
 interface RecentMemoriesWidgetProps {
-  memories?: MemoryItem[];
+  memories?: MemoryItem[] | null;
 }
 
 const defaultMemories: MemoryItem[] = [
@@ -24,7 +24,9 @@ const defaultMemories: MemoryItem[] = [
   },
 ];
 
-export const RecentMemoriesWidget = ({ memories = defaultMemories }: RecentMemoriesWidgetProps) => {
+export const RecentMemoriesWidget = ({ memories }: RecentMemoriesWidgetProps) => {
+  const displayMemories = Array.isArray(memories) ? memories : defaultMemories;
+
   return (
     <GlassCard hoverEffect={false} className="space-y-4">
       <div className="flex items-center justify-between">
@@ -40,14 +42,14 @@ export const RecentMemoriesWidget = ({ memories = defaultMemories }: RecentMemor
         </Link>
       </div>
 
-      {memories.length === 0 ? (
+      {displayMemories.length === 0 ? (
         <div className="text-center py-6">
           <Camera className="w-8 h-8 text-muted-foreground mx-auto opacity-50 mb-2" />
           <p className="text-xs text-muted-foreground">No memories recorded yet.</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {memories.map((mem, idx) => (
+          {displayMemories.map((mem, idx) => (
             <motion.div
               key={mem._id || idx}
               whileHover={{ x: 4 }}
