@@ -1,0 +1,218 @@
+{
+  "info": {
+    "_postman_id": "8c7d86f7-b3cd-4ab1-8cb1-80fdbf92de0d",
+    "name": "LocalLens AI Dashboard API (Phase 7)",
+    "description": "Collection containing authenticated dashboard REST endpoints for the LocalLens AI API gateway.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Overview",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/dashboard/overview",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "dashboard",
+            "overview"
+          ]
+        },
+        "description": "Retrieve aggregated metrics for dashboard overview pages."
+      },
+      "response": []
+    },
+    {
+      "name": "Quick Actions",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/dashboard/quick-actions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "dashboard",
+            "quick-actions"
+          ]
+        },
+        "description": "Retrieve list of valid quick-action links."
+      },
+      "response": []
+    },
+    {
+      "name": "Statistics",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/dashboard/statistics",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "dashboard",
+            "statistics"
+          ]
+        },
+        "description": "Retrieve general travel scores and planned trip count stats."
+      },
+      "response": []
+    },
+    {
+      "name": "Recent Trips",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/dashboard/recent-trips",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "dashboard",
+            "recent-trips"
+          ]
+        },
+        "description": "Retrieve user's latest trips."
+      },
+      "response": []
+    },
+    {
+      "name": "Recent Memories",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/dashboard/recent-memories",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "dashboard",
+            "recent-memories"
+          ]
+        },
+        "description": "Retrieve user's latest travel memories."
+      },
+      "response": []
+    },
+    {
+      "name": "Saved Places",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/dashboard/saved-places",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "dashboard",
+            "saved-places"
+          ]
+        },
+        "description": "Retrieve user's bookmarked dining and exploration points."
+      },
+      "response": []
+    },
+    {
+      "name": "Notifications",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/dashboard/notifications",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "dashboard",
+            "notifications"
+          ]
+        },
+        "description": "Retrieve system notification alerts."
+      },
+      "response": []
+    },
+    {
+      "name": "Activity Log",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/dashboard/activity",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "dashboard",
+            "activity"
+          ]
+        },
+        "description": "Retrieve historical activity log entries."
+      },
+      "response": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5050/api",
+      "type": "string"
+    }
+  ]
+}
