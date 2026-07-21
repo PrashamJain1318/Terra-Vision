@@ -3,18 +3,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+import FloatingBadge from '../common/FloatingBadge';
+
 export const HeroContent = () => {
   return (
     <div className="space-y-6 text-center md:text-left max-w-2xl">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold uppercase tracking-wider"
-      >
-        <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-        AI-Powered Local Travel Guide
-      </motion.div>
+      <FloatingBadge
+        icon={<span className="w-2 h-2 rounded-full bg-primary inline-block" />}
+        text="AI-Powered Local Travel Guide"
+      />
 
       <motion.h1
         initial={{ opacity: 0, y: 25 }}
