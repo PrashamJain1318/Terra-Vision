@@ -1,0 +1,19 @@
+import morgan from 'morgan';
+import logger from '../config/logger.js';
+
+const stream = {
+  // Use http severity level to pipe morgan message logs to Winston transports
+  write: (message) => logger.http(message.trim()),
+};
+
+const skip = () => {
+  const env = process.env.NODE_ENV || 'development';
+  return env !== 'development';
+};
+
+export const requestLogger = morgan(
+  ':method :url :status :res[content-length] - :response-time ms',
+  { stream, skip }
+);
+
+export default requestLogger;

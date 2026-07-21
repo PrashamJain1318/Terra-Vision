@@ -1,0 +1,42 @@
+{
+  "info": {
+    "_postman_id": "8c7d86f7-b3cd-4ab1-8cb1-80fdbf92de0f",
+    "name": "LocalLens AI API (Phase 2)",
+    "description": "Collection containing foundation endpoint calls for the LocalLens AI API gateway.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "System Health",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "health"
+          ]
+        },
+        "description": "Check backend health, uptime, and database connection status."
+      },
+      "response": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    }
+  ]
+}
