@@ -21,40 +21,27 @@ const steps = [
   },
 ];
 
+import SectionTitle from '../common/SectionTitle';
+import TimelineCard from './TimelineCard';
+
 export const TimelineSection = () => {
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-5xl mx-auto space-y-16">
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl font-extrabold tracking-tight">How It Works</h2>
-          <p className="text-muted-foreground font-light max-w-md mx-auto">
-            Get your AI travel companion set up in three simple steps.
-          </p>
-        </div>
+        <SectionTitle
+          title="How It Works"
+          subtitle="Get your AI travel companion set up in three simple steps."
+        />
 
         <div className="relative border-l border-border/40 pl-8 ml-4 md:ml-8 space-y-12">
           {steps.map((item, idx) => (
-            <motion.div
+            <TimelineCard
               key={idx}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.2 }}
-              className="relative space-y-2"
-            >
-              {/* Timeline bubble connector */}
-              <div className="absolute -left-[45px] top-1.5 w-6 h-6 rounded-full border-2 border-primary bg-background flex items-center justify-center font-bold text-xs text-primary shadow-md">
-                {idx + 1}
-              </div>
-              
-              <span className="text-sm font-bold text-primary tracking-widest uppercase">
-                Step {item.step}
-              </span>
-              <h3 className="text-2xl font-bold">{item.title}</h3>
-              <p className="text-muted-foreground leading-relaxed max-w-2xl">
-                {item.description}
-              </p>
-            </motion.div>
+              step={item.step}
+              title={item.title}
+              description={item.description}
+              index={idx}
+            />
           ))}
         </div>
       </div>
