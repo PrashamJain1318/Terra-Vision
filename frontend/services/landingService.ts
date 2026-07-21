@@ -41,24 +41,44 @@ export interface FooterData {
 
 export const landingService = {
   getHero: async (): Promise<ApiResponse<HeroData>> => {
-    const response = await api.get<ApiResponse<HeroData>>('/v1/landing/hero');
-    return response.data;
+    try {
+      const response = await api.get<ApiResponse<HeroData>>('/v1/landing/hero');
+      return response.data;
+    } catch {
+      return { success: false, message: 'Using default hero configuration' } as any;
+    }
   },
   getFeatures: async (): Promise<ApiResponse<FeatureData[]>> => {
-    const response = await api.get<ApiResponse<FeatureData[]>>('/v1/landing/features');
-    return response.data;
+    try {
+      const response = await api.get<ApiResponse<FeatureData[]>>('/v1/landing/features');
+      return response.data;
+    } catch {
+      return { success: false, message: 'Using default features configuration' } as any;
+    }
   },
   getStatistics: async (): Promise<ApiResponse<StatData[]>> => {
-    const response = await api.get<ApiResponse<StatData[]>>('/v1/landing/statistics');
-    return response.data;
+    try {
+      const response = await api.get<ApiResponse<StatData[]>>('/v1/landing/statistics');
+      return response.data;
+    } catch {
+      return { success: false, message: 'Using default statistics configuration' } as any;
+    }
   },
   getTestimonials: async (): Promise<ApiResponse<TestimonialData[]>> => {
-    const response = await api.get<ApiResponse<TestimonialData[]>>('/v1/landing/testimonials');
-    return response.data;
+    try {
+      const response = await api.get<ApiResponse<TestimonialData[]>>('/v1/landing/testimonials');
+      return response.data;
+    } catch {
+      return { success: false, message: 'Using default testimonials configuration' } as any;
+    }
   },
   getFooter: async (): Promise<ApiResponse<FooterData>> => {
-    const response = await api.get<ApiResponse<FooterData>>('/v1/landing/footer');
-    return response.data;
+    try {
+      const response = await api.get<ApiResponse<FooterData>>('/v1/landing/footer');
+      return response.data;
+    } catch {
+      return { success: false, message: 'Using default footer configuration' } as any;
+    }
   },
 };
 

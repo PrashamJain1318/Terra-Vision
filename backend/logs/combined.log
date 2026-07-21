@@ -1,14 +1,22 @@
-2026-07-22 03:00:48:048 [32minfo[39m: [32mServer running in development mode on port 5009[39m
-2026-07-22 03:01:29:129 [35mhttp[39m: [35mGET /api/v1/health 200 169 - 2.135 ms[39m
-2026-07-22 03:02:30:230 [32minfo[39m: [32mServer running in development mode on port 5013[39m
-2026-07-22 03:13:42:1342 [32minfo[39m: [32mServer running in development mode on port 5017[39m
-2026-07-22 03:20:24:2024 [32minfo[39m: [32mServer running in development mode on port 5018[39m
-2026-07-22 04:03:20:320 [32minfo[39m: [32mServer running in development mode on port 5050[39m
-2026-07-22 04:05:43:543 [33mwarn[39m: [33mNot Found - /api/v1/landing/hero [Code: INTERNAL_SERVER_ERROR][39m
-2026-07-22 04:05:43:543 [35mhttp[39m: [35mGET /api/v1/landing/hero 404 1168 - 10.401 ms[39m
-2026-07-22 04:05:49:549 [33mwarn[39m: [33mNot Found - /api/v1/landing/features [Code: INTERNAL_SERVER_ERROR][39m
-2026-07-22 04:05:49:549 [35mhttp[39m: [35mGET /api/v1/landing/features 404 1176 - 1.341 ms[39m
-2026-07-22 04:05:56:556 [33mwarn[39m: [33mNot Found - /api/v1/landing/statistics [Code: INTERNAL_SERVER_ERROR][39m
-2026-07-22 04:05:56:556 [35mhttp[39m: [35mGET /api/v1/landing/statistics 404 1180 - 0.856 ms[39m
-2026-07-22 04:06:02:62 [33mwarn[39m: [33mNot Found - /api/v1/landing/testimonials [Code: INTERNAL_SERVER_ERROR][39m
-2026-07-22 04:06:02:62 [35mhttp[39m: [35mGET /api/v1/landing/testimonials 404 1184 - 0.825 ms[39m
+
+2026-07-22 05:04:47:447 [35mhttp[39m: [35mGET /api/v1/dashboard/notifications 200 394 - 15.714 ms[39m
+2026-07-22 05:04:47:447 [35mhttp[39m: [35mGET /api/v1/dashboard/activity 200 347 - 12.748 ms[39m
+2026-07-22 05:04:47:447 [35mhttp[39m: [35mGET /api/v1/dashboard/recent-memories 200 114 - 24.807 ms[39m
+2026-07-22 05:04:47:447 [35mhttp[39m: [35mGET /api/v1/dashboard/recent-trips 200 111 - 30.198 ms[39m
+2026-07-22 05:04:47:447 [35mhttp[39m: [35mGET /api/v1/dashboard/saved-places 200 111 - 14.682 ms[39m
+2026-07-22 05:04:47:447 [35mhttp[39m: [35mGET /api/v1/dashboard/overview 200 378 - 43.489 ms[39m
+2026-07-22 05:04:47:447 [35mhttp[39m: [35mGET /api/v1/dashboard/statistics 200 333 - 51.120 ms[39m
+2026-07-22 05:14:25:1425 [33mwarn[39m: [33mAuthentication required. Please log in to proceed. [Code: UNAUTHORIZED_ACCESS][39m
+2026-07-22 05:14:25:1425 [35mhttp[39m: [35mGET /api/v1/dashboard/overview 401 1472 - 3.838 ms[39m
+2026-07-22 05:14:25:1425 [33mwarn[39m: [33mAuthentication required. Please log in to proceed. [Code: UNAUTHORIZED_ACCESS][39m
+2026-07-22 05:14:25:1425 [35mhttp[39m: [35mGET /api/v1/dashboard/statistics 401 1472 - 5.340 ms[39m
+2026-07-22 05:14:25:1425 [33mwarn[39m: [33mAuthentication required. Please log in to proceed. [Code: UNAUTHORIZED_ACCESS][39m
+2026-07-22 05:14:25:1425 [35mhttp[39m: [35mGET /api/v1/dashboard/recent-trips 401 1472 - 6.529 ms[39m
+2026-07-22 05:14:25:1425 [33mwarn[39m: [33mAuthentication required. Please log in to proceed. [Code: UNAUTHORIZED_ACCESS][39m
+2026-07-22 05:14:25:1425 [35mhttp[39m: [35mGET /api/v1/dashboard/recent-memories 401 1472 - 7.634 ms[39m
+2026-07-22 05:14:25:1425 [33mwarn[39m: [33mAuthentication required. Please log in to proceed. [Code: UNAUTHORIZED_ACCESS][39m
+2026-07-22 05:14:25:1425 [35mhttp[39m: [35mGET /api/v1/dashboard/saved-places 401 1472 - 8.275 ms[39m
+2026-07-22 05:14:25:1425 [33mwarn[39m: [33mAuthentication required. Please log in to proceed. [Code: UNAUTHORIZED_ACCESS][39m
+2026-07-22 05:14:25:1425 [35mhttp[39m: [35mGET /api/v1/dashboard/notifications 401 1472 - 8.815 ms[39m
+2026-07-22 05:14:25:1425 [33mwarn[39m: [33mAuthentication required. Please log in to proceed. [Code: UNAUTHORIZED_ACCESS][39m
+2026-07-22 05:14:25:1425 [35mhttp[39m: [35mGET /api/v1/dashboard/activity 401 1472 - 7.163 ms[39m

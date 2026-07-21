@@ -1,18 +1,31 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // For cookie exchange if needed
+  withCredentials: true,
 });
 
-// Request Interceptor
+// Request Interceptor to attach Authorization Bearer token if available
 api.interceptors.request.use(
   (config) => {
-    // Add auth tokens or custom headers here if needed in Phase 2
+    if (typeof window !== 'undefined') {
+      try {
+        const authStorage = localStorage.getItem('auth-storage');
+        if (authStorage) {
+          const parsed = JSON.parse(authStorage);
+          const token = parsed?.state?.token;
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+          }
+        }
+      } catch (e) {
+        // Silently catch storage parse errors
+      }
+    }
     return config;
   },
   (error) => {
@@ -24,8 +37,10 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Global API error handling placeholder
-    console.error('API Error Response:', error.response || error.message);
+    // Quietly log API errors to avoid triggering Next.js dev overlay popups
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('API Error Response:', error.response?.data?.message || error.message);
+    }
     return Promise.reject(error);
   }
 );
