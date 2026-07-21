@@ -32,7 +32,7 @@ export default function LoginPage() {
       const response = await authService.login({ email, password });
       if (response.success && response.data) {
         setCredentials(response.data.user, response.data.token);
-        router.push('/'); // Navigate home on success
+        router.push('/dashboard'); // Navigate to dashboard on success
       } else {
         setError(response.message || 'Login failed.');
       }

@@ -58,10 +58,10 @@ export const Navbar = () => {
             </button>
             
             {isAuthenticated && user ? (
-              <span className="hidden sm:inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full border border-border/50 bg-muted/40">
-                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                {user.name}
-              </span>
+              <Link href="/dashboard" className="hidden sm:inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full border border-border/50 bg-primary/10 hover:bg-primary/20 text-primary transition-all">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Dashboard ({user.name})
+              </Link>
             ) : (
               <div className="hidden sm:flex items-center gap-3">
                 <Link href="/login" className="text-sm font-medium hover:text-primary transition-colors">
