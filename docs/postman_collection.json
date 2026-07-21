@@ -1,8 +1,8 @@
 {
   "info": {
     "_postman_id": "8c7d86f7-b3cd-4ab1-8cb1-80fdbf92de0f",
-    "name": "LocalLens AI API (Phase 4)",
-    "description": "Collection containing foundation and authentication endpoints for the LocalLens AI API gateway.",
+    "name": "LocalLens AI API (Phase 6)",
+    "description": "Collection containing landing content, foundation, and authentication endpoints for the LocalLens AI API gateway.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -103,7 +103,7 @@
       "response": []
     },
     {
-      "name": "Auth - Refresh",
+      "name": "Landing - Hero",
       "request": {
         "method": "GET",
         "header": [
@@ -113,24 +113,24 @@
           }
         ],
         "url": {
-          "raw": "{{base_url}}/v1/auth/refresh",
+          "raw": "{{base_url}}/v1/landing/hero",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "v1",
-            "auth",
-            "refresh"
+            "landing",
+            "hero"
           ]
         },
-        "description": "Renew active expired access tokens silently using refresh token cookies."
+        "description": "Fetch landing page hero titles, subtitles and background config."
       },
       "response": []
     },
     {
-      "name": "Auth - Logout",
+      "name": "Landing - Features",
       "request": {
-        "method": "POST",
+        "method": "GET",
         "header": [
           {
             "key": "Content-Type",
@@ -138,17 +138,92 @@
           }
         ],
         "url": {
-          "raw": "{{base_url}}/v1/auth/logout",
+          "raw": "{{base_url}}/v1/landing/features",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "v1",
-            "auth",
-            "logout"
+            "landing",
+            "features"
           ]
         },
-        "description": "Invalidate user session cookies."
+        "description": "Fetch landing page feature grids items list."
+      },
+      "response": []
+    },
+    {
+      "name": "Landing - Statistics",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/landing/statistics",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "landing",
+            "statistics"
+          ]
+        },
+        "description": "Fetch landing page numeric stats cards trackers."
+      },
+      "response": []
+    },
+    {
+      "name": "Landing - Testimonials",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/landing/testimonials",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "landing",
+            "testimonials"
+          ]
+        },
+        "description": "Fetch active user testimonials reviews."
+      },
+      "response": []
+    },
+    {
+      "name": "Landing - Footer",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/v1/landing/footer",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "landing",
+            "footer"
+          ]
+        },
+        "description": "Fetch footer layout settings."
       },
       "response": []
     }
