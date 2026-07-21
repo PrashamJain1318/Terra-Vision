@@ -3,3 +3,5 @@
 2026-07-22 03:02:30:230 [32minfo[39m: [32mServer running in development mode on port 5013[39m
 2026-07-22 03:13:42:1342 [32minfo[39m: [32mServer running in development mode on port 5017[39m
 2026-07-22 03:20:24:2024 [32minfo[39m: [32mServer running in development mode on port 5018[39m
+2026-07-22 03:44:24:4424 [32minfo[39m: [32mServer running in development mode on port 5022[39m
+2026-07-22 03:44:41:4441 [35mhttp[39m: [35mGET /api/v1/landing/hero 200 417 - 32.805 ms[39m
