@@ -2,36 +2,68 @@ import api from '../utils/api';
 
 export const dashboardService = {
   getOverview: async () => {
-    const res = await api.get('/v1/dashboard/overview');
-    return res.data?.data;
+    try {
+      const res = await api.get('/v1/dashboard/overview');
+      return res.data?.data;
+    } catch {
+      return null;
+    }
   },
   getQuickActions: async () => {
-    const res = await api.get('/v1/dashboard/quick-actions');
-    return res.data?.data;
+    try {
+      const res = await api.get('/v1/dashboard/quick-actions');
+      return res.data?.data;
+    } catch {
+      return null;
+    }
   },
   getStatistics: async () => {
-    const res = await api.get('/v1/dashboard/statistics');
-    return res.data?.data;
+    try {
+      const res = await api.get('/v1/dashboard/statistics');
+      return res.data?.data;
+    } catch {
+      return null;
+    }
   },
   getRecentTrips: async () => {
-    const res = await api.get('/v1/dashboard/recent-trips');
-    return res.data?.data;
+    try {
+      const res = await api.get('/v1/dashboard/recent-trips');
+      return res.data?.data;
+    } catch {
+      return null;
+    }
   },
   getRecentMemories: async () => {
-    const res = await api.get('/v1/dashboard/recent-memories');
-    return res.data?.data;
+    try {
+      const res = await api.get('/v1/dashboard/recent-memories');
+      return res.data?.data;
+    } catch {
+      return null;
+    }
   },
   getSavedPlaces: async () => {
-    const res = await api.get('/v1/dashboard/saved-places');
-    return res.data?.data;
+    try {
+      const res = await api.get('/v1/dashboard/saved-places');
+      return res.data?.data;
+    } catch {
+      return null;
+    }
   },
   getNotifications: async () => {
-    const res = await api.get('/v1/dashboard/notifications');
-    return res.data?.data;
+    try {
+      const res = await api.get('/v1/dashboard/notifications');
+      return res.data?.data;
+    } catch {
+      return null;
+    }
   },
   getActivity: async () => {
-    const res = await api.get('/v1/dashboard/activity');
-    return res.data?.data;
+    try {
+      const res = await api.get('/v1/dashboard/activity');
+      return res.data?.data;
+    } catch {
+      return null;
+    }
   },
 };
 
