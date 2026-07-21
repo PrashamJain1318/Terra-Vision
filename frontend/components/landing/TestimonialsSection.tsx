@@ -23,8 +23,28 @@ const testimonials = [
 
 import SectionTitle from '../common/SectionTitle';
 import TestimonialCard from './TestimonialCard';
+import { useApiQuery } from '@/hooks/useApiQuery';
+import landingService from '@/services/landingService';
+import { QUERY_KEYS } from '@/services/queryKeys';
 
 export const TestimonialsSection = () => {
+  const { data: testimonialRes } = useApiQuery(
+    QUERY_KEYS.LANDING.TESTIMONIALS,
+    landingService.getTestimonials
+  );
+
+  const rawTestimonials = testimonialRes?.data || [];
+  const displayTestimonials = rawTestimonials.length > 0
+    ? rawTestimonials.map(t => ({
+        name: t.name,
+        role: t.country || 'Explorer',
+        content: t.review,
+      }))
+    : [
+        { name: 'Sarah Jenkins', role: 'United Kingdom', content: 'LocalLens AI helped me explore Himachal like a native. Found spot-on cafes and silent valleys!' },
+        { name: 'David Miller', role: 'United States', content: 'The custom itinerary fits my hiking habits perfectly. The integration is seamless.' },
+      ];
+
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10 overflow-hidden">
       <div className="max-w-7xl mx-auto space-y-16">
@@ -34,7 +54,7 @@ export const TestimonialsSection = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((item, idx) => (
+          {displayTestimonials.map((item, idx) => (
             <TestimonialCard
               key={idx}
               name={item.name}
