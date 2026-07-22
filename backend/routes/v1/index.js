@@ -9,6 +9,7 @@ import foodRouter from '../foodRoutes.js';
 import memoryRouter from '../memoryRoutes.js';
 import safetyRouter from '../safetyRoutes.js';
 import voiceRouter from '../voiceRoutes.js';
+import communityRouter from '../communityRoutes.js';
 
 const router = express.Router();
 
@@ -23,5 +24,6 @@ router.use('/food', foodRouter);
 router.use('/memory', memoryRouter);
 router.use('/safety', safetyRouter);
 router.use('/voice', voiceRouter);
+router.use('/community', communityRouter);
 
 export default router;
