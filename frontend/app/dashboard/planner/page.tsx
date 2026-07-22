@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import GlassCard from '@/components/common/GlassCard';
-import { Compass, Sparkles, MapPin, Calendar, Clock, Bookmark, RefreshCw, CheckCircle, Lightbulb, Package } from 'lucide-react';
+import { Compass, Sparkles, MapPin, Calendar, Clock, Bookmark, RefreshCw, Lightbulb, Package } from 'lucide-react';
 
 interface ItineraryDay {
   day: number;
@@ -26,8 +26,8 @@ interface FullItineraryResponse {
 }
 
 export default function PlannerPage() {
-  const [destination, setDestination] = useState('Amritsar, Punjab');
-  const [days, setDays] = useState('3');
+  const [destination, setDestination] = useState('Munnar, Kerala');
+  const [days, setDays] = useState('7');
   const [style, setStyle] = useState('Heritage & Food');
   const [loading, setLoading] = useState(false);
   const [fullItinerary, setFullItinerary] = useState<FullItineraryResponse | null>(null);
@@ -56,6 +56,8 @@ export default function PlannerPage() {
     e.preventDefault();
     setLoading(true);
 
+    const requestedDays = parseInt(days, 10) || 3;
+
     try {
       const token = localStorage.getItem('token');
       const res = await fetch('http://localhost:5050/api/v1/planner/generate', {
@@ -66,7 +68,7 @@ export default function PlannerPage() {
         },
         body: JSON.stringify({
           destination,
-          travelDays: parseInt(days, 10),
+          travelDays: requestedDays,
           travelStyle: style,
           budget: 'balanced',
         }),
@@ -74,38 +76,52 @@ export default function PlannerPage() {
 
       const responseData = await res.json();
 
+      let targetResponse: FullItineraryResponse | null = null;
       if (responseData.success && responseData.data?.generatedResponse) {
-        setFullItinerary(responseData.data.generatedResponse);
+        targetResponse = responseData.data.generatedResponse;
+      } else if (responseData.success && responseData.data?.itinerary) {
+        targetResponse = responseData.data;
+      }
+
+      if (targetResponse && Array.isArray(targetResponse.itinerary) && targetResponse.itinerary.length > 0) {
+        setFullItinerary(targetResponse);
       } else {
-        // Fallback structure if response format varies
+        // Dynamic Fallback matching requestedDays
+        const generatedDays: ItineraryDay[] = Array.from({ length: requestedDays }, (_, idx) => ({
+          day: idx + 1,
+          title: `Day ${idx + 1}: ${
+            idx === 0
+              ? 'Arrival & Cultural Heritage Walk'
+              : idx === 1
+              ? 'Hidden Gems & Local Discovery'
+              : idx === 2
+              ? 'Culinary Tasting & Spice Trails'
+              : idx === 3
+              ? 'Nature Exploration & Scenic Vantage Points'
+              : idx === 4
+              ? 'Artisan Markets & Craftsmanship'
+              : idx === 5
+              ? 'Panoramic Views & Sunset Walk'
+              : 'Farewell Views & Souvenir Shopping'
+          } in ${destination}`,
+          morning: `Morning heritage exploration & iconic spots in ${destination}.`,
+          afternoon: `Sample authentic local cuisine & visit traditional bazaars.`,
+          evening: `Golden hour photography & relaxing evening cafes in ${destination}.`,
+          foodSuggestions: [`Local Specialty Spot ${idx + 1}`, `Heritage Tea House`],
+        }));
+
         setFullItinerary({
           tripTitle: `AI Expedition: ${destination}`,
           destination,
-          days: parseInt(days, 10),
-          summary: `A curated ${days}-day travel experience in ${destination} tailored for ${style}.`,
+          days: requestedDays,
+          summary: `A curated ${requestedDays}-day travel experience in ${destination} tailored for ${style}.`,
           estimatedBudget: '$150 - $350',
-          itinerary: [
-            {
-              day: 1,
-              title: `Arrival & Cultural Immersion in ${destination}`,
-              morning: `Heritage walking tour & architectural landmarks in ${destination}.`,
-              afternoon: `Sample authentic local cuisine & visit traditional bazaars.`,
-              evening: `Sunset views & golden hour photography at historic spots.`,
-              foodSuggestions: ['Legendary Local Dhaba', 'Heritage Tea House'],
-            },
-            {
-              day: 2,
-              title: `Hidden Gems & Local Discovery`,
-              morning: `Exploration of secret stepwells and ancient monuments.`,
-              afternoon: `Culinary tasting tour & clay tandoor specialties.`,
-              evening: `Artisan craft workshops & souvenir shopping.`,
-              foodSuggestions: ['Famous Clay Tandoor Paratha', 'Artisan Bakery'],
-            },
-          ],
+          itinerary: generatedDays,
           travelTips: ['Carry local cash for small vendors.', 'Download offline maps before valley trips.'],
           packingChecklist: ['Comfortable walking shoes', 'Layered clothing', 'Universal power adapter'],
         });
       }
+
       fetchSavedTrips();
     } catch (err) {
       console.error('Error generating AI itinerary:', err);
@@ -210,7 +226,7 @@ export default function PlannerPage() {
               <div className="flex items-center justify-between border-b border-border/30 pb-4">
                 <div>
                   <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary">ChatGPT AI Itinerary</span>
-                  <h2 className="text-xl font-extrabold text-foreground">{fullItinerary.tripTitle || `${days}-Day Experience in ${destination}`}</h2>
+                  <h2 className="text-xl font-extrabold text-foreground">{fullItinerary.tripTitle || `${fullItinerary.itinerary.length}-Day Experience in ${destination}`}</h2>
                   <p className="text-xs text-muted-foreground">{fullItinerary.summary}</p>
                 </div>
                 <button
@@ -315,8 +331,8 @@ export default function PlannerPage() {
                 {recentTrips.map((trip, idx) => (
                   <div key={idx} className="p-4 rounded-2xl bg-muted/20 border border-border/30 flex items-center justify-between">
                     <div>
-                      <h4 className="text-xs font-extrabold text-foreground">{trip.destination || trip.title || 'Amritsar Escape'}</h4>
-                      <p className="text-[10px] text-muted-foreground flex items-center gap-1"><Clock className="w-3 h-3 text-primary" /> {trip.duration || '3 Days'}</p>
+                      <h4 className="text-xs font-extrabold text-foreground">{trip.destination || trip.title || 'Munnar Escape'}</h4>
+                      <p className="text-[10px] text-muted-foreground flex items-center gap-1"><Clock className="w-3 h-3 text-primary" /> {trip.duration || `${trip.travelDays || 7} Days`}</p>
                     </div>
                     <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">
                       Active

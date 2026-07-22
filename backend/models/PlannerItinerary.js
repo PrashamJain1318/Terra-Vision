@@ -47,26 +47,8 @@ const plannerItinerarySchema = new mongoose.Schema(
       default: 'english',
     },
     generatedResponse: {
-      tripTitle: { type: String, default: '' },
-      destination: { type: String, default: '' },
-      days: { type: Number, default: 3 },
-      summary: { type: String, default: '' },
-      estimatedBudget: { type: String, default: '' },
-      itinerary: [
-        {
-          day: { type: Number },
-          title: { type: String },
-          morning: { type: String },
-          afternoon: { type: String },
-          evening: { type: String },
-          foodSuggestions: [{ type: String }],
-        },
-      ],
-      travelTips: [{ type: String }],
-      packingChecklist: [{ type: String }],
-      bestTimeToVisit: { type: String, default: '' },
-      localEtiquette: { type: String, default: '' },
-      emergencyNumbers: { type: String, default: '' },
+      type: mongoose.Schema.Types.Mixed,
+      required: true,
     },
     status: {
       type: String,

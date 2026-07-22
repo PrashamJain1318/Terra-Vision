@@ -2,39 +2,37 @@ import promptBuilderService from './promptBuilderService.js';
 
 export const aiPlannerService = {
   generateItinerary: async (params) => {
-    const {
-      destination = 'Amritsar, Punjab',
-      travelDays = 3,
-      budget = 'balanced',
-      travelStyle = 'Heritage & Food',
-    } = params;
+    const destination = params.destination || 'Munnar, Kerala';
+    const travelDays = parseInt(params.travelDays, 10) || 3;
+    const budget = params.budget || 'balanced';
+    const travelStyle = params.travelStyle || 'Heritage & Food';
 
     const apiKey = process.env.OPENAI_API_KEY;
 
     // Connect to ChatGPT OpenAI API if API Key is available
     if (apiKey && apiKey !== 'mock_openai_key' && !apiKey.startsWith('mock_')) {
       try {
-        const systemPrompt = `You are LocalLens AI, an expert travel planner. Generate a JSON multi-day itinerary for the destination "${destination}" lasting ${travelDays} days for a "${travelStyle}" style trip with "${budget}" budget. 
+        const systemPrompt = `You are LocalLens AI, an expert travel planner. Generate a complete multi-day JSON itinerary for destination "${destination}" lasting EXACTLY ${travelDays} days (Day 1 through Day ${travelDays}) for a "${travelStyle}" style trip with "${budget}" budget. 
 Return ONLY a valid JSON object matching this exact schema:
 {
-  "tripTitle": "string",
+  "tripTitle": "AI Expedition: ${destination}",
   "destination": "${destination}",
   "days": ${travelDays},
-  "summary": "string",
-  "estimatedBudget": "string",
+  "summary": "A curated ${travelDays}-day travel experience in ${destination} tailored for ${travelStyle}.",
+  "estimatedBudget": "$150 - $350 per day",
   "itinerary": [
     {
       "day": 1,
-      "title": "string",
-      "morning": "string",
-      "afternoon": "string",
-      "evening": "string",
-      "foodSuggestions": ["string"]
+      "title": "Day 1 Title",
+      "morning": "Morning activity details in ${destination}",
+      "afternoon": "Afternoon activity details in ${destination}",
+      "evening": "Evening activity details in ${destination}",
+      "foodSuggestions": ["Food Pick 1", "Food Pick 2"]
     }
   ],
-  "travelTips": ["string"],
-  "packingChecklist": ["string"],
-  "bestTimeToVisit": "string"
+  "travelTips": ["Tip 1", "Tip 2"],
+  "packingChecklist": ["Item 1", "Item 2"],
+  "bestTimeToVisit": "Best season details"
 }`;
 
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -49,7 +47,7 @@ Return ONLY a valid JSON object matching this exact schema:
               { role: 'system', content: systemPrompt },
               {
                 role: 'user',
-                content: `Create a ${travelDays}-day ${travelStyle} travel itinerary for ${destination}.`,
+                content: `Create an itinerary for ${destination} lasting EXACTLY ${travelDays} days. Generate ${travelDays} distinct day items in the itinerary array.`,
               },
             ],
             response_format: { type: 'json_object' },
@@ -60,40 +58,54 @@ Return ONLY a valid JSON object matching this exact schema:
         if (response.ok) {
           const data = await response.json();
           const parsed = JSON.parse(data.choices[0].message.content);
-          return parsed;
+          if (parsed && Array.isArray(parsed.itinerary) && parsed.itinerary.length > 0) {
+            return parsed;
+          }
         }
       } catch (err) {
         console.warn('ChatGPT API call failed, using LocalLens AI engine:', err.message);
       }
     }
 
-    // Dynamic LocalLens AI itinerary generator engine
-    const numDays = parseInt(travelDays, 10) || 3;
+    // Dynamic LocalLens AI itinerary generator engine for exact requested travelDays
+    const dayTitles = [
+      'Arrival & Cultural Heritage Walk',
+      'Hidden Gems & Historical Landmarks',
+      'Culinary Masterclass & Local Spice Markets',
+      'Nature Exploration & Scenic Vantage Points',
+      'Artisan Crafts & Local Bazaar Walking Tour',
+      'Panoramic Sunset Views & Relaxation',
+      'Farewell Walking Tour & Souvenir Shopping',
+      'Countryside Day Trip & Hidden Stepwells',
+      'Architectural Photography & Cafe Hopping',
+      'Local Life Immersion & Eco-Trail Trek',
+    ];
+
+    const generatedDays = Array.from({ length: travelDays }, (_, idx) => {
+      const dayNum = idx + 1;
+      const titleTheme = dayTitles[(dayNum - 1) % dayTitles.length];
+      return {
+        day: dayNum,
+        title: `${titleTheme} in ${destination}`,
+        morning: `Explore iconic morning landmarks & scenic points around ${destination} (Day ${dayNum}).`,
+        afternoon: `Enjoy authentic regional lunch delicacies and vibrant artisan markets in ${destination}.`,
+        evening: `Golden hour sunset views, cozy cafes, and local evening street walkthroughs.`,
+        foodSuggestions: [
+          `Authentic ${destination} Eatery ${dayNum}`,
+          `Heritage Tea House`,
+          `Famous Local Street Bazaar`,
+        ],
+      };
+    });
+
     return {
       tripTitle: `AI Expedition: ${destination}`,
       destination: destination,
-      days: numDays,
-      summary: `A carefully curated ${numDays}-day travel experience in ${destination} tailored for a ${travelStyle} style (${budget} budget).`,
+      days: travelDays,
+      summary: `A carefully curated ${travelDays}-day travel experience in ${destination} tailored for ${travelStyle} (${budget} budget).`,
       estimatedBudget:
         budget === 'luxury' ? '$500 - $1200' : budget === 'backpack' ? '$50 - $120' : '$150 - $350',
-      itinerary: Array.from({ length: Math.min(numDays, 7) }, (_, idx) => ({
-        day: idx + 1,
-        title: `Day ${idx + 1}: ${
-          idx === 0
-            ? 'Arrival & Cultural Immersion'
-            : idx === 1
-            ? 'Hidden Gems & Historic Walk'
-            : 'Culinary Masterclass & Scenic Views'
-        } in ${destination}`,
-        morning: `Morning Heritage Walk & iconic landmarks in ${destination}.`,
-        afternoon: `Sample authentic local delicacies & explore artisan bazaar markets.`,
-        evening: `Golden hour photography at scenic viewpoints & evening street food.`,
-        foodSuggestions: [
-          `Legendary Local Spot Day ${idx + 1}`,
-          `Heritage Tea House`,
-          `Traditional Street Bazaar`,
-        ],
-      })),
+      itinerary: generatedDays,
       travelTips: [
         'Carry local cash for small street vendors.',
         'Keep digital copies of identification stored offline.',
