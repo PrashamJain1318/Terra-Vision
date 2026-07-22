@@ -2,41 +2,43 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Sparkles, Compass } from 'lucide-react';
+import { Compass, ArrowRight } from 'lucide-react';
+import EditorialHeading from '../common/EditorialHeading';
+import CoordinatesTag from '../common/CoordinatesTag';
 
 export const CTASection = () => {
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
-      <div className="max-w-5xl mx-auto rounded-3xl glass p-12 sm:p-16 text-center space-y-8 relative overflow-hidden">
-        {/* Glow Effects */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/20 rounded-full blur-[100px] pointer-events-none -z-10" />
+      <div className="max-w-5xl mx-auto rounded-3xl bg-[#111713] text-[#F3F0E8] p-10 sm:p-16 text-center space-y-8 relative overflow-hidden border border-[#244B3C]/50 shadow-2xl">
+        <div className="absolute inset-0 topographic-pattern opacity-30 pointer-events-none" />
+        <div className="absolute inset-0 contour-lines opacity-20 pointer-events-none" />
 
-        <div className="space-y-4 max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
-            Join the Adventure
-          </div>
-          <h2 className="text-4xl sm:text-5xl font-black tracking-tight leading-tight">
-            Ready to See Beyond the Destination?
-          </h2>
-          <p className="text-sm sm:text-base text-muted-foreground font-light max-w-md mx-auto leading-relaxed">
-            Register your profile details and explore hidden local sights instantly.
+        <div className="relative z-10 space-y-4 max-w-2xl mx-auto">
+          <CoordinatesTag lat="31.6340° N" lon="74.8723° E" />
+
+          <EditorialHeading as="h2" className="text-3xl sm:text-5xl font-extrabold text-[#F3F0E8] leading-tight">
+            Your Next Journey Begins Before You Leave.
+          </EditorialHeading>
+
+          <p className="text-xs sm:text-base text-muted-foreground font-sans leading-relaxed">
+            Join thousands of travelers exploring with AI planning, 3D cartography, visual landmark perception, and safety intelligence.
           </p>
-        </div>
 
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          className="w-fit mx-auto"
-        >
-          <Link
-            href="/signup"
-            className="inline-flex px-8 py-4 bg-foreground text-background hover:bg-foreground/90 font-bold rounded-full text-sm transition-all shadow-lg items-center gap-2"
-          >
-            <Compass className="w-4 h-4" />
-            Get Started Now
-          </Link>
-        </motion.div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+            <Link
+              href="/dashboard/planner"
+              className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#244B3C] text-[#F3F0E8] font-extrabold text-xs uppercase tracking-wider shadow-xl hover:bg-[#244B3C]/90 transition-all flex items-center justify-center gap-2"
+            >
+              <Compass className="w-4 h-4 animate-spin-slow" /> Create My Journey
+            </Link>
+            <Link
+              href="/login"
+              className="w-full sm:w-auto px-8 py-4 rounded-full border border-[#F3F0E8]/30 text-[#F3F0E8] hover:bg-[#F3F0E8]/10 font-extrabold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+            >
+              Sign In <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );
