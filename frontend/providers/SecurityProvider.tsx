@@ -17,7 +17,7 @@ export const SecurityProvider = ({ children }: { children: React.ReactNode }) =>
   const triggerSecurityScan = () => {
     const scanEvent: SecurityEvent = {
       id: `sec-${Date.now()}`,
-      type: 'INFO',
+      type: 'AUTH_SUCCESS',
       details: 'Automated platform vulnerability & TLS handshake scan passed.',
       severity: 'INFO',
       timestamp: 'Just now',
