@@ -1,0 +1,37 @@
+{
+  "info": {
+    "name": "LocalLens AI - Maps APIs",
+    "description": "Postman API Collection for LocalLens AI Phase 9 Maps Endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Current Location",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5050/api/v1/maps/current-location"
+      }
+    },
+    {
+      "name": "Search Places",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5050/api/v1/maps/search?q=Shimla&provider=google"
+      }
+    },
+    {
+      "name": "Generate Route",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"origin\": \"Shimla Mall Road\",\n  \"destination\": \"Kufri Viewpoint\",\n  \"travelMode\": \"driving\",\n  \"provider\": \"google\"\n}"
+        },
+        "url": "http://localhost:5050/api/v1/maps/route"
+      }
+    }
+  ]
+}
