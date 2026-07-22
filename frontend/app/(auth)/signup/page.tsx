@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
+import { User } from '@/types/user';
 import { Compass, Sparkles, User as UserIcon, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
 export default function SignupPage() {
@@ -44,13 +45,16 @@ export default function SignupPage() {
       }
     } catch (err: any) {
       // Fallback local registration if network fails completely
-      const fallbackUser = {
+      const fallbackUser: User = {
         _id: 'usr_local_' + Date.now(),
         name,
         email,
         role: 'user',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+        profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+        preferences: { travelStyle: 'leisure', interests: ['Nature', 'Food', 'Culture'] },
+        isDeleted: false,
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       setCredentials(fallbackUser, 'mock_token_' + Date.now());
       router.push('/dashboard');

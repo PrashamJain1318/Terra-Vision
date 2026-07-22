@@ -20,8 +20,11 @@ export const authService = {
           name: payload.email ? payload.email.split('@')[0] : 'Local Lens Traveller',
           email: payload.email || 'user@locallens.ai',
           role: 'user',
-          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+          profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+          preferences: { travelStyle: 'leisure', interests: ['Nature', 'Food', 'Culture'] },
+          isDeleted: false,
           createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
         };
         const mockToken = 'mock_jwt_token_' + Date.now();
         return {
@@ -50,8 +53,11 @@ export const authService = {
           name: payload.name || 'Local Lens Traveller',
           email: payload.email || 'user@locallens.ai',
           role: 'user',
-          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+          profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+          preferences: { travelStyle: 'leisure', interests: ['Nature', 'Food', 'Culture'] },
+          isDeleted: false,
           createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
         };
         const mockToken = 'mock_jwt_token_' + Date.now();
         return {
