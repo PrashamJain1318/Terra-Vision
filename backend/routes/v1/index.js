@@ -6,6 +6,7 @@ import dashboardRouter from '../dashboardRoutes.js';
 import visionRouter from '../visionRoutes.js';
 import hiddenGemsRouter from '../hiddenGemsRoutes.js';
 import foodRouter from '../foodRoutes.js';
+import memoryRouter from '../memoryRoutes.js';
 
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.use('/dashboard', dashboardRouter);
 router.use('/vision', visionRouter);
 router.use('/hidden-gems', hiddenGemsRouter);
 router.use('/food', foodRouter);
+router.use('/memory', memoryRouter);
 
 export default router;

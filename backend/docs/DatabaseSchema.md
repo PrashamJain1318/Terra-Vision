@@ -1,12 +1,14 @@
-# LocalLens AI — Local Food Database Schema Specification
+# LocalLens AI — Travel Memory Capsule Database Schema
 
 Developer: Pinank Shah (`pinankshah-Ab`)
 
 ---
 
-- `Restaurant`: Name, destination, coordinates, opening hours, rating.
-- `LocalDish`: Name, cuisine, price estimate, diet category, food story.
-- `SavedFood`: User references to saved food items and custom notes.
-- `FoodHistory`: Audit log of food discovery requests.
-- `NutritionProfile`: Calorie, macro, and allergen breakdown per dish.
-- `FoodRecommendationCache`: Transient TTL document cache for AI food requests.
+- `TravelMemory`: Master capsule record.
+- `MemoryCollection`: Categorized media and event collections.
+- `MemoryTimeline`: Chronological event log.
+- `MemoryStory`: AI narrative documents.
+- `MemoryMedia`: Photos and videos metadata.
+- `MemoryShare`: Security share tokens.
+- `MemoryStatistics`: Aggregated travel analytics metrics.
+- `MemoryExport`: PDF export job status.
