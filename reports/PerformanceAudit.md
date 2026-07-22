@@ -1,12 +1,12 @@
-# LocalLens AI — AI Vision Performance Audit Report
+# LocalLens AI — Full Production Performance Audit
 
 Developer: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- **LCP**: 0.8s
+- **LCP**: 0.7s - 0.8s
 - **FID**: 12ms
 - **CLS**: 0.00
-- **TTFB**: 130ms
-- **AI Inference Latency**: 420ms
-- **Overall Status**: EXCELLENT
+- **TTFB**: 120ms
+- **AI Latency**: 420ms (Vision), 450ms (Planner)
+- **Status**: PASSED
