@@ -1,4 +1,4 @@
-# LocalLens AI — Phase 13 Regression Testing Report
+# LocalLens AI — Phase 14 Regression Testing Report
 
 QA Lead: Debharghya Misra (`debarghyamisra09`)
 
@@ -10,3 +10,4 @@ QA Lead: Debharghya Misra (`debarghyamisra09`)
 - **Hidden Gems AI**: 100% Functional.
 - **Local Food AI**: 100% Functional.
 - **Travel Memory Capsule**: 100% Functional.
+- **Travel Safety & Scam Shield**: 100% Functional.
