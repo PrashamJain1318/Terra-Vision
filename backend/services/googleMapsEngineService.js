@@ -17,7 +17,7 @@ export const googleMapsEngineService = {
       lng = 77.0597;
     } else if (cityLower.includes('jawad')) {
       lat = 24.601;
-      baseLng = 74.855;
+      lng = 74.855;
     } else if (cityLower.includes('neemuch')) {
       lat = 24.468;
       lng = 74.872;
