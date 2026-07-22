@@ -1,8 +1,17 @@
 import TravelMemory from '../models/TravelMemory.js';
 
 export const MemoryService = {
-  createMemory: async (userId, title, destination, description = '', tripId = `trip-${Date.now()}`) => {
-    return await TravelMemory.create({ user: userId, tripId, title, destination, description });
+  createMemory: async (userId, title, destination, description = '', tripId = 'general', media = [], category = 'General') => {
+    return await TravelMemory.create({
+      user: userId,
+      tripId,
+      title,
+      destination,
+      description,
+      media,
+      category,
+      date: new Date(),
+    });
   },
 
   getMemoryById: async (id) => {
