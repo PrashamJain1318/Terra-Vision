@@ -273,12 +273,12 @@ export default function MemoriesPage() {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-extrabold border border-primary/30 flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" /> High-Res Media Vault & Voice Recorder Connected
+              <Sparkles className="w-3.5 h-3.5" /> High-Res Media Vault & AI Journal Connected
             </span>
           </div>
-          <h1 className="text-3xl font-extrabold text-foreground tracking-tight mt-2">Travel Memories Vault</h1>
+          <h1 className="text-3xl font-extrabold text-foreground tracking-tight mt-2">Personal Travel Hub & AI Journal</h1>
           <p className="text-xs text-muted-foreground">
-            Capture, organize, and relive your favorite trip memories with high-res photos, 4K videos, and personal voice notes
+            Automated daily timelines, AI trip journals, visited country badges, and high-res memory vaults
           </p>
         </div>
 
@@ -288,6 +288,72 @@ export default function MemoriesPage() {
         >
           <Plus className="w-4 h-4" /> Add Memory Capsule
         </button>
+      </div>
+
+      {/* Explorer Level & Travel Stats Banner */}
+      <div className="p-6 rounded-3xl bg-gradient-to-r from-zinc-950 via-emerald-950/30 to-zinc-950 border border-emerald-500/30 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="p-3 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+              <Sparkles className="w-6 h-6 animate-pulse" />
+            </div>
+            <div>
+              <span className="text-[10px] uppercase font-mono font-extrabold text-emerald-400">Level 7 World Explorer</span>
+              <h2 className="text-xl font-black text-white">Prasham Jain</h2>
+              <p className="text-xs text-zinc-400">14 Countries Visited • 38 Cities • 12,450 km Traveled</p>
+            </div>
+          </div>
+
+          <div className="w-full sm:w-48 space-y-1">
+            <div className="flex justify-between text-[11px] font-mono text-zinc-400">
+              <span>XP Progress</span>
+              <span className="text-emerald-400 font-bold">4,850 / 5,000</span>
+            </div>
+            <div className="h-2 w-full bg-zinc-800 rounded-full overflow-hidden">
+              <div className="h-full bg-emerald-500 rounded-full w-[97%]" />
+            </div>
+          </div>
+        </div>
+
+        {/* AI Travel Journal Automated Writer Box */}
+        <div className="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 space-y-2">
+          <div className="flex items-center justify-between text-xs font-mono text-emerald-400">
+            <span className="flex items-center gap-1.5 font-bold">
+              <Sparkles className="w-3.5 h-3.5" /> Automated AI Travel Journal
+            </span>
+            <span>Today • 29°C Pleasant</span>
+          </div>
+          <p className="text-xs text-zinc-200 leading-relaxed italic">
+            "Today you explored Fort Aguada. The weather was pleasant with temperatures around 29°C. You visited three attractions and covered approximately 12 km. Your favorite stop appears to have been Sinquerim Beach."
+          </p>
+        </div>
+
+        {/* Smart Travel Timeline Widget */}
+        <div className="space-y-2 pt-2 border-t border-zinc-800/80">
+          <span className="text-[10px] font-mono uppercase font-bold text-zinc-400">Smart Daily Timeline</span>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
+            <div className="p-2.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
+              <span className="text-[10px] text-emerald-400 font-mono block">7:30 AM</span>
+              <span className="font-bold text-white">Breakfast</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
+              <span className="text-[10px] text-emerald-400 font-mono block">9:00 AM</span>
+              <span className="font-bold text-white">Museum</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
+              <span className="text-[10px] text-emerald-400 font-mono block">12:00 PM</span>
+              <span className="font-bold text-white">Lunch</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
+              <span className="text-[10px] text-emerald-400 font-mono block">2:00 PM</span>
+              <span className="font-bold text-white">Beach</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-zinc-900/90 border border-zinc-800 col-span-2 sm:col-span-1">
+              <span className="text-[10px] text-emerald-400 font-mono block">6:00 PM</span>
+              <span className="font-bold text-white">Sunset Point</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Media Stats Banner */}

@@ -28,6 +28,28 @@ export const LocalFoodWorkspace = () => {
             </span>
           </div>
         </div>
+
+        {/* Phase 3 Filter Chips */}
+        <div className="flex items-center gap-2 overflow-x-auto pt-2 scrollbar-none border-t border-border/30">
+          {[
+            { label: 'All Experiences', icon: Utensils },
+            { label: 'Street Food Guide 🍢', icon: Flame },
+            { label: 'Vegetarian Guide 🥦', icon: Sparkles },
+            { label: '100% Vegan 🌱', icon: Sparkles },
+            { label: 'Nightlife & Bars 🍹', icon: Flame },
+            { label: 'Shopping Bazaars 🛍️', icon: MapPin },
+            { label: 'Festivals & Events 🛕', icon: Star },
+            { label: 'Museums & Culture 🏛️', icon: MapPin },
+            { label: 'Adventure & Trails 🥾', icon: Flame },
+          ].map((cat, idx) => (
+            <button
+              key={idx}
+              className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-muted/30 hover:bg-orange-500/20 hover:text-orange-400 border border-border/30 whitespace-nowrap transition"
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Primary Culinary Discovery Workspace */}

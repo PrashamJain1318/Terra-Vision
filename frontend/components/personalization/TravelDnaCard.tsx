@@ -4,14 +4,14 @@ import React from 'react';
 import { Compass, Utensils, Trees, Crown, Zap, BookOpen } from 'lucide-react';
 import { TravelDnaScores } from '@/context/PersonalizationContext';
 
-export const TravelDnaCard = ({ dna }: { dna: TravelDnaScores }) => {
+export const TravelDnaCard = ({ dna }: { dna?: any }) => {
   const dimensions = [
-    { label: 'Explorer', score: dna.explorer, icon: Compass, color: 'bg-blue-500' },
-    { label: 'Foodie', score: dna.foodie, icon: Utensils, color: 'bg-amber-500' },
-    { label: 'Nature Lover', score: dna.nature, icon: Trees, color: 'bg-emerald-500' },
-    { label: 'Luxury', score: dna.luxury, icon: Crown, color: 'bg-purple-500' },
-    { label: 'Adventure', score: dna.adventure, icon: Zap, color: 'bg-pink-500' },
-    { label: 'History Buff', score: dna.history, icon: BookOpen, color: 'bg-indigo-500' },
+    { label: 'Adventure', score: dna?.adventure || 92, icon: Zap, color: 'bg-pink-500' },
+    { label: 'Food Explorer', score: dna?.foodie || 84, icon: Utensils, color: 'bg-amber-500' },
+    { label: 'Nature', score: dna?.nature || 95, icon: Trees, color: 'bg-emerald-500' },
+    { label: 'Luxury', score: dna?.luxury || 25, icon: Crown, color: 'bg-purple-500' },
+    { label: 'Nightlife', score: dna?.nightlife || 30, icon: Compass, color: 'bg-indigo-500' },
+    { label: 'Photography', score: dna?.photography || 88, icon: BookOpen, color: 'bg-cyan-500' },
   ];
 
   return (

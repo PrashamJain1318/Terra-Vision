@@ -20,10 +20,13 @@ import betaRouter from '../betaRoutes.js';
 import mobileRouter from '../mobileRoutes.js';
 import settingsRouter from '../settingsRoutes.js';
 
+import aiBrainRouter from '../aiBrainRoutes.js';
+
 const router = express.Router();
 
 // Mount all v1 features
 router.use('/health', healthRouter);
+router.use('/ai', aiBrainRouter);
 router.use('/auth', authRouter);
 router.use('/landing', landingRouter);
 router.use('/dashboard', dashboardRouter);

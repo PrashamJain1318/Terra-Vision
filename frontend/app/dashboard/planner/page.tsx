@@ -246,14 +246,42 @@ export default function PlannerPage() {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-extrabold border border-primary/30 flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" /> ChatGPT & LocalLens AI Engine Connected
+              <Sparkles className="w-3.5 h-3.5" /> Gemini & LocalLens AI Engine Connected
             </span>
           </div>
-          <h1 className="text-3xl font-extrabold text-foreground tracking-tight mt-2">AI Travel Planner</h1>
+          <h1 className="text-3xl font-extrabold text-foreground tracking-tight mt-2">AI Travel Brain & Planner</h1>
           <p className="text-xs text-muted-foreground">
-            Generate personalized multi-day itineraries powered by OpenAI ChatGPT and real-time Local Lens AI recommendations
+            Generate personalized multi-day itineraries, budget breakdowns, packing lists, and risk advisories powered by Gemini AI
           </p>
         </div>
+      </div>
+
+      {/* AI Quick Prompt Examples Bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        {[
+          { title: 'Plan my trip', desc: '5-day itinerary', dest: 'Tokyo', days: '5' },
+          { title: 'Suggest hidden gems', desc: 'Secret spots', dest: 'Goa', days: '3' },
+          { title: 'Recommend restaurants', desc: 'Local delicacies', dest: 'Paris', days: '4' },
+          { title: 'Photography spots', desc: 'Golden hour views', dest: 'Iceland', days: '7' },
+          { title: 'Best budget hotels', desc: 'Stays under $50', dest: 'Bali', days: '5' },
+          { title: '5-day itinerary', desc: 'Complete breakdown', dest: 'Rome', days: '5' },
+        ].map((promptItem, pIdx) => (
+          <button
+            key={pIdx}
+            onClick={() => {
+              setDestination(promptItem.dest);
+              setDays(promptItem.days);
+            }}
+            className="p-3.5 rounded-2xl bg-zinc-950/80 hover:bg-emerald-500/10 border border-zinc-800 hover:border-emerald-500/40 text-left transition group space-y-1"
+          >
+            <span className="text-xs font-extrabold text-white group-hover:text-emerald-300 block truncate">
+              ⚡ {promptItem.title}
+            </span>
+            <span className="text-[10px] text-zinc-400 font-mono block">
+              {promptItem.dest} • {promptItem.desc}
+            </span>
+          </button>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

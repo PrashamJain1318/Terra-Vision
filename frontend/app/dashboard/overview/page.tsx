@@ -15,6 +15,10 @@ import ProfileCard from '@/components/dashboard/widgets/ProfileCard';
 import NotificationsPanel from '@/components/dashboard/NotificationsPanel';
 import NetworkError from '@/components/common/NetworkError';
 
+import ProactiveRecommendations from '@/components/ai/ProactiveRecommendations';
+import LiveTelemetryWidget from '@/components/dashboard/LiveTelemetryWidget';
+import GamificationCard from '@/components/gamification/GamificationCard';
+
 export default function OverviewPage() {
   const {
     data: overviewData,
@@ -61,13 +65,22 @@ export default function OverviewPage() {
     );
   }
 
-  const userName = overviewData?.user?.name || 'Jane Doe';
-  const userEmail = overviewData?.user?.email || 'jane.doe@locallens.ai';
+  const userName = overviewData?.user?.name || 'Prasham Jain';
+  const userEmail = overviewData?.user?.email || 'prasham@locallens.ai';
 
   return (
     <div className="space-y-8">
       {/* Hero Welcome Section */}
       <WelcomeBanner userName={userName} />
+
+      {/* Real-Time Live Telemetry Bar */}
+      <LiveTelemetryWidget />
+
+      {/* Proactive AI Recommendation Engine */}
+      <ProactiveRecommendations />
+
+      {/* Gamification Explorer Level & XP Progress Card */}
+      <GamificationCard />
 
       {/* User Profile Card & Stats Overview */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

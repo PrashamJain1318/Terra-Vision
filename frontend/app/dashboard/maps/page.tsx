@@ -55,15 +55,17 @@ import {
 
 const CATEGORIES_WITH_ICONS = [
   { name: 'All', icon: Compass },
+  { name: 'Hidden Gems', icon: Sparkles },
   { name: 'Attractions', icon: Camera },
   { name: 'Restaurants', icon: UtensilsCrossed },
-  { name: 'Hidden Gems', icon: Sparkles },
-  { name: 'Museums', icon: Landmark },
-  { name: 'Shopping', icon: CreditCard },
+  { name: 'EV Charging', icon: Zap },
+  { name: 'Parking Finder', icon: Car },
+  { name: 'Public Toilets', icon: Info },
+  { name: 'Water Refill', icon: Waves },
+  { name: 'Scenic Routes', icon: Mountain },
+  { name: 'Accessibility', icon: Footprints },
   { name: 'Nature', icon: Trees },
   { name: 'Nightlife', icon: Flame },
-  { name: 'Adventure', icon: Mountain },
-  { name: 'Family', icon: Heart },
 ];
 
 const TRENDING_DESTINATIONS = ['Goa', 'Munnar', 'Manali', 'Jaipur', 'Bali', 'Paris', 'Tokyo', 'New York', 'Dubai', 'Delhi', 'Neemuch', 'Jawad'];
