@@ -1,12 +1,13 @@
-# LocalLens AI — Phase 10 AI Vision Known Issues
+# LocalLens AI — Full Production Known Issues Log
 
 Developer: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-## Resolved Items
+## Resolved Issues
 - ✅ Fixed null `pathname` check in `DashboardNavbar.tsx`.
-- ✅ Resolved backend `express-validator` package dependency.
+- ✅ Configured `express-validator` package in backend.
+- ✅ Added GitHub Actions CI/CD workflows under `.github/workflows/`.
 
 ## Open Considerations
-- Real-time OCR plaque translation will be attached in future translation modules.
+- Production replica set setup recommended for high-volume MongoDB deployment.

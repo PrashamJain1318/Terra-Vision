@@ -1,12 +1,10 @@
-# LocalLens AI — AI Vision Browser Compatibility Matrix
+# LocalLens AI — Full Production Browser Compatibility Matrix
 
 Developer: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-| Browser | OS | Status |
-|---|---|---|
-| Chrome 124+ | macOS / Windows / Android | **PASSED** |
-| Safari 17+ | macOS / iOS | **PASSED** |
-| Firefox 125+ | macOS / Windows | **PASSED** |
-| Edge 124+ | Windows | **PASSED** |
+- Chrome 124+: **PASSED**
+- Safari 17+: **PASSED**
+- Firefox 125+: **PASSED**
+- Edge 124+: **PASSED**
