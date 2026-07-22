@@ -16,21 +16,21 @@ export default function TermsPage() {
           <FileText className="w-4 h-4" /> Legal & Governance
         </div>
         <h1 className="text-3xl font-black text-white">Terms of Service</h1>
-        <p className="text-xs text-slate-400 font-semibold">Last Updated: July 2026 • LocalLens AI Operating System</p>
+        <p className="text-xs text-slate-400 font-semibold">Last Updated: July 2026 • TerraVision Operating System</p>
       </div>
 
       <div className="space-y-6 text-xs text-slate-300 font-semibold leading-relaxed">
         <section className="space-y-2">
           <h2 className="text-base font-black text-white">1. Acceptance of Terms</h2>
           <p>
-            By accessing or using LocalLens AI, you agree to be bound by these Terms of Service. Our services integrate Google Maps Platform spatial APIs and Gemini AI intelligence models to provide personalized travel discovery.
+            By accessing or using TerraVision, you agree to be bound by these Terms of Service. Our services integrate Google Maps Platform spatial APIs and Gemini AI intelligence models to provide personalized travel discovery.
           </p>
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-base font-black text-white">2. Permitted Use & Spatial Intelligence</h2>
+          <h2 className="text-base font-black text-white">2. Acceptable Use Policy</h2>
           <p>
-            You agree to use LocalLens AI for lawful travel planning, route discovery, and location bookmarking. Data retrieved from Google Places and Gemini AI is provided for informational purposes.
+            You agree to use TerraVision for lawful travel planning, route discovery, and location bookmarking. Data retrieved from Google Places and Gemini AI is provided for informational purposes.
           </p>
         </section>
 

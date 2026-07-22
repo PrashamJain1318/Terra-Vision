@@ -47,7 +47,7 @@ export const VoiceSidebar = () => {
       <div className="p-3 rounded-2xl bg-card/60 border border-border/30 text-xs text-muted-foreground space-y-1">
         <span className="font-extrabold text-foreground block">Acoustic Perception</span>
         <div className="flex items-center gap-2 text-cyan-400 font-extrabold">
-          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" /> Wake Word "Hey LocalLens"
+          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" /> Wake Word "Hey TerraVision"
         </div>
       </div>
     </aside>

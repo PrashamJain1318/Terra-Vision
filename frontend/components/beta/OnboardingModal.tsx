@@ -51,7 +51,7 @@ export default function OnboardingModal() {
               <Compass className="w-8 h-8 animate-spin-slow" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-xl font-black text-white">Welcome to LocalLens AI</h3>
+              <h3 className="text-xl font-black text-white">Welcome to TerraVision</h3>
               <p className="text-xs text-slate-400 font-semibold leading-relaxed">
                 Your global AI Travel Operating System powered by live spatial intelligence & Gemini AI.
               </p>

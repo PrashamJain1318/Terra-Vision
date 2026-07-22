@@ -19,7 +19,7 @@ export const PlannerHero = () => {
         </span>
       </h1>
       <p className="text-sm text-muted-foreground font-light leading-relaxed">
-        Specify your destination, pace, budget, and activities. LocalLens AI will generate a day-by-day itinerary tailored just for you.
+        Specify your destination, pace, budget, and activities. TerraVision will generate a day-by-day itinerary tailored just for you.
       </p>
     </div>
   );

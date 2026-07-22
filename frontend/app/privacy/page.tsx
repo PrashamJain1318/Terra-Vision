@@ -16,14 +16,14 @@ export default function PrivacyPage() {
           <Lock className="w-4 h-4" /> Privacy & Security
         </div>
         <h1 className="text-3xl font-black text-white">Privacy Policy & Cookie Consent</h1>
-        <p className="text-xs text-slate-400 font-semibold">Last Updated: July 2026 • LocalLens AI</p>
+        <p className="text-xs text-slate-400 font-semibold">Last Updated: July 2026 • TerraVision</p>
       </div>
 
-      <div className="space-y-6 text-xs text-slate-300 font-semibold leading-relaxed">
+      <div className="p-8 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 space-y-6 text-sm leading-relaxed text-muted-foreground">
         <section className="space-y-2">
-          <h2 className="text-base font-black text-white">1. Information Collection</h2>
+          <h2 className="text-base font-extrabold text-foreground">1. Data Collection & Privacy Commitment</h2>
           <p>
-            LocalLens AI respects user privacy. We do not sell personal travel logs. Event telemetry is processed in aggregate to calculate DAU/MAU and optimize Google Maps & Gemini API cache hit ratios.
+            TerraVision respects user privacy. We do not sell personal travel logs. Event telemetry is processed in aggregate to calculate DAU/MAU and optimize Google Maps & Gemini API cache hit ratios.
           </p>
         </section>
 

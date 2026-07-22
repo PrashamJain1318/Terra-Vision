@@ -33,7 +33,7 @@ export default function EnterpriseLayout({ children }: EnterpriseLayoutProps) {
             <h1 className="text-2xl font-black text-foreground tracking-tight">Enterprise & Partner Platform</h1>
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            Connect hotels, restaurants, tourism boards, local guides & travel agencies to LocalLens AI
+            Connect hotels, restaurants, tourism boards, local guides & travel agencies to TerraVision
           </p>
         </div>
 

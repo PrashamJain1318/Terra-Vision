@@ -6,12 +6,12 @@ import { ArrowLeft, HelpCircle, Search, MessageSquare, ChevronDown, ChevronUp, M
 
 const FAQS = [
   {
-    q: 'How does LocalLens AI enrich Google Maps data?',
-    a: 'LocalLens AI retrieves verified spatial details from Google Places and feeds them to Gemini AI models to calculate photography scores, crowd levels, safety scores, and travel summaries.',
+    q: 'How does TerraVision enrich Google Maps data?',
+    a: 'TerraVision retrieves verified spatial details from Google Places and feeds them to Gemini AI models to calculate photography scores, crowd levels, safety scores, and travel summaries.',
   },
   {
-    q: 'Can I use LocalLens AI offline?',
-    a: 'Yes! LocalLens AI caches searched places and saved wishlists in your browser localStorage, allowing offline map access during intermittent connectivity.',
+    q: 'Can I use TerraVision offline?',
+    a: 'Yes! TerraVision caches searched places and saved wishlists in your browser localStorage, allowing offline map access during intermittent connectivity.',
   },
   {
     q: 'How do I submit feedback or report a bug?',

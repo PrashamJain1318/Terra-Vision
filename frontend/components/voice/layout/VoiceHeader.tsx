@@ -15,7 +15,7 @@ export const VoiceHeader = () => {
         </div>
         <div>
           <h1 className="text-sm font-extrabold text-foreground tracking-tight flex items-center gap-2">
-            LocalLens AI <span className="text-cyan-400">Voice AI Travel Assistant</span>
+            TerraVision <span className="text-cyan-400">Voice AI Travel Assistant</span>
           </h1>
           <p className="text-[11px] text-muted-foreground font-semibold">
             Conversational Context Engine • Multi-Modal Speech Reasoning

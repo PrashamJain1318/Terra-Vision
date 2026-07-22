@@ -17,7 +17,7 @@ const steps = [
   {
     step: '03',
     title: 'Generate Spot Guide',
-    description: 'Let LocalLens AI suggest hidden local spots and map routes.',
+    description: 'Let TerraVision suggest hidden local spots and map routes.',
   },
 ];
 

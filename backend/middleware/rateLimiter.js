@@ -1,4 +1,4 @@
-// Rate Limiting Protection Middleware for LocalLens AI 3.0
+// Rate Limiting Protection Middleware for TerraVision 3.0
 const requestCounts = new Map();
 
 export const rateLimiter = (options = { windowMs: 15 * 60 * 1000, max: 100 }) => {

@@ -5,7 +5,7 @@ class GeminiVoiceProvider {
 
   async processVoiceInteraction(prompt, language = 'en-US') {
     const lower = prompt.toLowerCase();
-    let targetModule = 'LocalLens Companion';
+    let targetModule = 'TerraVision Companion';
     let intent = 'GENERAL_QUERY';
     let speechResponse = `I have received your voice request: "${prompt}".`;
 

@@ -37,9 +37,9 @@ export default function UnifiedWorkspacePage() {
               <Cpu className="w-6 h-6 animate-pulse" />
             </div>
             <div>
-              <h3 className="text-base font-black text-foreground">LocalLens OS Multi-Agent Command Console</h3>
+              <h3 className="text-base font-black text-foreground">TerraVision OS Multi-Agent Command Console</h3>
               <p className="text-xs text-muted-foreground">
-                Enter any travel objective. The Multi-Agent Orchestrator routes task execution across 8 specialized AI agents.
+                Synthesize itineraries, resolve safety queries, and run multi-agent workflows.
               </p>
             </div>
           </div>
@@ -50,7 +50,7 @@ export default function UnifiedWorkspacePage() {
                 type="text"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                placeholder="Ask LocalLens OS anything about your trip..."
+                placeholder="Ask TerraVision OS anything about your trip..."
                 className="w-full pl-4 pr-10 py-3.5 rounded-2xl bg-card border border-border/40 text-xs font-semibold text-foreground focus:outline-none focus:border-primary shadow-inner"
               />
               <Sparkles className="w-4 h-4 text-primary absolute right-3.5 top-4" />

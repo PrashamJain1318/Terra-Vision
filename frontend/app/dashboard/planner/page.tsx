@@ -246,7 +246,7 @@ export default function PlannerPage() {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-extrabold border border-primary/30 flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" /> Gemini & LocalLens AI Engine Connected
+              <Sparkles className="w-3.5 h-3.5" /> Gemini & TerraVision Engine Connected
             </span>
           </div>
           <h1 className="text-3xl font-extrabold text-foreground tracking-tight mt-2">AI Travel Brain & Planner</h1>

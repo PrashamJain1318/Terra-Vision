@@ -9,7 +9,7 @@ export const LoadingScreen = () => {
         {/* Apple/Tesla-inspired minimalist circular spinner */}
         <div className="w-12 h-12 border-2 border-muted border-t-primary rounded-full animate-spin"></div>
         <p className="text-sm font-semibold tracking-wider uppercase text-muted-foreground animate-pulse">
-          Loading LocalLens AI...
+          Loading TerraVision...
         </p>
       </div>
     </div>

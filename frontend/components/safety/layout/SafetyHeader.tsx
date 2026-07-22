@@ -15,7 +15,7 @@ export const SafetyHeader = () => {
         </div>
         <div>
           <h1 className="text-sm font-extrabold text-foreground tracking-tight flex items-center gap-2">
-            LocalLens AI <span className="text-red-500">Travel Safety & Scam Shield</span>
+            TerraVision <span className="text-red-500">Travel Safety & Scam Shield</span>
           </h1>
           <p className="text-[11px] text-muted-foreground font-semibold">
             Real-time Threat Monitoring • Scam Detection • Emergency Assistance

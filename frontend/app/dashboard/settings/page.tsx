@@ -250,7 +250,7 @@ export default function SettingsV2Page() {
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-400">
             <Settings className="w-4 h-4 text-emerald-400" />
-            <span>LocalLens AI Operating System / Settings V2</span>
+            <span>TerraVision Operating System / Settings V2</span>
           </div>
           <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
             Settings & Control Hub

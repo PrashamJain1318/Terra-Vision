@@ -46,7 +46,7 @@ export const ReviewPlanner = () => {
       <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20 flex items-center gap-3">
         <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
         <p className="text-xs font-medium text-foreground">
-          All parameters validated. Ready to trigger LocalLens AI Multimodal Itinerary Engine.
+          All parameters validated. Ready to trigger TerraVision Multimodal Itinerary Engine.
         </p>
       </div>
     </div>

@@ -50,7 +50,7 @@ export const DashboardNavbar = () => {
         </button>
 
         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground select-none">
-          <span>LocalLens</span>
+          <span>TerraVision</span>
           <span>/</span>
           <span className="text-foreground capitalize">{pageTitle}</span>
         </div>

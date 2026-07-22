@@ -28,7 +28,7 @@ export default function OsLayout({ children }: OsLayoutProps) {
           <div className="flex items-center gap-2">
             <Cpu className="w-5 h-5 text-primary animate-pulse" />
             <h1 className="text-2xl font-black text-foreground tracking-tight">
-              LocalLens OS <span className="text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary font-black uppercase">v20.0 AI Kernel</span>
+              TerraVision OS <span className="text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary font-black uppercase">v20.0 AI Kernel</span>
             </h1>
           </div>
           <p className="text-xs text-muted-foreground mt-1">

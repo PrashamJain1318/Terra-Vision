@@ -58,8 +58,8 @@ export const Navbar = () => {
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <Compass className="w-8 h-8 text-primary group-hover:rotate-45 transition-transform duration-300" />
-            <span className="font-extrabold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-indigo-500">
-              LocalLens AI
+            <span className="font-extrabold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400">
+              TerraVision
             </span>
           </Link>
 

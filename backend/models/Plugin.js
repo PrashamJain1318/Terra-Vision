@@ -41,7 +41,7 @@ const pluginSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      default: 'Official LocalLens OS Plugin',
+      default: 'Official TerraVision OS Plugin',
     },
   },
   {

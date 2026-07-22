@@ -66,24 +66,20 @@ export default function DeveloperPlatformPage() {
           </div>
         )}
 
-        <GlassCard hoverEffect={false} className="p-6 border-border/40 space-y-2">
-          <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
-              <Code className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="text-base font-black text-foreground">Open Developer Platform & Plugin Architecture</h3>
-              <p className="text-xs text-muted-foreground">
-                Build custom plugins for LocalLens OS. Access REST APIs, SDK downloads, event webhooks, and plugin registration.
-              </p>
-            </div>
+        <div className="p-6 rounded-3xl bg-card/45 backdrop-blur-xl border border-purple-500/20 shadow-xl space-y-2">
+          <div className="flex items-center gap-2">
+            <Code className="w-5 h-5 text-purple-400" />
+            <h2 className="text-xl font-extrabold text-foreground">Developer Mesh & Plugin Platform</h2>
           </div>
-        </GlassCard>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Build custom plugins for TerraVision OS. Access REST APIs, SDK downloads, event webhooks, and plugin registration.
+          </p>
+        </div>
 
         {/* Developer Header */}
-        <div className="flex items-center justify-between">
+        <div className="p-6 rounded-3xl bg-card/45 backdrop-blur-xl border border-border/40 space-y-4 shadow-xl">
           <h3 className="text-sm font-extrabold text-foreground flex items-center gap-2">
-            <Layers className="w-4 h-4 text-purple-400" /> Active LocalLens OS Developer Plugins
+            <Layers className="w-4 h-4 text-purple-400" /> Active TerraVision OS Developer Plugins
           </h3>
 
           <button

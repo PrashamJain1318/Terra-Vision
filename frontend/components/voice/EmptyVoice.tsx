@@ -11,7 +11,7 @@ export const EmptyVoice = () => {
       </div>
       <h4 className="text-sm font-extrabold text-foreground">No Voice Interaction Active</h4>
       <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-        Press the microphone button or say "Hey LocalLens" to start talking.
+        Press the microphone button or say "Hey TerraVision" to start talking.
       </p>
     </div>
   );
