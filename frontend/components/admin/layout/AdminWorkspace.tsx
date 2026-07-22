@@ -5,14 +5,14 @@ import AdminLayout from './AdminLayout';
 import AdminContainer from './AdminContainer';
 import AdminHeader from './AdminHeader';
 import AdminSidebar from './AdminSidebar';
-import AdminOverviewPage from '../../pages/admin/AdminOverviewPage';
-import AdminUsersPage from '../../pages/admin/AdminUsersPage';
-import AdminModerationPage from '../../pages/admin/AdminModerationPage';
-import AdminDestinationsPage from '../../pages/admin/AdminDestinationsPage';
-import AdminAiOpsPage from '../../pages/admin/AdminAiOpsPage';
-import AdminAnalyticsPage from '../../pages/admin/AdminAnalyticsPage';
-import AdminNotificationsPage from '../../pages/admin/AdminNotificationsPage';
-import AdminSecurityPage from '../../pages/admin/AdminSecurityPage';
+import AdminOverviewPage from '@/pages/admin/AdminOverviewPage';
+import AdminUsersPage from '@/pages/admin/AdminUsersPage';
+import AdminModerationPage from '@/pages/admin/AdminModerationPage';
+import AdminDestinationsPage from '@/pages/admin/AdminDestinationsPage';
+import AdminAiOpsPage from '@/pages/admin/AdminAiOpsPage';
+import AdminAnalyticsPage from '@/pages/admin/AdminAnalyticsPage';
+import AdminNotificationsPage from '@/pages/admin/AdminNotificationsPage';
+import AdminSecurityPage from '@/pages/admin/AdminSecurityPage';
 import { useAdmin } from '@/hooks/useAdmin';
 
 const AdminContent = () => {

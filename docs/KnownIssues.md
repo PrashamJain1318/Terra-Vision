@@ -4,4 +4,4 @@ QA Lead: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- **Status**: Zero blocker or high-severity issues reported for Phase 16 Community Hub.
+- **Status**: Zero blocker or high-severity issues reported for Phase 17 Admin & Operations Platform.
