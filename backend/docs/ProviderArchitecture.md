@@ -1,9 +1,9 @@
-# LocalLens AI — Memory Provider Architecture
+# LocalLens AI — Travel Safety Provider Architecture
 
 Developer: Pinank Shah (`pinankshah-Ab`)
 
 ---
 
-- `GeminiMemoryProvider`: Multimodal layout & narration adapter.
-- `OpenAIMemoryProvider`: Gourmet emotional story adapter.
-- `ClaudeMemoryProvider`: Ancestral cultural log adapter.
+- `GeminiSafetyProvider`: Multimodal threat analysis adapter.
+- `OpenAISafetyProvider`: Scam taxonomy classification adapter.
+- `ClaudeSafetyProvider`: Regional travel advisory adapter.

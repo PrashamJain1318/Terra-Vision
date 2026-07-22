@@ -1,9 +1,9 @@
-# LocalLens AI — Memory API Error Codes
+# LocalLens AI — Travel Safety API Error Codes
 
 Developer: Pinank Shah (`pinankshah-Ab`)
 
 ---
 
-- `400 Bad Request`: Missing title or destination.
-- `404 Not Found`: Memory capsule or share token not found.
-- `500 Internal Error`: Story generation or database failure.
+- `400 Bad Request`: Missing destination or invalid coordinates.
+- `404 Not Found`: Emergency contact directory not found.
+- `500 Internal Error`: Safety provider or SOS dispatch failure.

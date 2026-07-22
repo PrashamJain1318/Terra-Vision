@@ -1,14 +1,15 @@
-# LocalLens AI — Travel Memory Capsule Database Schema
+# LocalLens AI — Travel Safety Database Schema
 
 Developer: Pinank Shah (`pinankshah-Ab`)
 
 ---
 
-- `TravelMemory`: Master capsule record.
-- `MemoryCollection`: Categorized media and event collections.
-- `MemoryTimeline`: Chronological event log.
-- `MemoryStory`: AI narrative documents.
-- `MemoryMedia`: Photos and videos metadata.
-- `MemoryShare`: Security share tokens.
-- `MemoryStatistics`: Aggregated travel analytics metrics.
-- `MemoryExport`: PDF export job status.
+- `SafetyAssessment`: Master destination risk score record.
+- `ScamAlert`: Verified scam taxonomies.
+- `CommunityReport`: User-generated safety reports.
+- `EmergencyContact`: Police & hospital directory.
+- `SafetyAdvisory`: Regional travel warnings.
+- `SafetyNotification`: User push alerts log.
+- `SOSRequest`: Active SOS emergency dispatches.
+- `SafetyHistory`: Threat query history log.
+- `RiskZone`: Safe & unsafe polygon zones.
