@@ -8,8 +8,7 @@ import {
   Users,
   Settings,
   Bell,
-  HelpCircle,
-  LogOut,
+  Radio,
 } from 'lucide-react';
 
 export interface NavigationItem {
@@ -26,6 +25,7 @@ export const navigationConfig: NavigationItem[] = [
   { name: 'Memories', href: '/dashboard/memories', icon: Camera, category: 'workspace' },
   { name: 'Saved Places', href: '/dashboard/saved', icon: Heart, category: 'workspace' },
   { name: 'Maps', href: '/dashboard/maps', icon: Map, category: 'workspace' },
+  { name: 'Companion Ecosystem', href: '/dashboard/ecosystem', icon: Radio, category: 'workspace' },
   { name: 'Community', href: '/dashboard/community', icon: Users, category: 'social' },
   { name: 'Notifications', href: '/dashboard/notifications', icon: Bell, category: 'system' },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings, category: 'system' },
