@@ -1,0 +1,9 @@
+export const MEMORY_CONSTANTS = {
+  MODULE_NAME: 'Travel Memory Capsule',
+  VERSION: '13.0.0',
+  DEFAULT_DESTINATION: 'Amritsar, Punjab',
+  MAX_PHOTOS_PER_CAPSULE: 100,
+  PDF_EXPORT_RESOLUTION: '300DPI',
+};
+
+export default MEMORY_CONSTANTS;
