@@ -14,6 +14,7 @@ import adminRouter from '../adminRoutes.js';
 import securityRouter from '../securityRoutes.js';
 import personalizationRouter from '../personalizationRoutes.js';
 import ecosystemRouter from '../ecosystemRoutes.js';
+import enterpriseRouter from '../enterpriseRoutes.js';
 
 const router = express.Router();
 
@@ -33,5 +34,6 @@ router.use('/admin', adminRouter);
 router.use('/security', securityRouter);
 router.use('/personalization', personalizationRouter);
 router.use('/ecosystem', ecosystemRouter);
+router.use('/enterprise', enterpriseRouter);
 
 export default router;
