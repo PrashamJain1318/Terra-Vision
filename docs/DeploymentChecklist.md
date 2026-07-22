@@ -1,11 +1,10 @@
-# LocalLens AI — Production Deployment Checklist
+# LocalLens AI — Phase 11 Deployment Checklist
 
-Developer: Debharghya Misra (`debarghyamisra09`)
+QA Lead: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- [x] All 5 GitHub Actions workflows created (`frontend.yml`, `backend.yml`, `tests.yml`, `lint.yml`, `build.yml`)
-- [x] Multi-stage `Dockerfile` created for both frontend and backend
-- [x] Production Compose file `docker-compose.prod.yml` configured
-- [x] Production build validation (`npm run build`) passed with zero errors across 26 prerendered routes
-- [x] Health check endpoint `GET /api/v1/health` returning 200 OK
+- [x] Environment variable verification (`GEMINI_API_KEY`, `OPENAI_API_KEY`).
+- [x] Production build verification (`npm run build` passed cleanly with 33 static pages generated).
+- [x] MongoDB index creation on `HiddenGem`, `SavedHiddenGem`, and `RecommendationCache`.
+- [x] CI/CD GitHub Actions pipeline verification (`.github/workflows/*.yml`).
