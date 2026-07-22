@@ -4,50 +4,27 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import GlassCard from '@/components/common/GlassCard';
 import api from '@/utils/api';
-import mapsService, { PlaceItem, CityWeather, RouteInfo, TelemetryStats } from '@/services/mapsService';
+import mapsService, { PlaceItem, CityWeather, RouteInfo } from '@/services/mapsService';
 import {
-  Map as MapIcon,
-  MapPin,
-  Navigation,
-  Sparkles,
-  Utensils,
   Compass,
   Search,
   Star,
   Bookmark,
-  ExternalLink,
   RefreshCw,
   Heart,
   Landmark,
   Mountain,
   Mic,
   MicOff,
-  Layers,
-  Clock,
   Phone,
-  Globe,
-  DollarSign,
-  ShieldCheck,
   Share2,
-  Filter,
-  Eye,
-  CheckCircle2,
-  ChevronRight,
-  ChevronLeft,
   X,
-  ArrowLeft,
   Camera,
   Trees,
   UtensilsCrossed,
-  SlidersHorizontal,
   Maximize2,
-  MessageSquare,
-  ChevronDown,
-  Volume2,
   Sun,
   Sunset,
-  CloudRain,
-  Wind,
   ShieldAlert,
   Car,
   Bike,
@@ -58,22 +35,28 @@ import {
   Hospital,
   CreditCard,
   Fuel,
-  TrendingUp,
   Flame,
   Zap,
   Command,
+  Navigation,
+  Sparkles,
+  Layers,
   Activity,
-  Check,
-  Compass as CompassIcon,
-  CheckCircle,
-  Radio,
+  CheckCircle2,
+  Clock,
+  DollarSign,
+  Info,
+  MapPin,
+  Maximize,
   Sliders,
+  ChevronRight,
+  ChevronLeft,
 } from 'lucide-react';
 
 const CATEGORIES_WITH_ICONS = [
   { name: 'All', icon: Compass },
   { name: 'Attractions', icon: Camera },
-  { name: 'Restaurants', icon: Utensils },
+  { name: 'Restaurants', icon: UtensilsCrossed },
   { name: 'Hidden Gems', icon: Sparkles },
   { name: 'Museums', icon: Landmark },
   { name: 'Shopping', icon: CreditCard },
@@ -83,22 +66,24 @@ const CATEGORIES_WITH_ICONS = [
   { name: 'Family', icon: Heart },
 ];
 
-const RECENT_SEARCHES = ['Goa', 'Munnar', 'Manali', 'Paris', 'Tokyo'];
-const TRENDING_DESTINATIONS = ['Goa', 'Jaipur', 'Bali', 'New York', 'Dubai', 'Delhi', 'Neemuch', 'Jawad'];
+const TRENDING_DESTINATIONS = ['Goa', 'Munnar', 'Manali', 'Jaipur', 'Bali', 'Paris', 'Tokyo', 'New York', 'Dubai', 'Delhi', 'Neemuch', 'Jawad'];
 
-// Custom Animated Map Markers (Icon Map)
-const getMarkerIcon = (category: string) => {
+// Custom Animated Map Marker Generator
+const getMarkerStyle = (category: string) => {
   const cat = category.toLowerCase();
   if (cat.includes('food') || cat.includes('restaurant') || cat.includes('cafe'))
-    return { icon: '🍽', bg: 'bg-amber-500/20 text-amber-400 border-amber-500/40' };
+    return { symbol: '🍽', color: 'border-amber-400 text-amber-300 bg-amber-950/80 shadow-amber-500/20' };
   if (cat.includes('temple') || cat.includes('historical') || cat.includes('fort'))
-    return { icon: '🛕', bg: 'bg-purple-500/20 text-purple-400 border-purple-500/40' };
+    return { symbol: '🛕', color: 'border-purple-400 text-purple-300 bg-purple-950/80 shadow-purple-500/20' };
   if (cat.includes('nature') || cat.includes('park') || cat.includes('waterfall'))
-    return { icon: '🌿', bg: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' };
-  if (cat.includes('museum')) return { icon: '🏛', bg: 'bg-blue-500/20 text-blue-400 border-blue-500/40' };
-  if (cat.includes('beach')) return { icon: '🏖️', bg: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40' };
-  if (cat.includes('hotel')) return { icon: '🏨', bg: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/40' };
-  return { icon: '🧗', bg: 'bg-purple-500/20 text-purple-400 border-purple-500/40' };
+    return { symbol: '🌿', color: 'border-emerald-400 text-emerald-300 bg-emerald-950/80 shadow-emerald-500/20' };
+  if (cat.includes('museum'))
+    return { symbol: '🏛', color: 'border-blue-400 text-blue-300 bg-blue-950/80 shadow-blue-500/20' };
+  if (cat.includes('beach'))
+    return { symbol: '🏖️', color: 'border-cyan-400 text-cyan-300 bg-cyan-950/80 shadow-cyan-500/20' };
+  if (cat.includes('hotel'))
+    return { symbol: '🏨', color: 'border-indigo-400 text-indigo-300 bg-indigo-950/80 shadow-indigo-500/20' };
+  return { symbol: '🧗', color: 'border-purple-400 text-purple-300 bg-purple-950/80 shadow-purple-500/20' };
 };
 
 const initialGoaPlaces: PlaceItem[] = [
@@ -256,15 +241,15 @@ export default function MapsPage() {
     },
   });
 
-  // Layer toggles
+  // Layer & View Toggles
   const [mapMode, setMapMode] = useState<'map' | 'satellite' | 'terrain'>('satellite');
   const [trafficLayer, setTrafficLayer] = useState(true);
+  const [rightPanelOpen, setRightPanelOpen] = useState(true);
 
   // Modals & Voice State
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
   const [isListening, setIsListening] = useState(false);
-  const [routeModalOpen, setRouteModalOpen] = useState(false);
   const [routeMode, setRouteMode] = useState<'driving' | 'walking' | 'cycling' | 'transit'>('driving');
   const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null);
 
@@ -304,7 +289,6 @@ export default function MapsPage() {
     }
   };
 
-  // Voice Search Handler
   const startVoiceSearch = () => {
     if (typeof window === 'undefined') return;
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -375,7 +359,7 @@ export default function MapsPage() {
     e.stopPropagation();
     if (navigator.clipboard) {
       navigator.clipboard.writeText(place.googleMapsUrl || window.location.href);
-      alert(`Google Maps link for "${place.name}" copied to clipboard!`);
+      alert(`Google Maps share link for "${place.name}" copied to clipboard!`);
     }
   };
 
@@ -415,8 +399,8 @@ export default function MapsPage() {
   });
 
   return (
-    <div className="space-y-6 max-w-[1850px] mx-auto pb-32 relative font-sans text-slate-100 bg-[#09090B]">
-      {/* TOP FLOATING COMMAND SEARCH BAR & SAAS TELEMETRY WIDGETS */}
+    <div className="space-y-6 max-w-[1920px] mx-auto pb-32 relative font-sans text-slate-100 bg-[#09090B] min-h-screen">
+      {/* 1. TOP SAAS CONTROL BAR (SEARCH COMMAND + QUICK TELEMETRY WIDGETS) */}
       <div className="space-y-4">
         {/* Floating Command Search Bar */}
         <div className="p-3.5 rounded-3xl bg-[#111827]/90 border border-white/[0.08] shadow-2xl backdrop-blur-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -434,14 +418,13 @@ export default function MapsPage() {
                   }
                 }}
                 placeholder="Search any city, landmark, cafe, museum, beach worldwide..."
-                className="w-full pl-12 pr-20 py-3.5 rounded-2xl bg-card/60 border border-white/[0.08] text-xs font-bold text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/20 shadow-inner transition-all"
+                className="w-full pl-12 pr-20 py-3.5 rounded-2xl bg-black/40 border border-white/[0.08] text-xs font-bold text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/20 shadow-inner transition-all"
               />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-white/[0.06] border border-white/[0.08] text-[10px] font-mono text-slate-400 flex items-center gap-1">
                 <Command className="w-3 h-3" /> K
               </span>
             </div>
 
-            {/* Voice Search Mic Button */}
             <button
               onClick={startVoiceSearch}
               className={`p-3.5 rounded-2xl border transition-all flex items-center justify-center shrink-0 shadow-md ${
@@ -467,7 +450,6 @@ export default function MapsPage() {
             </button>
           </div>
 
-          {/* Trending Destinations */}
           <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest shrink-0 flex items-center gap-1">
               <Flame className="w-3.5 h-3.5 text-amber-400" /> Trending:
@@ -492,7 +474,7 @@ export default function MapsPage() {
           </div>
         </div>
 
-        {/* TOP SAAS TELEMETRY WIDGETS ROW (Weather, Nearby, Saved, Travel Score, AI Status, Google API) */}
+        {/* 6 TOP SAAS TELEMETRY CARDS */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-3.5">
           <div className="p-3.5 rounded-2xl bg-[#111827]/80 border border-white/[0.08] backdrop-blur-xl flex items-center justify-between shadow-lg">
             <div>
@@ -577,7 +559,7 @@ export default function MapsPage() {
             <button
               key={cat.name}
               onClick={() => setSelectedCategory(cat.name)}
-              className={`px-4 py-2 rounded-full text-xs font-black transition-all border whitespace-nowrap shadow-sm flex items-center gap-2 ${
+              className={`px-4.5 py-2.5 rounded-full text-xs font-black transition-all border whitespace-nowrap shadow-sm flex items-center gap-2 ${
                 active
                   ? 'bg-[#7C3AED] text-white border-purple-400 shadow-lg shadow-[#7C3AED]/30 scale-105'
                   : 'bg-[#111827]/80 text-slate-400 border-white/[0.08] hover:bg-white/[0.08] hover:text-white'
@@ -590,10 +572,10 @@ export default function MapsPage() {
         })}
       </div>
 
-      {/* V2 DASHBOARD WORKSPACE (LEFT EXPLORER 25% • CENTER HERO MAP 50% • RIGHT APPLE AI SHEET 25%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* LEFT SIDEBAR EXPLORER PANEL (3 COLUMNS) */}
-        <div className="lg:col-span-3 space-y-3.5 max-h-[820px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/10">
+      {/* 2. THE HERO: 70–75% GOOGLE MAP CANVAS & SIDE PANELS */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+        {/* LEFT EXPLORER PANEL (25% / 3 COLUMNS) */}
+        <div className="xl:col-span-3 space-y-3.5 max-h-[800px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/10">
           <div className="flex items-center justify-between text-xs font-black text-slate-400 uppercase tracking-widest px-1">
             <span>Explorer ({filteredPlaces.length})</span>
             <span className="text-[#7C3AED]">{currentCity}</span>
@@ -614,7 +596,7 @@ export default function MapsPage() {
                     : 'border-white/[0.08] hover:border-white/20'
                 }`}
               >
-                {/* Large Photo Preview */}
+                {/* Photo Preview */}
                 <div className="h-36 rounded-2xl overflow-hidden relative bg-black border border-white/[0.08]">
                   <img src={place.imageUrl} alt={place.name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
 
@@ -634,7 +616,7 @@ export default function MapsPage() {
                   )}
                 </div>
 
-                {/* Place Info Block */}
+                {/* Info Block */}
                 <div className="space-y-1">
                   <div className="flex items-start justify-between gap-1">
                     <h4 className="font-black text-sm text-slate-100 truncate">{place.name}</h4>
@@ -662,22 +644,22 @@ export default function MapsPage() {
           })}
         </div>
 
-        {/* CENTER HERO INTERACTIVE GOOGLE MAP CANVAS (6 COLUMNS / ~55% WIDTH) */}
-        <div className="lg:col-span-6 space-y-4">
-          <div className="h-[760px] rounded-[24px] overflow-hidden bg-slate-950 border border-white/[0.08] shadow-2xl relative flex flex-col justify-between p-5">
+        {/* HERO GOOGLE MAP CANVAS (75% WIDTH IN FULL VIEW / 9 OR 6 COLUMNS) */}
+        <div className={rightPanelOpen ? 'xl:col-span-6 space-y-4' : 'xl:col-span-9 space-y-4'}>
+          <div className="h-[800px] rounded-[24px] overflow-hidden bg-slate-950 border border-white/[0.08] shadow-2xl relative flex flex-col justify-between p-6">
             <div className="absolute inset-0 bg-[radial-gradient(#7c3aed_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-30 pointer-events-none" />
 
-            {/* Map Top Floating Glass Controls */}
-            <div className="relative z-10 p-3.5 rounded-2xl bg-[#111827]/90 border border-white/[0.08] backdrop-blur-xl flex items-center justify-between text-xs shadow-xl">
+            {/* Floating Top Map Controls */}
+            <div className="relative z-10 p-3.5 rounded-2xl bg-[#111827]/90 border border-white/[0.08] backdrop-blur-xl flex flex-wrap items-center justify-between gap-2 text-xs shadow-xl">
               <div className="flex items-center gap-2 text-slate-200 font-black">
                 <Search className="w-4 h-4 text-[#7C3AED]" />
-                <span>Search Area ({currentCity})</span>
+                <span className="truncate">Search Area ({currentCity})</span>
               </div>
 
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 shrink-0">
                 <button
                   onClick={() => setMapMode('map')}
-                  className={`px-3 py-1 rounded-xl text-[10px] font-black uppercase transition-all ${
+                  className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase transition-all ${
                     mapMode === 'map' ? 'bg-[#7C3AED] text-white shadow-lg' : 'bg-slate-900 text-slate-400'
                   }`}
                 >
@@ -685,7 +667,7 @@ export default function MapsPage() {
                 </button>
                 <button
                   onClick={() => setMapMode('satellite')}
-                  className={`px-3 py-1 rounded-xl text-[10px] font-black uppercase transition-all ${
+                  className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase transition-all ${
                     mapMode === 'satellite' ? 'bg-[#7C3AED] text-white shadow-lg' : 'bg-slate-900 text-slate-400'
                   }`}
                 >
@@ -693,7 +675,7 @@ export default function MapsPage() {
                 </button>
                 <button
                   onClick={() => setMapMode('terrain')}
-                  className={`px-3 py-1 rounded-xl text-[10px] font-black uppercase transition-all ${
+                  className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase transition-all ${
                     mapMode === 'terrain' ? 'bg-[#7C3AED] text-white shadow-lg' : 'bg-slate-900 text-slate-400'
                   }`}
                 >
@@ -701,34 +683,44 @@ export default function MapsPage() {
                 </button>
                 <button
                   onClick={() => setTrafficLayer(!trafficLayer)}
-                  className={`px-3 py-1 rounded-xl text-[10px] font-black uppercase transition-all ${
+                  className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase transition-all ${
                     trafficLayer ? 'bg-emerald-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400'
                   }`}
                 >
                   Traffic
                 </button>
+                <button
+                  onClick={() => setRightPanelOpen(!rightPanelOpen)}
+                  className="p-1.5 rounded-xl bg-slate-900 text-slate-300 hover:text-white"
+                  title="Toggle Info Sheet"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
 
-            {/* CUSTOM ANIMATED MAP MARKERS */}
+            {/* CUSTOM ANIMATED PINS */}
             <div className="relative z-10 grid grid-cols-2 gap-4 my-auto">
               {filteredPlaces.slice(0, 4).map((p) => {
                 const isSelected = selectedPlace?.id === p.id;
                 const isHovered = hoveredPlaceId === p.id;
-                const markerStyle = getMarkerIcon(p.category);
+                const style = getMarkerStyle(p.category);
 
                 return (
                   <button
                     key={p.id}
-                    onClick={() => setSelectedPlace(p)}
-                    className={`p-3 rounded-2xl border text-left transition-all duration-300 backdrop-blur-xl flex items-center gap-3 ${
+                    onClick={() => {
+                      setSelectedPlace(p);
+                      setRightPanelOpen(true);
+                    }}
+                    className={`p-3.5 rounded-2xl border text-left transition-all duration-300 backdrop-blur-xl flex items-center gap-3 ${
                       isSelected || isHovered
                         ? 'bg-[#7C3AED]/40 border-[#7C3AED] ring-4 ring-[#7C3AED]/30 scale-105 shadow-2xl'
                         : 'bg-[#111827]/85 border-white/[0.08] hover:border-[#7C3AED]/50'
                     }`}
                   >
-                    <div className={`p-2.5 rounded-xl border text-base shrink-0 ${markerStyle.bg}`}>
-                      {markerStyle.icon}
+                    <div className={`p-3 rounded-xl border text-lg shrink-0 ${style.color}`}>
+                      {style.symbol}
                     </div>
                     <div className="min-w-0">
                       <span className="text-xs font-black text-slate-100 truncate block">{p.name}</span>
@@ -739,152 +731,146 @@ export default function MapsPage() {
               })}
             </div>
 
-            {/* Map Footer Glass Controls */}
+            {/* Footer Control Bar */}
             <div className="relative z-10 p-3 rounded-2xl bg-[#111827]/90 border border-white/[0.08] backdrop-blur-xl flex items-center justify-between text-[11px] text-slate-400 font-mono">
               <label className="flex items-center gap-2 cursor-pointer font-sans text-xs">
                 <input type="checkbox" defaultChecked className="rounded text-[#7C3AED] focus:ring-[#7C3AED]" />
-                <span>Live Google Places Sync</span>
+                <span>Live Google Maps API Connected</span>
               </label>
-              <span>Google Maps JavaScript API v3 © 2026</span>
+              <span>Google Maps JavaScript Engine © 2026</span>
             </div>
           </div>
         </div>
 
-        {/* RIGHT APPLE-STYLE AI INTELLIGENCE SHEET (3 COLUMNS) */}
-        <div className="lg:col-span-3">
-          <div className="p-6 rounded-3xl bg-[#111827]/90 border border-white/[0.08] shadow-2xl sticky top-6 backdrop-blur-2xl space-y-5">
-            {selectedPlace ? (
-              <div className="space-y-5">
-                {/* Hero Photo Carousel */}
-                <div className="h-52 rounded-2xl overflow-hidden relative bg-black border border-white/[0.08] shadow-xl group">
-                  <img src={selectedPlace.imageUrl} alt={selectedPlace.name} className="w-full h-full object-cover" />
+        {/* RIGHT APPLE-STYLE AI SHEET (25% / 3 COLUMNS) */}
+        {rightPanelOpen && selectedPlace && (
+          <div className="xl:col-span-3">
+            <div className="p-6 rounded-3xl bg-[#111827]/90 border border-white/[0.08] shadow-2xl sticky top-6 backdrop-blur-2xl space-y-5">
+              {/* Hero Image */}
+              <div className="h-52 rounded-2xl overflow-hidden relative bg-black border border-white/[0.08] shadow-xl group">
+                <img src={selectedPlace.imageUrl} alt={selectedPlace.name} className="w-full h-full object-cover" />
 
-                  <button
-                    onClick={(e) => handleSavePlace(selectedPlace, e)}
-                    className="absolute top-3 right-3 p-2 rounded-full bg-black/60 backdrop-blur-md text-white hover:text-rose-400 transition-colors"
-                  >
-                    <Heart className="w-4.5 h-4.5" />
-                  </button>
+                <button
+                  onClick={(e) => handleSavePlace(selectedPlace, e)}
+                  className="absolute top-3 right-3 p-2 rounded-full bg-black/60 backdrop-blur-md text-white hover:text-rose-400 transition-colors"
+                >
+                  <Heart className="w-4.5 h-4.5" />
+                </button>
 
-                  <span className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-black text-white">
-                    1 / {(selectedPlace.photos?.length || 1) + 15}
-                  </span>
+                <button
+                  onClick={() => setPhotoModalOpen(true)}
+                  className="absolute bottom-3 right-3 p-2 rounded-xl bg-black/70 backdrop-blur-md text-white hover:bg-black transition-colors"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </button>
+              </div>
 
-                  <button
-                    onClick={() => setPhotoModalOpen(true)}
-                    className="absolute bottom-3 right-3 p-2 rounded-xl bg-black/70 backdrop-blur-md text-white hover:bg-black transition-colors"
-                  >
-                    <Maximize2 className="w-4 h-4" />
-                  </button>
+              {/* Title & Badges */}
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  {selectedPlace.isHiddenGem && (
+                    <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[9px] font-black uppercase tracking-wider">
+                      Hidden Gem
+                    </span>
+                  )}
+                  {selectedPlace.isMustVisit && (
+                    <span className="px-2.5 py-0.5 rounded-md bg-[#7C3AED]/20 text-[#7C3AED] text-[9px] font-black uppercase tracking-wider">
+                      Must Visit
+                    </span>
+                  )}
                 </div>
 
-                {/* Title & Ratings */}
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    {selectedPlace.isHiddenGem && (
-                      <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[9px] font-black uppercase tracking-wider">
-                        Hidden Gem
-                      </span>
-                    )}
-                    {selectedPlace.isMustVisit && (
-                      <span className="px-2.5 py-0.5 rounded-md bg-[#7C3AED]/20 text-[#7C3AED] text-[9px] font-black uppercase tracking-wider">
-                        Must Visit
-                      </span>
-                    )}
-                  </div>
+                <h2 className="text-xl font-black text-slate-100 leading-snug">{selectedPlace.name}</h2>
 
-                  <h2 className="text-xl font-black text-slate-100 leading-snug">{selectedPlace.name}</h2>
-
-                  <div className="flex items-center gap-2 text-xs font-black text-amber-400">
-                    <span>★ {selectedPlace.rating}</span>
-                    <span className="text-slate-400 font-bold">({selectedPlace.reviewsCount.toLocaleString()} Google Reviews)</span>
-                  </div>
-                </div>
-
-                {/* GEMINI AI INSIGHTS MATRIX CARDS */}
-                <div className="space-y-2">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block flex items-center gap-1">
-                    <Sparkles className="w-3.5 h-3.5 text-[#7C3AED]" /> AI Intelligence Matrix
-                  </span>
-
-                  <div className="grid grid-cols-3 gap-2 text-center">
-                    <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
-                      <span className="text-[9px] font-extrabold text-slate-400 block">Photography</span>
-                      <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights?.photographyScore || '9.6/10'}</span>
-                    </div>
-
-                    <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
-                      <span className="text-[9px] font-extrabold text-slate-400 block">Crowd</span>
-                      <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights?.crowdLevel || 'Low'}</span>
-                    </div>
-
-                    <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
-                      <span className="text-[9px] font-extrabold text-slate-400 block">Budget</span>
-                      <span className="text-xs font-black text-amber-400">{selectedPlace.priceLevel || '₹₹'}</span>
-                    </div>
-
-                    <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
-                      <span className="text-[9px] font-extrabold text-slate-400 block">Adventure</span>
-                      <span className="text-xs font-black text-purple-400">{selectedPlace.aiInsights?.adventureScore || '9.1'}</span>
-                    </div>
-
-                    <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
-                      <span className="text-[9px] font-extrabold text-slate-400 block">Family</span>
-                      <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights?.familyFriendly || 'Yes'}</span>
-                    </div>
-
-                    <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
-                      <span className="text-[9px] font-extrabold text-slate-400 block">Safety</span>
-                      <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights?.safetyScore || '9.8'}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Gemini AI Summary */}
-                <div className="p-3.5 rounded-2xl bg-[#7C3AED]/10 border border-[#7C3AED]/30 space-y-1">
-                  <span className="text-[10px] font-black text-[#7C3AED] uppercase block">Gemini Travel Intelligence</span>
-                  <p className="text-xs text-slate-300 font-semibold leading-relaxed">
-                    {selectedPlace.aiInsights?.summary || selectedPlace.description}
-                  </p>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    onClick={() => window.open(selectedPlace.googleMapsUrl, '_blank')}
-                    className="p-3 rounded-2xl bg-[#7C3AED] hover:bg-[#A855F7] text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-[#7C3AED]/30 transition-all col-span-1"
-                  >
-                    <Navigation className="w-4 h-4" />
-                    <span>Directions</span>
-                  </button>
-
-                  <button
-                    onClick={(e) => handleSavePlace(selectedPlace, e)}
-                    className="p-3 rounded-2xl bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] text-slate-100 font-black text-xs flex items-center justify-center gap-1.5 transition-all"
-                  >
-                    <Bookmark className="w-4 h-4 text-[#7C3AED]" />
-                    <span>Save</span>
-                  </button>
-
-                  <button
-                    onClick={(e) => handleSharePlace(selectedPlace, e)}
-                    className="p-3 rounded-2xl bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] text-slate-100 font-black text-xs flex items-center justify-center gap-1.5 transition-all"
-                  >
-                    <Share2 className="w-4 h-4 text-purple-400" />
-                    <span>Share</span>
-                  </button>
+                <div className="flex items-center gap-2 text-xs font-black text-amber-400">
+                  <span>★ {selectedPlace.rating}</span>
+                  <span className="text-slate-400 font-bold">({selectedPlace.reviewsCount.toLocaleString()} Google Reviews)</span>
                 </div>
               </div>
-            ) : null}
+
+              {/* GEMINI AI INSIGHTS MATRIX */}
+              <div className="space-y-2">
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-[#7C3AED]" /> AI Intelligence Matrix
+                </span>
+
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
+                    <span className="text-[9px] font-extrabold text-slate-400 block">Photography</span>
+                    <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights?.photographyScore || '9.6/10'}</span>
+                  </div>
+
+                  <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
+                    <span className="text-[9px] font-extrabold text-slate-400 block">Crowd</span>
+                    <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights?.crowdLevel || 'Low'}</span>
+                  </div>
+
+                  <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
+                    <span className="text-[9px] font-extrabold text-slate-400 block">Budget</span>
+                    <span className="text-xs font-black text-amber-400">{selectedPlace.priceLevel || '₹₹'}</span>
+                  </div>
+
+                  <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
+                    <span className="text-[9px] font-extrabold text-slate-400 block">Adventure</span>
+                    <span className="text-xs font-black text-purple-400">{selectedPlace.aiInsights?.adventureScore || '9.1'}</span>
+                  </div>
+
+                  <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
+                    <span className="text-[9px] font-extrabold text-slate-400 block">Family</span>
+                    <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights?.familyFriendly || 'Yes'}</span>
+                  </div>
+
+                  <div className="p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] space-y-0.5">
+                    <span className="text-[9px] font-extrabold text-slate-400 block">Safety</span>
+                    <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights?.safetyScore || '9.8'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Gemini AI Summary */}
+              <div className="p-3.5 rounded-2xl bg-[#7C3AED]/10 border border-[#7C3AED]/30 space-y-1">
+                <span className="text-[10px] font-black text-[#7C3AED] uppercase block">Gemini Travel Intelligence</span>
+                <p className="text-xs text-slate-300 font-semibold leading-relaxed">
+                  {selectedPlace.aiInsights?.summary || selectedPlace.description}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  onClick={() => window.open(selectedPlace.googleMapsUrl, '_blank')}
+                  className="p-3 rounded-2xl bg-[#7C3AED] hover:bg-[#A855F7] text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-[#7C3AED]/30 transition-all col-span-1"
+                >
+                  <Navigation className="w-4 h-4" />
+                  <span>Directions</span>
+                </button>
+
+                <button
+                  onClick={(e) => handleSavePlace(selectedPlace, e)}
+                  className="p-3 rounded-2xl bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] text-slate-100 font-black text-xs flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <Bookmark className="w-4 h-4 text-[#7C3AED]" />
+                  <span>Save</span>
+                </button>
+
+                <button
+                  onClick={(e) => handleSharePlace(selectedPlace, e)}
+                  className="p-3 rounded-2xl bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] text-slate-100 font-black text-xs flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <Share2 className="w-4 h-4 text-purple-400" />
+                  <span>Share</span>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* BOTTOM SECTION: AI RECOMMENDATIONS HORIZONTAL CAROUSEL CARDS */}
-      <div className="space-y-3 pt-4 border-t border-white/[0.08]">
+      <div className="space-y-3 pt-6 border-t border-white/[0.08]">
         <div className="flex items-center justify-between">
           <span className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#7C3AED]" /> AI Recommended Nearby Places in {currentCity}
+            <Sparkles className="w-4 h-4 text-[#7C3AED]" /> AI Recommended Places in {currentCity}
           </span>
           <span className="text-[11px] font-bold text-[#7C3AED]">Curated by Gemini AI</span>
         </div>
@@ -907,7 +893,7 @@ export default function MapsPage() {
                 <p className="text-[10px] text-slate-400 truncate">{item.address}</p>
                 <div className="flex items-center justify-between text-[10px] text-emerald-400 font-bold pt-1 border-t border-white/[0.06]">
                   <span>{item.distance}</span>
-                  <span>AI Score {item.aiScore || 97}</span>
+                  <span>AI Score {item.aiScore || 98}</span>
                 </div>
               </div>
             </div>
@@ -915,7 +901,7 @@ export default function MapsPage() {
         </div>
       </div>
 
-      {/* FLOATING BOTTOM ROUTE PLANNER PANEL */}
+      {/* FLOATING ROUTE PLANNER PANEL */}
       {selectedPlace && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 max-w-4xl w-[92%] z-40">
           <div className="p-4 rounded-3xl bg-[#111827]/95 border border-white/[0.12] shadow-2xl backdrop-blur-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
