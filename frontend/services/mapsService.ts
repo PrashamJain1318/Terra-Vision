@@ -27,6 +27,7 @@ export interface PlaceItem {
   website?: string;
   bestTimeToVisit?: string;
   popularFor?: string;
+  aiScore?: number;
   aiInsights?: {
     summary: string;
     bestTimeToVisit?: string;
@@ -35,6 +36,7 @@ export interface PlaceItem {
     familyFriendly: string;
     adventureScore: string;
     nightlifeScore?: string;
+    safetyScore?: string;
     suggestedDuration?: string;
     budgetTips?: string;
     safetyTips?: string;
