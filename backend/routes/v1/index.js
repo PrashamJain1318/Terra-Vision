@@ -8,6 +8,7 @@ import hiddenGemsRouter from '../hiddenGemsRoutes.js';
 import foodRouter from '../foodRoutes.js';
 import memoryRouter from '../memoryRoutes.js';
 import safetyRouter from '../safetyRoutes.js';
+import voiceRouter from '../voiceRoutes.js';
 
 const router = express.Router();
 
@@ -21,5 +22,6 @@ router.use('/hidden-gems', hiddenGemsRouter);
 router.use('/food', foodRouter);
 router.use('/memory', memoryRouter);
 router.use('/safety', safetyRouter);
+router.use('/voice', voiceRouter);
 
 export default router;
