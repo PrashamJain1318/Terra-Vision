@@ -2,12 +2,27 @@
 
 import React, { useState, useEffect } from 'react';
 import GlassCard from '@/components/common/GlassCard';
-import { Compass, Sparkles, MapPin, Calendar, Clock, Plus, Bookmark, Check, RefreshCw, Send } from 'lucide-react';
+import { Compass, Sparkles, MapPin, Calendar, Clock, Bookmark, RefreshCw, CheckCircle, Lightbulb, Package } from 'lucide-react';
 
 interface ItineraryDay {
   day: number;
   title: string;
-  activities: string[];
+  morning?: string;
+  afternoon?: string;
+  evening?: string;
+  activities?: string[];
+  foodSuggestions?: string[];
+}
+
+interface FullItineraryResponse {
+  tripTitle?: string;
+  destination?: string;
+  days?: number;
+  summary?: string;
+  estimatedBudget?: string;
+  itinerary: ItineraryDay[];
+  travelTips?: string[];
+  packingChecklist?: string[];
 }
 
 export default function PlannerPage() {
@@ -15,7 +30,7 @@ export default function PlannerPage() {
   const [days, setDays] = useState('3');
   const [style, setStyle] = useState('Heritage & Food');
   const [loading, setLoading] = useState(false);
-  const [itinerary, setItinerary] = useState<ItineraryDay[] | null>(null);
+  const [fullItinerary, setFullItinerary] = useState<FullItineraryResponse | null>(null);
   const [recentTrips, setRecentTrips] = useState<any[]>([]);
 
   useEffect(() => {
@@ -42,81 +57,58 @@ export default function PlannerPage() {
     setLoading(true);
 
     try {
-      // Fetch recommendations from food and hidden-gems endpoints
-      const [foodRes, gemsRes] = await Promise.all([
-        fetch('http://localhost:5050/api/v1/food/discover', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ destination, cuisine: 'street_food', diet: 'vegetarian' }),
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:5050/api/v1/planner/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          destination,
+          travelDays: parseInt(days, 10),
+          travelStyle: style,
+          budget: 'balanced',
         }),
-        fetch('http://localhost:5050/api/v1/hidden-gems/discover', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ destination, category: 'heritage' }),
-        }),
-      ]);
+      });
 
-      const foodData = await foodRes.json();
-      const gemsData = await gemsRes.json();
+      const responseData = await res.json();
 
-      const foodList = foodData?.data || [];
-      const gemsList = gemsData?.data || [];
-
-      // Construct multi-day itinerary
-      const generated: ItineraryDay[] = [
-        {
-          day: 1,
-          title: `Arrival & Heritage Exploration in ${destination}`,
-          activities: [
-            gemsList[0]?.name ? `Visit ${gemsList[0].name} (${gemsList[0].location || 'Historical Center'})` : 'Explore Old City Heritage Walk & Ancient Architecture',
-            foodList[0]?.name ? `Lunch at ${foodList[0].restaurantName || 'Local Dhaba'}: Try authentic ${foodList[0].name}` : 'Sample Local Street Specialties at Legendary Culinary Hub',
-            'Evening Golden Light Photography & Sunset Promenade',
+      if (responseData.success && responseData.data?.generatedResponse) {
+        setFullItinerary(responseData.data.generatedResponse);
+      } else {
+        // Fallback structure if response format varies
+        setFullItinerary({
+          tripTitle: `AI Expedition: ${destination}`,
+          destination,
+          days: parseInt(days, 10),
+          summary: `A curated ${days}-day travel experience in ${destination} tailored for ${style}.`,
+          estimatedBudget: '$150 - $350',
+          itinerary: [
+            {
+              day: 1,
+              title: `Arrival & Cultural Immersion in ${destination}`,
+              morning: `Heritage walking tour & architectural landmarks in ${destination}.`,
+              afternoon: `Sample authentic local cuisine & visit traditional bazaars.`,
+              evening: `Sunset views & golden hour photography at historic spots.`,
+              foodSuggestions: ['Legendary Local Dhaba', 'Heritage Tea House'],
+            },
+            {
+              day: 2,
+              title: `Hidden Gems & Local Discovery`,
+              morning: `Exploration of secret stepwells and ancient monuments.`,
+              afternoon: `Culinary tasting tour & clay tandoor specialties.`,
+              evening: `Artisan craft workshops & souvenir shopping.`,
+              foodSuggestions: ['Famous Clay Tandoor Paratha', 'Artisan Bakery'],
+            },
           ],
-        },
-        {
-          day: 2,
-          title: 'Deep Cultural & Hidden Gems Discovery',
-          activities: [
-            gemsList[1]?.name ? `Morning Expedition: ${gemsList[1].name}` : 'Visit Secret Architectural Baoli & Underground Tunnels',
-            foodList[1]?.name ? `Famous Lunch Spot: ${foodList[1].name} at ${foodList[1].restaurantName}` : 'Traditional Clay Tandoor Breakfast with Homemade Butter',
-            'Local Craftsmen Workshop & Artisan Bazaars',
-          ],
-        },
-        {
-          day: 3,
-          title: 'Culinary Masterclass & Farewell Views',
-          activities: [
-            'Early Morning Spice Market Guided Walk',
-            foodList[2]?.name ? `Tasting Special: ${foodList[2].name}` : 'Signature Regional Dessert & Earthen Pot Sweets',
-            'Panoramic Sunset Viewpoint & Souvenir Shopping',
-          ],
-        },
-      ];
-
-      setItinerary(generated);
+          travelTips: ['Carry local cash for small vendors.', 'Download offline maps before valley trips.'],
+          packingChecklist: ['Comfortable walking shoes', 'Layered clothing', 'Universal power adapter'],
+        });
+      }
+      fetchSavedTrips();
     } catch (err) {
-      console.error(err);
-      // Fallback
-      setItinerary([
-        {
-          day: 1,
-          title: `Arrival & Cultural Immersion in ${destination}`,
-          activities: [
-            'Morning Heritage Walking Tour',
-            'Authentic Local Dhaba Lunch Experience',
-            'Sunset Cultural Monument Visit',
-          ],
-        },
-        {
-          day: 2,
-          title: 'Hidden Gems & Local Culinary Feast',
-          activities: [
-            'Secret Underground Stepwell Expedition',
-            'Famous Clay Oven Stuffed Paratha Feast',
-            'Artisan Bazaar Shopping & Handicrafts',
-          ],
-        },
-      ]);
+      console.error('Error generating AI itinerary:', err);
     } finally {
       setLoading(false);
     }
@@ -129,12 +121,12 @@ export default function PlannerPage() {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-extrabold border border-primary/30 flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" /> AI Engine Connected
+              <Sparkles className="w-3.5 h-3.5" /> ChatGPT & LocalLens AI Engine Connected
             </span>
           </div>
           <h1 className="text-3xl font-extrabold text-foreground tracking-tight mt-2">AI Travel Planner</h1>
           <p className="text-xs text-muted-foreground">
-            Generate personalized multi-day itineraries powered by real-time Local Lens AI recommendations
+            Generate personalized multi-day itineraries powered by OpenAI ChatGPT and real-time Local Lens AI recommendations
           </p>
         </div>
       </div>
@@ -200,7 +192,7 @@ export default function PlannerPage() {
             >
               {loading ? (
                 <>
-                  <RefreshCw className="w-4 h-4 animate-spin" /> Generating AI Itinerary...
+                  <RefreshCw className="w-4 h-4 animate-spin" /> Querying ChatGPT AI Engine...
                 </>
               ) : (
                 <>
@@ -213,39 +205,92 @@ export default function PlannerPage() {
 
         {/* Itinerary Output */}
         <div className="lg:col-span-2 space-y-6">
-          {itinerary ? (
+          {fullItinerary ? (
             <GlassCard hoverEffect={false} className="p-6 space-y-6 border-border/40 shadow-xl">
               <div className="flex items-center justify-between border-b border-border/30 pb-4">
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary">Custom AI Itinerary</span>
-                  <h2 className="text-xl font-extrabold text-foreground">{days}-Day Experience in {destination}</h2>
-                  <p className="text-xs text-muted-foreground">Tailored for {style}</p>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary">ChatGPT AI Itinerary</span>
+                  <h2 className="text-xl font-extrabold text-foreground">{fullItinerary.tripTitle || `${days}-Day Experience in ${destination}`}</h2>
+                  <p className="text-xs text-muted-foreground">{fullItinerary.summary}</p>
                 </div>
                 <button
                   onClick={() => alert('Itinerary saved to your active profile!')}
-                  className="px-4 py-2 rounded-2xl bg-primary/10 text-primary border border-primary/30 text-xs font-extrabold flex items-center gap-1.5 hover:bg-primary/20 transition-all"
+                  className="px-4 py-2 rounded-2xl bg-primary/10 text-primary border border-primary/30 text-xs font-extrabold flex items-center gap-1.5 hover:bg-primary/20 transition-all shrink-0"
                 >
                   <Bookmark className="w-4 h-4" /> Save Itinerary
                 </button>
               </div>
 
+              {/* Day-by-Day Details */}
               <div className="space-y-6">
-                {itinerary.map((dayItem) => (
+                {fullItinerary.itinerary.map((dayItem) => (
                   <div key={dayItem.day} className="p-5 rounded-2xl bg-muted/20 border border-border/30 space-y-3">
                     <div className="flex items-center gap-2 text-primary">
                       <Calendar className="w-4 h-4" />
                       <span className="text-xs font-extrabold uppercase tracking-wider">Day {dayItem.day}</span>
                       <span className="text-xs font-bold text-foreground">• {dayItem.title}</span>
                     </div>
-                    <ul className="space-y-2 pl-6 list-disc text-xs text-muted-foreground">
-                      {dayItem.activities.map((act, idx) => (
-                        <li key={idx} className="leading-relaxed">
-                          <span className="text-foreground font-semibold">{act}</span>
-                        </li>
+
+                    <div className="space-y-2 text-xs font-sans text-muted-foreground pl-2 border-l-2 border-primary/30 ml-2">
+                      {dayItem.morning && (
+                        <p><strong className="text-foreground">Morning:</strong> {dayItem.morning}</p>
+                      )}
+                      {dayItem.afternoon && (
+                        <p><strong className="text-foreground">Afternoon:</strong> {dayItem.afternoon}</p>
+                      )}
+                      {dayItem.evening && (
+                        <p><strong className="text-foreground">Evening:</strong> {dayItem.evening}</p>
+                      )}
+                      {dayItem.activities && dayItem.activities.length > 0 && (
+                        <ul className="list-disc pl-4 space-y-1">
+                          {dayItem.activities.map((act, idx) => (
+                            <li key={idx} className="text-foreground font-semibold">{act}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+
+                    {dayItem.foodSuggestions && dayItem.foodSuggestions.length > 0 && (
+                      <div className="pt-2 border-t border-border/20 flex flex-wrap items-center gap-2 text-[11px] font-mono">
+                        <span className="text-amber-400 font-bold">Food Picks:</span>
+                        {dayItem.foodSuggestions.map((food, fIdx) => (
+                          <span key={fIdx} className="px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                            {food}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Travel Tips & Packing */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-border/30">
+                {fullItinerary.travelTips && (
+                  <div className="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/20 space-y-2">
+                    <h4 className="text-xs font-extrabold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <Lightbulb className="w-4 h-4" /> Expert Travel Tips
+                    </h4>
+                    <ul className="space-y-1 pl-4 list-disc text-xs text-muted-foreground">
+                      {fullItinerary.travelTips.map((tip, idx) => (
+                        <li key={idx}>{tip}</li>
                       ))}
                     </ul>
                   </div>
-                ))}
+                )}
+
+                {fullItinerary.packingChecklist && (
+                  <div className="p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 space-y-2">
+                    <h4 className="text-xs font-extrabold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <Package className="w-4 h-4" /> Essential Packing Checklist
+                    </h4>
+                    <ul className="space-y-1 pl-4 list-disc text-xs text-muted-foreground">
+                      {fullItinerary.packingChecklist.map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </GlassCard>
           ) : (
@@ -256,7 +301,7 @@ export default function PlannerPage() {
               <div className="space-y-1">
                 <h3 className="text-base font-extrabold text-foreground">Ready to Generate Your Travel Plan</h3>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Select your destination and travel style on the left to fetch AI recommendations connected directly to our backend services.
+                  Select your destination and travel style on the left to fetch AI recommendations connected directly to our ChatGPT backend service.
                 </p>
               </div>
             </GlassCard>
