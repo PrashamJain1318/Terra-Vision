@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Globe, Compass, Award } from 'lucide-react';
 import AnimatedCounter from '@/components/common/AnimatedCounter';
 
 interface StatItem {
@@ -12,7 +11,7 @@ interface StatItem {
 }
 
 interface StatsWidgetProps {
-  stats?: StatItem[];
+  stats?: StatItem[] | null;
 }
 
 const defaultStats: StatItem[] = [
@@ -22,10 +21,12 @@ const defaultStats: StatItem[] = [
   { key: 'score', value: '150', label: 'Travel Score' },
 ];
 
-export const StatsWidget = ({ stats = defaultStats }: StatsWidgetProps) => {
+export const StatsWidget = ({ stats }: StatsWidgetProps) => {
+  const displayStats = Array.isArray(stats) && stats.length > 0 ? stats : defaultStats;
+
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      {stats.map((stat, idx) => (
+      {displayStats.map((stat, idx) => (
         <motion.div
           key={stat.key || idx}
           initial={{ opacity: 0, y: 15 }}

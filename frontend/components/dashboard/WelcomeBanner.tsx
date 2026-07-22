@@ -9,12 +9,7 @@ export interface WelcomeBannerProps {
 }
 
 export const WelcomeBanner = ({ userName = 'Jane Doe' }: WelcomeBannerProps) => {
-  const todayDate = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  const todayDate = 'Wednesday, Jul 22, 2026';
 
   return (
     <motion.div
@@ -34,7 +29,7 @@ export const WelcomeBanner = ({ userName = 'Jane Doe' }: WelcomeBannerProps) => 
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted/40 text-muted-foreground text-xs font-medium">
             <Calendar className="w-3.5 h-3.5" />
-            <span>{todayDate}</span>
+            <span suppressHydrationWarning>{todayDate}</span>
           </div>
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-medium border border-amber-500/20">

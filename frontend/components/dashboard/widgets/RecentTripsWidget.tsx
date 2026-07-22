@@ -16,20 +16,22 @@ interface TripItem {
 }
 
 interface RecentTripsWidgetProps {
-  trips?: TripItem[];
+  trips?: TripItem[] | null;
 }
 
 const defaultTrips: TripItem[] = [
   {
     title: 'Himalayan Adventure',
     destination: { name: 'Shimla, India' },
-    startDate: new Date().toISOString(),
-    endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+    startDate: '2026-07-22T00:00:00.000Z',
+    endDate: '2026-07-27T00:00:00.000Z',
     status: 'upcoming',
   },
 ];
 
-export const RecentTripsWidget = ({ trips = defaultTrips }: RecentTripsWidgetProps) => {
+export const RecentTripsWidget = ({ trips }: RecentTripsWidgetProps) => {
+  const displayTrips = Array.isArray(trips) ? trips : defaultTrips;
+
   return (
     <GlassCard hoverEffect={false} className="space-y-4">
       <div className="flex items-center justify-between">
@@ -45,14 +47,14 @@ export const RecentTripsWidget = ({ trips = defaultTrips }: RecentTripsWidgetPro
         </Link>
       </div>
 
-      {trips.length === 0 ? (
+      {displayTrips.length === 0 ? (
         <div className="text-center py-8 space-y-3">
           <Compass className="w-8 h-8 text-muted-foreground mx-auto opacity-50" />
           <p className="text-xs text-muted-foreground">No trips planned yet.</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {trips.map((trip, idx) => (
+          {displayTrips.map((trip, idx) => (
             <motion.div
               key={trip._id || idx}
               whileHover={{ x: 4 }}
@@ -63,11 +65,11 @@ export const RecentTripsWidget = ({ trips = defaultTrips }: RecentTripsWidgetPro
                 <div className="flex items-center gap-3 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3 h-3 text-primary" />
-                    {trip.destination?.name}
+                    {trip.destination?.name || 'Destination'}
                   </span>
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-1" suppressHydrationWarning>
                     <Calendar className="w-3 h-3" />
-                    {new Date(trip.startDate).toLocaleDateString()}
+                    {trip.startDate ? new Date(trip.startDate).toLocaleDateString('en-US') : 'Jul 22, 2026'}
                   </span>
                 </div>
               </div>

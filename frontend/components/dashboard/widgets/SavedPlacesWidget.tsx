@@ -15,7 +15,7 @@ interface SavedPlaceItem {
 }
 
 interface SavedPlacesWidgetProps {
-  places?: SavedPlaceItem[];
+  places?: SavedPlaceItem[] | null;
 }
 
 const defaultPlaces: SavedPlaceItem[] = [
@@ -27,7 +27,9 @@ const defaultPlaces: SavedPlaceItem[] = [
   },
 ];
 
-export const SavedPlacesWidget = ({ places = defaultPlaces }: SavedPlacesWidgetProps) => {
+export const SavedPlacesWidget = ({ places }: SavedPlacesWidgetProps) => {
+  const displayPlaces = Array.isArray(places) ? places : defaultPlaces;
+
   return (
     <GlassCard hoverEffect={false} className="space-y-4">
       <div className="flex items-center justify-between">
@@ -43,14 +45,14 @@ export const SavedPlacesWidget = ({ places = defaultPlaces }: SavedPlacesWidgetP
         </Link>
       </div>
 
-      {places.length === 0 ? (
+      {displayPlaces.length === 0 ? (
         <div className="text-center py-6">
           <Heart className="w-8 h-8 text-muted-foreground mx-auto opacity-50 mb-2" />
           <p className="text-xs text-muted-foreground">No places saved yet.</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {places.map((place, idx) => (
+          {displayPlaces.map((place, idx) => (
             <motion.div
               key={place._id || idx}
               whileHover={{ x: 4 }}
