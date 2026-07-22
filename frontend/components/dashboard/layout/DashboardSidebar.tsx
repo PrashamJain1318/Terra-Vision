@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useDashboard } from '@/providers/DashboardProvider';
 import { navigationConfig } from '../config/navigation';
 import dashboardThemeConfig from '../config/dashboardTheme';
-import { Compass, ChevronLeft, LogOut } from 'lucide-react';
+import { Compass, LogOut } from 'lucide-react';
 
 export const DashboardSidebar = () => {
   const pathname = usePathname();
@@ -32,9 +32,9 @@ export const DashboardSidebar = () => {
         />
       )}
 
-      {/* Sidebar Layout */}
+      {/* Sidebar Layout - Completely Static in Place */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 h-screen z-50 ${dashboardThemeConfig.sidebar.bg} ${dashboardThemeConfig.sidebar.border} ${sidebarWidth} transition-all duration-300 flex flex-col justify-between overflow-x-hidden ${
+        className={`fixed lg:sticky top-0 left-0 h-screen shrink-0 z-50 ${dashboardThemeConfig.sidebar.bg} ${dashboardThemeConfig.sidebar.border} ${sidebarWidth} transition-all duration-300 flex flex-col justify-between overflow-x-hidden ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
@@ -50,7 +50,7 @@ export const DashboardSidebar = () => {
           </div>
 
           {/* Links list */}
-          <nav className="p-4 space-y-1.5">
+          <nav className="p-4 space-y-1.5 overflow-y-auto max-h-[calc(100vh-140px)] scrollbar-none">
             {navigationConfig.map((item, idx) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -74,7 +74,7 @@ export const DashboardSidebar = () => {
         </div>
 
         {/* Footer/Logout Action */}
-        <div className="p-4 border-t border-border/10">
+        <div className="p-4 border-t border-border/10 mt-auto">
           <button
             onClick={() => console.log('Logout triggered')}
             className="w-full flex items-center gap-3.5 px-3.5 py-3 rounded-2xl text-xs font-semibold text-red-500 hover:bg-red-500/5 transition-all"

@@ -14,16 +14,16 @@ interface DashboardLayoutProps {
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <DashboardProvider>
-      <div className="flex min-h-screen bg-background text-foreground transition-colors duration-300">
-        {/* Left collapsable sidebar navigation */}
+      <div className="flex h-screen w-full overflow-hidden bg-background text-foreground transition-colors duration-300">
+        {/* Left static sidebar navigation */}
         <DashboardSidebar />
 
-        {/* Workspace content wrapper */}
-        <div className="flex-1 flex flex-col min-w-0">
+        {/* Main workspace scrollable viewport */}
+        <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
           {/* Header toolbar */}
           <DashboardNavbar />
 
-          {/* Core scrollable viewport */}
+          {/* Scrollable content container */}
           <DashboardContainer>
             {children}
           </DashboardContainer>
