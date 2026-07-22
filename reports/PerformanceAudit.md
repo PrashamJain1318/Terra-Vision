@@ -1,9 +1,9 @@
-# LocalLens AI — Phase 14 Performance Audit Details
+# LocalLens AI — Phase 15 Performance Audit Details
 
 QA Lead: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- Chunk Optimization: Turbopack page splitting.
-- Render Latency: < 16 ms frame render rate (60 FPS smooth animations).
-- Memory Footprint: Constant heap memory footprint.
+- Audio Stream Buffer Optimization: 16 kHz PCM chunking.
+- Render Latency: < 16 ms frame render rate (60 FPS smooth waveform visualizer).
+- Heap Footprint: Constant audio buffer garbage collection.
