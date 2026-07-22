@@ -5,7 +5,7 @@ export interface PlaceItem {
   name: string;
   category: string;
   subCategory?: string;
-  badge?: 'HIDDEN GEM' | 'MUST VISIT' | 'CAFE';
+  badge?: 'HIDDEN GEM' | 'MUST VISIT' | 'TOP RATED' | 'POPULAR';
   isHiddenGem?: boolean;
   isMustVisit?: boolean;
   address: string;
@@ -37,6 +37,7 @@ export interface PlaceItem {
     adventureScore: string;
     nightlifeScore?: string;
     safetyScore?: string;
+    budgetScore?: string;
     suggestedDuration?: string;
     budgetTips?: string;
     safetyTips?: string;
@@ -67,7 +68,17 @@ export interface RouteInfo {
   mode: string;
   distance: string;
   duration: string;
+  fuelEstimate?: string;
   routeSteps: string[];
+}
+
+export interface TelemetryStats {
+  temp: string;
+  nearbyPlacesCount: number;
+  savedPlacesCount: number;
+  travelScore: number;
+  aiStatus: string;
+  apiStatus: string;
 }
 
 export const mapsService = {
