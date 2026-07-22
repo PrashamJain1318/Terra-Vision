@@ -1,8 +1,8 @@
-# LocalLens AI / Terra Vision — Phase 16 Performance Audit Details
+# LocalLens AI / Terra Vision — Phase 17 Performance Audit Details
 
 QA Lead: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- Feed Dispatch Virtualization: 60 FPS scrolling performance.
-- Minimal bundle footprint for community state context.
+- Admin Operations Metric Stream: 60 FPS UI responsiveness.
+- Zero memory leakage during real-time metric polling.

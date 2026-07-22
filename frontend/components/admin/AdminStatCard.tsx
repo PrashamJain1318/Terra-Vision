@@ -1,12 +1,12 @@
 'use client';
 
-import React, { ElementType } from 'react';
+import React, { ComponentType } from 'react';
 
 export interface AdminStatCardProps {
   title: string;
   value: string | number;
   subtitle?: string;
-  icon: ElementType;
+  icon: ComponentType<{ className?: string }>;
   color?: string;
 }
 
