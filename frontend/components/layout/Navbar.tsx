@@ -26,10 +26,25 @@ export const Navbar = () => {
       }
       setLastScrollY(currentScrollY);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const navLinks = [
+    { label: 'Experience', href: '/#experience' },
+    { label: 'Planner', href: '/dashboard/planner' },
+    { label: 'Hidden Gems', href: '/dashboard/hidden-gems' },
+    { label: 'Safety', href: '/dashboard/safety' },
+    { label: 'Memories', href: '/dashboard/memories' },
+  ];
 
   const navLinks = [
     { name: 'Explore', href: '/dashboard/maps' },
@@ -85,9 +100,9 @@ export const Navbar = () => {
               className="p-2 rounded-full border border-border/50 hover:bg-muted/50 transition-colors text-foreground"
               aria-label="Toggle Theme"
             >
-              {theme === 'dark' ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-indigo-900" />}
+              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
             </button>
-            
+
             {isAuthenticated && user ? (
               <Link
                 href="/dashboard"
