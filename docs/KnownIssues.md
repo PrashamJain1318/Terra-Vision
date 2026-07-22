@@ -1,7 +1,12 @@
-# Known Issues & Release Notes — Phase 7 Dashboard
+# LocalLens AI — Phase 9 Maps Known Issues
 
-## Known Issues
-- None. All high and medium severity layout issues resolved during QA audits.
+Developer: Debharghya Misra (`debarghyamisra09`)
 
-## Mitigations & Notes
-- macOS AirPlay Control Center occupies port 5000; local API server default moved to port 5050 (`http://localhost:5050/api`).
+---
+
+## Resolved Items
+- ✅ Fixed null `pathname` check in `DashboardNavbar.tsx`.
+- ✅ Resolved backend `express-validator` package dependency.
+
+## Open Considerations
+- Real-time turn-by-turn voice directions will be attached in **Phase 10 (Voice Navigation)**.

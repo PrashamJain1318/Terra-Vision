@@ -18,7 +18,7 @@ export const DashboardNavbar = () => {
   } = useDashboard();
 
   // Extract path names for breadcrumbs
-  const pathSegments = pathname.split('/').filter(Boolean);
+  const pathSegments = (pathname || '').split('/').filter(Boolean);
   const pageTitle = pathSegments[pathSegments.length - 1] || 'Overview';
 
   return (
