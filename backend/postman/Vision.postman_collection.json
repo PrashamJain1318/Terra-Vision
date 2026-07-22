@@ -1,0 +1,30 @@
+{
+  "info": {
+    "name": "LocalLens AI - Vision APIs",
+    "description": "Postman API Collection for LocalLens AI Phase 10 Vision Endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Analyze Image",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"imageUrl\": \"https://locallens.ai/sample_landmark.jpg\",\n  \"provider\": \"gemini\"\n}"
+        },
+        "url": "http://localhost:5050/api/v1/vision/analyze"
+      }
+    },
+    {
+      "name": "Get Scan History",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5050/api/v1/vision/history"
+      }
+    }
+  ]
+}
