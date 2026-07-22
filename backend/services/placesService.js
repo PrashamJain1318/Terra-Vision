@@ -12,9 +12,13 @@ export const placesService = {
       user: userId,
       name: placeData.name,
       category: placeData.category || 'attraction',
+      city: placeData.city || 'Shimla, India',
       coordinates: placeData.coordinates || { lat: 31.1048, lng: 77.1734 },
       address: placeData.address || '',
       notes: placeData.notes || '',
+      imageUrl: placeData.imageUrl || '',
+      rating: placeData.rating || 4.8,
+      reviewsCount: placeData.reviewsCount || 142,
       favorite: placeData.favorite || false,
     });
     return record;

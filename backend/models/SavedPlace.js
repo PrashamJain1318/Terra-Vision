@@ -17,9 +17,13 @@ const savedPlaceSchema = new mongoose.Schema(
       type: String,
       default: 'attraction',
     },
+    city: {
+      type: String,
+      default: 'Shimla, India',
+    },
     coordinates: {
-      lat: { type: Number, required: true },
-      lng: { type: Number, required: true },
+      lat: { type: Number, default: 31.1048 },
+      lng: { type: Number, default: 77.1734 },
     },
     address: {
       type: String,
@@ -28,6 +32,18 @@ const savedPlaceSchema = new mongoose.Schema(
     notes: {
       type: String,
       default: '',
+    },
+    imageUrl: {
+      type: String,
+      default: '',
+    },
+    rating: {
+      type: Number,
+      default: 4.8,
+    },
+    reviewsCount: {
+      type: Number,
+      default: 128,
     },
     favorite: {
       type: Boolean,
