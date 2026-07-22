@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from '@/providers/ThemeProvider';
-import { Compass, Menu, X, Sun, Moon, Shield, Mic, User } from 'lucide-react';
+import { Compass, Menu, X, Sun, Moon } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 
 export const Navbar = () => {
@@ -56,25 +56,27 @@ export const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`transition-colors py-1 border-b-2 font-semibold ${
-                    isActive
-                      ? 'text-primary border-primary'
-                      : 'text-muted-foreground hover:text-foreground border-transparent'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </div>
+          {/* Desktop Navigation Links — ONLY Shown When Logged In */}
+          {isAuthenticated && user && (
+            <div className="hidden md:flex items-center space-x-6 text-sm font-medium">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`transition-colors py-1 border-b-2 font-semibold ${
+                      isActive
+                        ? 'text-primary border-primary'
+                        : 'text-muted-foreground hover:text-foreground border-transparent'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
@@ -95,7 +97,7 @@ export const Navbar = () => {
                 <span>Dashboard ({user.name})</span>
               </Link>
             ) : (
-              <div className="hidden sm:flex items-center gap-3">
+              <div className="flex items-center gap-3">
                 <Link
                   href="/login"
                   className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5"
@@ -111,20 +113,22 @@ export const Navbar = () => {
               </div>
             )}
 
-            {/* Mobile Menu Toggle Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full border border-border/50 hover:bg-muted/50 transition-colors text-foreground"
-              aria-label="Toggle Mobile Menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            {/* Mobile Menu Toggle Button — Shown for logged-in mobile users */}
+            {isAuthenticated && user && (
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-full border border-border/50 hover:bg-muted/50 transition-colors text-foreground"
+                aria-label="Toggle Mobile Menu"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Mobile Dropdown Drawer */}
-      {mobileMenuOpen && (
+      {/* Mobile Dropdown Drawer — ONLY Shown When Logged In */}
+      {mobileMenuOpen && isAuthenticated && user && (
         <div className="md:hidden bg-card/95 border-b border-border/40 backdrop-blur-xl px-4 pt-2 pb-6 space-y-3 animate-in slide-in-from-top duration-300">
           <div className="flex flex-col space-y-2 pt-2">
             {navLinks.map((link) => {
@@ -147,32 +151,13 @@ export const Navbar = () => {
           </div>
 
           <div className="pt-4 border-t border-border/40 flex flex-col gap-2">
-            {isAuthenticated && user ? (
-              <Link
-                href="/dashboard"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 rounded-xl bg-primary text-primary-foreground font-bold text-xs"
-              >
-                Go to Dashboard ({user.name})
-              </Link>
-            ) : (
-              <div className="grid grid-cols-2 gap-2">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-2.5 rounded-xl border border-border/60 text-foreground font-bold text-xs hover:bg-muted/40"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/signup"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-2.5 rounded-xl bg-primary text-primary-foreground font-bold text-xs hover:bg-primary/90"
-                >
-                  Get Started
-                </Link>
-              </div>
-            )}
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full text-center py-2.5 rounded-xl bg-primary text-primary-foreground font-bold text-xs"
+            >
+              Go to Dashboard ({user.name})
+            </Link>
           </div>
         </div>
       )}
