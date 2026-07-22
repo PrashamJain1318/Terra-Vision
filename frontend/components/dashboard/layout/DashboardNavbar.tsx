@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useDashboard } from '@/providers/DashboardProvider';
-import { Menu, Bell, Sidebar, User, Search } from 'lucide-react';
+import { Menu, Bell, Sidebar, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react';
 import dashboardThemeConfig from '../config/dashboardTheme';
 
 export const DashboardNavbar = () => {
@@ -11,8 +11,6 @@ export const DashboardNavbar = () => {
   const {
     sidebarCollapsed,
     setSidebarCollapsed,
-    rightPanelOpen,
-    setRightPanelOpen,
     mobileMenuOpen,
     setMobileMenuOpen,
   } = useDashboard();
@@ -22,8 +20,8 @@ export const DashboardNavbar = () => {
   const pageTitle = pathSegments[pathSegments.length - 1] || 'Overview';
 
   return (
-    <header className={`${dashboardThemeConfig.header.bg} ${dashboardThemeConfig.header.border} ${dashboardThemeConfig.header.height} flex items-center justify-between px-6 sticky top-0 z-30`}>
-      {/* Breadcrumbs & Toggle */}
+    <header className={`${dashboardThemeConfig.header.bg} ${dashboardThemeConfig.header.border} ${dashboardThemeConfig.header.height} flex items-center justify-between px-6 relative z-30 transition-all`}>
+      {/* Breadcrumbs & Sidebar Toggle */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -35,10 +33,20 @@ export const DashboardNavbar = () => {
 
         <button
           onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="hidden lg:block p-2 hover:bg-muted/40 rounded-full text-muted-foreground hover:text-foreground transition-all"
-          aria-label="Toggle Sidebar"
+          className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-xs font-black text-slate-200 border border-white/[0.08] transition-all shadow-sm"
+          title={sidebarCollapsed ? 'Show Navigation Sidebar' : 'Hide Navigation Sidebar'}
         >
-          <Sidebar className={`w-5 h-5 transition-transform duration-300 ${sidebarCollapsed ? 'rotate-180' : ''}`} />
+          {sidebarCollapsed ? (
+            <>
+              <PanelLeftOpen className="w-4 h-4 text-[#7C3AED]" />
+              <span>Show Sidebar</span>
+            </>
+          ) : (
+            <>
+              <PanelLeftClose className="w-4 h-4 text-purple-400" />
+              <span>Hide Sidebar</span>
+            </>
+          )}
         </button>
 
         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground select-none">
@@ -64,15 +72,6 @@ export const DashboardNavbar = () => {
         <button className="p-2 hover:bg-muted/40 rounded-full text-muted-foreground hover:text-foreground relative transition-all" aria-label="View notifications">
           <Bell className="w-4.5 h-4.5" />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary" />
-        </button>
-
-        {/* Toggle Right Panel */}
-        <button
-          onClick={() => setRightPanelOpen(!rightPanelOpen)}
-          className={`p-2 hover:bg-muted/40 rounded-full text-muted-foreground hover:text-foreground transition-all ${rightPanelOpen ? 'text-primary' : ''}`}
-          aria-label="Toggle right details panel"
-        >
-          <User className="w-4.5 h-4.5" />
         </button>
       </div>
     </header>

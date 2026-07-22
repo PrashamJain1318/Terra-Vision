@@ -244,6 +244,7 @@ export default function MapsPage() {
   // Layer & View Toggles
   const [mapMode, setMapMode] = useState<'map' | 'satellite' | 'terrain'>('satellite');
   const [trafficLayer, setTrafficLayer] = useState(true);
+  const [leftPanelOpen, setLeftPanelOpen] = useState(true);
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
 
   // Modals & Voice State
@@ -572,80 +573,97 @@ export default function MapsPage() {
         })}
       </div>
 
-      {/* 2. THE HERO: 70–75% GOOGLE MAP CANVAS & SIDE PANELS */}
+      {/* 2. THE HERO: GOOGLE MAP CANVAS & DYNAMIC SIDE PANELS */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-        {/* LEFT EXPLORER PANEL (25% / 3 COLUMNS) */}
-        <div className="xl:col-span-3 space-y-3.5 max-h-[800px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/10">
-          <div className="flex items-center justify-between text-xs font-black text-slate-400 uppercase tracking-widest px-1">
-            <span>Explorer ({filteredPlaces.length})</span>
-            <span className="text-[#7C3AED]">{currentCity}</span>
-          </div>
-
-          {filteredPlaces.map((place) => {
-            const isSelected = selectedPlace?.id === place.id;
-            const isHovered = hoveredPlaceId === place.id;
-            return (
-              <div
-                key={place.id}
-                onClick={() => setSelectedPlace(place)}
-                onMouseEnter={() => setHoveredPlaceId(place.id)}
-                onMouseLeave={() => setHoveredPlaceId(null)}
-                className={`p-3.5 rounded-3xl bg-[#111827]/90 border shadow-xl cursor-pointer transition-all duration-300 space-y-3 ${
-                  isSelected || isHovered
-                    ? 'border-[#7C3AED] ring-2 ring-[#7C3AED]/40 scale-[1.02] bg-[#111827]'
-                    : 'border-white/[0.08] hover:border-white/20'
-                }`}
-              >
-                {/* Photo Preview */}
-                <div className="h-36 rounded-2xl overflow-hidden relative bg-black border border-white/[0.08]">
-                  <img src={place.imageUrl} alt={place.name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
-
-                  <span className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-xl bg-black/70 backdrop-blur-md text-[11px] font-black text-amber-400 flex items-center gap-1 border border-amber-500/20">
-                    ★ {place.rating}
-                  </span>
-
-                  {place.isHiddenGem && (
-                    <span className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-xl bg-emerald-500/80 backdrop-blur-md text-[9px] font-black text-white uppercase tracking-wider shadow-md">
-                      Hidden Gem
-                    </span>
-                  )}
-                  {place.isMustVisit && (
-                    <span className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-xl bg-[#7C3AED]/80 backdrop-blur-md text-[9px] font-black text-white uppercase tracking-wider shadow-md">
-                      Must Visit
-                    </span>
-                  )}
-                </div>
-
-                {/* Info Block */}
-                <div className="space-y-1">
-                  <div className="flex items-start justify-between gap-1">
-                    <h4 className="font-black text-sm text-slate-100 truncate">{place.name}</h4>
-                    <button
-                      onClick={(e) => handleSavePlace(place, e)}
-                      className="text-slate-400 hover:text-[#7C3AED] transition-colors shrink-0"
-                    >
-                      <Bookmark className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  <p className="text-[10px] font-extrabold text-slate-400 uppercase truncate">
-                    {place.subCategory || place.category}
-                  </p>
-
-                  <div className="flex items-center justify-between text-[11px] pt-1 border-t border-white/[0.08]">
-                    <span className="text-slate-400 font-semibold">{place.distance}</span>
-                    <span className="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-black">
-                      AI Score {place.aiScore || 98}
-                    </span>
-                  </div>
-                </div>
+        {/* LEFT EXPLORER PANEL (3 COLUMNS WHEN OPEN) */}
+        {leftPanelOpen && (
+          <div className="xl:col-span-3 space-y-3.5 max-h-[800px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/10">
+            <div className="flex items-center justify-between text-xs font-black text-slate-400 uppercase tracking-widest px-1">
+              <span>Explorer ({filteredPlaces.length})</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[#7C3AED]">{currentCity}</span>
+                <button
+                  onClick={() => setLeftPanelOpen(false)}
+                  className="px-2 py-0.5 rounded-lg bg-white/[0.06] hover:bg-rose-500/20 text-slate-400 hover:text-rose-300 text-[10px] font-bold transition-all"
+                  title="Hide Explorer Panel"
+                >
+                  Hide
+                </button>
               </div>
-            );
-          })}
-        </div>
+            </div>
 
-        {/* HERO GOOGLE MAP CANVAS (75% WIDTH IN FULL VIEW / 9 OR 6 COLUMNS) */}
-        <div className={rightPanelOpen ? 'xl:col-span-6 space-y-4' : 'xl:col-span-9 space-y-4'}>
+            {filteredPlaces.map((place) => {
+              const isSelected = selectedPlace?.id === place.id;
+              const isHovered = hoveredPlaceId === place.id;
+              return (
+                <div
+                  key={place.id}
+                  onClick={() => setSelectedPlace(place)}
+                  onMouseEnter={() => setHoveredPlaceId(place.id)}
+                  onMouseLeave={() => setHoveredPlaceId(null)}
+                  className={`p-3.5 rounded-3xl bg-[#111827]/90 border shadow-xl cursor-pointer transition-all duration-300 space-y-3 ${
+                    isSelected || isHovered
+                      ? 'border-[#7C3AED] ring-2 ring-[#7C3AED]/40 scale-[1.02] bg-[#111827]'
+                      : 'border-white/[0.08] hover:border-white/20'
+                  }`}
+                >
+                  {/* Photo Preview */}
+                  <div className="h-36 rounded-2xl overflow-hidden relative bg-black border border-white/[0.08]">
+                    <img src={place.imageUrl} alt={place.name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+
+                    <span className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-xl bg-black/70 backdrop-blur-md text-[11px] font-black text-amber-400 flex items-center gap-1 border border-amber-500/20">
+                      ★ {place.rating}
+                    </span>
+
+                    {place.isHiddenGem && (
+                      <span className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-xl bg-emerald-500/80 backdrop-blur-md text-[9px] font-black text-white uppercase tracking-wider shadow-md">
+                        Hidden Gem
+                      </span>
+                    )}
+                    {place.isMustVisit && (
+                      <span className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-xl bg-[#7C3AED]/80 backdrop-blur-md text-[9px] font-black text-white uppercase tracking-wider shadow-md">
+                        Must Visit
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Info Block */}
+                  <div className="space-y-1">
+                    <div className="flex items-start justify-between gap-1">
+                      <h4 className="font-black text-sm text-slate-100 truncate">{place.name}</h4>
+                      <button
+                        onClick={(e) => handleSavePlace(place, e)}
+                        className="text-slate-400 hover:text-[#7C3AED] transition-colors shrink-0"
+                      >
+                        <Bookmark className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <p className="text-[10px] font-extrabold text-slate-400 uppercase truncate">
+                      {place.subCategory || place.category}
+                    </p>
+
+                    <div className="flex items-center justify-between text-[11px] pt-1 border-t border-white/[0.08]">
+                      <span className="text-slate-400 font-semibold">{place.distance}</span>
+                      <span className="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-black">
+                        AI Score {place.aiScore || 98}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* HERO GOOGLE MAP CANVAS (DYNAMIC COLUMNS 6 / 9 / 12) */}
+        <div className={`space-y-4 ${
+          leftPanelOpen && rightPanelOpen
+            ? 'xl:col-span-6'
+            : leftPanelOpen || rightPanelOpen
+            ? 'xl:col-span-9'
+            : 'xl:col-span-12'
+        }`}>
           <div className="h-[800px] rounded-[24px] overflow-hidden bg-slate-950 border border-white/[0.08] shadow-2xl relative flex flex-col justify-between p-6">
             <div className="absolute inset-0 bg-[radial-gradient(#7c3aed_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-30 pointer-events-none" />
 
@@ -657,6 +675,14 @@ export default function MapsPage() {
               </div>
 
               <div className="flex items-center gap-1.5 shrink-0">
+                {!leftPanelOpen && (
+                  <button
+                    onClick={() => setLeftPanelOpen(true)}
+                    className="px-3 py-1.5 rounded-xl bg-[#7C3AED] text-white text-[10px] font-black uppercase transition-all shadow-md hover:bg-[#A855F7]"
+                  >
+                    Show Explorer
+                  </button>
+                )}
                 <button
                   onClick={() => setMapMode('map')}
                   className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase transition-all ${
