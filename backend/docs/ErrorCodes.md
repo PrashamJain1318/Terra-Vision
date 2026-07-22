@@ -1,10 +1,10 @@
-# LocalLens AI — Hidden Gems API Error Codes
+# LocalLens AI — Local Food API Error Codes
 
 Developer: Pinank Shah (`pinankshah-Ab`)
 
 ---
 
-- `400 Bad Request`: Validation failure on destination or parameters.
+- `400 Bad Request`: Invalid destination or cuisine parameters.
 - `401 Unauthorized`: Missing or invalid JWT authentication token.
-- `429 Too Many Requests`: Rate limit exceeded on AI recommendation endpoint.
-- `500 Internal Error`: AI provider failure or database connection failure.
+- `429 Too Many Requests`: Rate limit exceeded on food discovery API.
+- `500 Internal Error`: AI provider or database connection failure.
