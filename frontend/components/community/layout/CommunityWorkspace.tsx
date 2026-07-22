@@ -5,12 +5,12 @@ import CommunityLayout from './CommunityLayout';
 import CommunityContainer from './CommunityContainer';
 import CommunityHeader from './CommunityHeader';
 import CommunitySidebar from './CommunitySidebar';
-import CommunityFeedPage from '../../pages/community/CommunityFeedPage';
-import CommunityProfilesPage from '../../pages/community/CommunityProfilesPage';
-import CommunityJournalsPage from '../../pages/community/CommunityJournalsPage';
-import CommunityGroupsPage from '../../pages/community/CommunityGroupsPage';
-import CommunityReviewsPage from '../../pages/community/CommunityReviewsPage';
-import CommunityGamificationPage from '../../pages/community/CommunityGamificationPage';
+import CommunityFeedPage from '@/pages/community/CommunityFeedPage';
+import CommunityProfilesPage from '@/pages/community/CommunityProfilesPage';
+import CommunityJournalsPage from '@/pages/community/CommunityJournalsPage';
+import CommunityGroupsPage from '@/pages/community/CommunityGroupsPage';
+import CommunityReviewsPage from '@/pages/community/CommunityReviewsPage';
+import CommunityGamificationPage from '@/pages/community/CommunityGamificationPage';
 import CreatePostModal from '../CreatePostModal';
 import { useCommunity } from '@/hooks/useCommunity';
 

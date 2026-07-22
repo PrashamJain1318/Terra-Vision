@@ -3,19 +3,20 @@
 import React from 'react';
 import { Users, Search, PlusCircle } from 'lucide-react';
 import { useCommunity } from '@/hooks/useCommunity';
-import Eyebrow from '@/components/common/Eyebrow';
 
 export const CommunityHeader = ({ onOpenCreateModal }: { onOpenCreateModal: () => void }) => {
   const { searchQuery, setSearchQuery } = useCommunity();
 
   return (
-    <header className="p-6 rounded-3xl atlas-card border-primary/30 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+    <header className="p-6 rounded-3xl bg-card border border-border/40 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
       <div className="space-y-1">
         <div className="flex items-center gap-2">
           <Users className="w-5 h-5 text-emerald-400" />
-          <Eyebrow>GLOBAL TRAVELERS NETWORK</Eyebrow>
+          <span className="text-[10px] font-mono font-bold tracking-widest text-primary uppercase">
+            GLOBAL TRAVELERS NETWORK
+          </span>
         </div>
-        <h1 className="font-editorial text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
           Terra Vision Community Hub
         </h1>
         <p className="text-xs text-muted-foreground font-sans">

@@ -3,17 +3,17 @@
 import React from 'react';
 import BadgePill from '@/components/community/BadgePill';
 import COMMUNITY_BADGES from '@/config/communityBadges';
-import EditorialHeading from '@/components/common/EditorialHeading';
-import Eyebrow from '@/components/common/Eyebrow';
 
 export const CommunityGamificationPage = () => {
   return (
     <div className="space-y-6">
-      <div className="p-6 rounded-3xl atlas-card border-primary/30 space-y-2">
-        <Eyebrow>EXPLORER GAMIFICATION & ACHIEVEMENTS</Eyebrow>
-        <EditorialHeading as="h2" className="text-2xl font-extrabold">
+      <div className="p-6 rounded-3xl bg-card border border-primary/30 space-y-2">
+        <span className="text-[10px] font-mono font-bold tracking-widest text-primary uppercase">
+          EXPLORER GAMIFICATION & ACHIEVEMENTS
+        </span>
+        <h2 className="text-2xl font-extrabold text-foreground">
           Community Badges & AI Travel Rank
-        </EditorialHeading>
+        </h2>
         <p className="text-xs text-muted-foreground font-sans">
           Earn verified explorer badges by publishing dispatches, reviewing hidden spots, reporting scam alerts, and founding travel groups.
         </p>

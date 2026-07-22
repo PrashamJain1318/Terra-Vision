@@ -3,12 +3,22 @@
 import { useContext } from 'react';
 import { CommunityContext } from '@/context/CommunityContext';
 
+const defaultFallbackState = {
+  activeTab: 'feed',
+  setActiveTab: () => {},
+  searchQuery: '',
+  setSearchQuery: () => {},
+  posts: [],
+  addPost: () => {},
+  toggleLike: () => {},
+  toggleBookmark: () => {},
+  followingIds: [],
+  toggleFollow: () => {},
+};
+
 export const useCommunity = () => {
   const context = useContext(CommunityContext);
-  if (!context) {
-    throw new Error('useCommunity must be used within a CommunityProvider');
-  }
-  return context;
+  return context || defaultFallbackState;
 };
 
 export default useCommunity;

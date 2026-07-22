@@ -1,10 +1,9 @@
-# LocalLens AI — Phase 15 Deployment Checklist
+# LocalLens AI / Terra Vision — Phase 16 Deployment Checklist
 
 QA Lead: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- [x] Environment variable verification (`GEMINI_API_KEY`, `OPENAI_API_KEY`).
-- [x] Production build verification (`npm run build` passed cleanly with 81 static pages generated).
-- [x] MongoDB index creation on `VoiceSession`, `VoiceMessage`, `VoiceIntent`, and `VoiceContext`.
-- [x] Web Audio API microphone permission SSL HTTPS fallback verification.
+- [x] Verified MongoDB collections: `CommunityPost`, `CommunityJournal`, `CommunityGroup`, `CommunityReview`, `CommunityFollow`.
+- [x] Verified Express route mounting `/api/v1/community/*`.
+- [x] Next.js production build (`npm run build`) passed with 81 static pages prerendered cleanly.
