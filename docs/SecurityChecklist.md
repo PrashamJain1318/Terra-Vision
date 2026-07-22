@@ -1,11 +1,10 @@
-# LocalLens AI — Phase 10 Security Checklist
+# LocalLens AI — Phase 11 Security Audit Checklist
 
-Developer: Debharghya Misra (`debarghyamisra09`)
+QA Lead: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- [x] Rate limiting active on `/api/v1/vision/analyze` (20 req/min)
-- [x] File upload MIME type checks (JPEG, PNG, WEBP only)
-- [x] Maximum file size limit enforced (10MB)
-- [x] JWT Token protection on saved memories
-- [x] No exposed AI provider secret keys in client bundle
+- [x] JWT Token Verification on protected API routes.
+- [x] Express Validator sanitization on `POST /api/v1/hidden-gems/discover`.
+- [x] Rate limiting protection on recommendation endpoints.
+- [x] Zero exposed API keys in git history or client bundles.
