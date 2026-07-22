@@ -39,14 +39,6 @@ export const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { label: 'Experience', href: '/#experience' },
-    { label: 'Planner', href: '/dashboard/planner' },
-    { label: 'Hidden Gems', href: '/dashboard/hidden-gems' },
-    { label: 'Safety', href: '/dashboard/safety' },
-    { label: 'Memories', href: '/dashboard/memories' },
-  ];
-
-  const navLinks = [
     { name: 'Explore', href: '/dashboard/maps' },
     { name: 'Trips', href: '/dashboard/trips' },
     { name: 'Vision', href: '/dashboard/vision' },

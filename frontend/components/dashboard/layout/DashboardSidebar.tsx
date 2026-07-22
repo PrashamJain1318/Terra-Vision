@@ -86,7 +86,7 @@ export const DashboardSidebar = () => {
           >
             <LogOut className="w-4 h-4 flex-shrink-0" />
             {!sidebarCollapsed && <span>Exit Workspace</span>}
-          </Link>
+          </button>
         </div>
       </aside>
     </>
