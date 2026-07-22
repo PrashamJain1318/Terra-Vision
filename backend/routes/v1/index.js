@@ -18,6 +18,7 @@ import enterpriseRouter from '../enterpriseRoutes.js';
 import platformRouter from '../platformRoutes.js';
 import betaRouter from '../betaRoutes.js';
 import mobileRouter from '../mobileRoutes.js';
+import settingsRouter from '../settingsRoutes.js';
 
 const router = express.Router();
 
@@ -41,5 +42,6 @@ router.use('/enterprise', enterpriseRouter);
 router.use('/platform', platformRouter);
 router.use('/beta', betaRouter);
 router.use('/mobile', mobileRouter);
+router.use('/settings', settingsRouter);
 
 export default router;
