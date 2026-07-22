@@ -1,13 +1,27 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mic, Send, Bot, Sparkles, Volume2 } from 'lucide-react';
+import { Mic, MicOff, Send, Bot, Sparkles, Volume2, VolumeX, Trash2, RotateCcw, AlertTriangle, Radio } from 'lucide-react';
 import { useVoice } from '@/hooks/useVoice';
-import VOICE_PROVIDERS from '@/config/voiceProviders';
-import VOICE_INTENTS from '@/config/voiceIntents';
+import AppCard from '@/components/ui/AppCard';
+import AppButton from '@/components/ui/AppButton';
+import AppBadge from '@/components/ui/AppBadge';
+import AppHeader from '@/components/ui/AppHeader';
+
+const VOICE_INTENTS = [
+  { sampleUtterance: 'Plan a 3-day weekend trip to Munnar', targetModule: 'Planner' },
+  { sampleUtterance: 'Where can I find vegetarian street food nearby?', targetModule: 'Food' },
+  { sampleUtterance: 'Is it safe to walk at night near Sunset Point?', targetModule: 'Safety' },
+  { sampleUtterance: 'Scan landmark in front of me', targetModule: 'Vision' },
+];
+
+const VOICE_PROVIDERS = [
+  { id: 'gemini-voice', name: 'Google Gemini 1.5 Voice (Recommended)' },
+  { id: 'web-speech', name: 'Browser Native Web Speech API' },
+];
 
 export const VoiceWorkspace = () => {
-  const { state, sendMessage, setSelectedProvider, startListening, stopListening } = useVoice();
+  const { state, sendMessage, setSelectedProvider, startListening, stopListening, clearHistory } = useVoice();
   const [inputText, setInputText] = useState('');
 
   const handleSend = () => {
@@ -17,118 +31,232 @@ export const VoiceWorkspace = () => {
     }
   };
 
+  const handleReplayAudio = (text: string) => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const handleStopAudio = () => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-card/45 backdrop-blur-xl border border-cyan-500/20 shadow-xl">
-        <div className="space-y-1">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-cyan-400">Natural Language Travel Companion</span>
-          <h2 className="text-2xl font-extrabold text-foreground">Speak to LocalLens AI</h2>
-          <p className="text-xs text-muted-foreground">
-            Multi-modal speech reasoning engine coordinating Planner, Maps, Vision, Food, Safety, and Memory.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          {state.isListening ? (
-            <button
-              onClick={stopListening}
-              className="p-4 rounded-full bg-cyan-600 text-white shadow-xl shadow-cyan-600/40 animate-pulse flex items-center justify-center"
-            >
-              <Mic className="w-6 h-6" />
-            </button>
-          ) : (
-            <button
-              onClick={startListening}
-              className="p-4 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white shadow-xl shadow-cyan-600/40 flex items-center justify-center transition-all"
-            >
-              <Mic className="w-6 h-6" />
-            </button>
+      {/* Page Header */}
+      <AppHeader
+        title="Voice AI Travel Companion"
+        subtitle="Multi-modal speech reasoning engine coordinating Planner, Maps, Vision, Food, Safety, and Memory."
+        badgeText="Gemini 1.5 Voice Engine"
+        icon={Radio}
+      >
+        <div className="flex items-center gap-2">
+          <AppButton variant="secondary" size="sm" icon={Trash2} onClick={clearHistory}>
+            Clear History
+          </AppButton>
+          {state.isSpeaking && (
+            <AppButton variant="danger" size="sm" icon={VolumeX} onClick={handleStopAudio}>
+              Stop Audio
+            </AppButton>
           )}
         </div>
-      </div>
+      </AppHeader>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 p-6 rounded-3xl bg-card/45 backdrop-blur-xl border border-border/40 space-y-4 shadow-xl">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-extrabold text-foreground flex items-center gap-2">
-              <Bot className="w-4 h-4 text-cyan-400" /> Conversational Audio Stream
-            </h3>
-            <span className="text-[10px] text-cyan-400 font-bold uppercase">{state.selectedProvider}</span>
+      {/* Error Alert Toast */}
+      {state.error && (
+        <div className="p-4 rounded-2xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs font-black flex items-center justify-between shadow-xl backdrop-blur-md">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-rose-400" />
+            <span>{state.error}</span>
+          </div>
+          <button onClick={startListening} className="underline text-xs font-bold hover:text-white">
+            Retry Mic
+          </button>
+        </div>
+      )}
+
+      {/* Hero Control Bar & State Indicators */}
+      <AppCard hoverEffect={false} className="border-emerald-500/30">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              {state.isListening ? (
+                <AppBadge variant="red" icon={Radio}>
+                  Recording & Listening...
+                </AppBadge>
+              ) : state.loading ? (
+                <AppBadge variant="amber" icon={Sparkles}>
+                  Gemini Thinking...
+                </AppBadge>
+              ) : state.isSpeaking ? (
+                <AppBadge variant="emerald" icon={Volume2}>
+                  Speaking Response...
+                </AppBadge>
+              ) : (
+                <AppBadge variant="emerald" icon={Bot}>
+                  Voice Engine Ready
+                </AppBadge>
+              )}
+            </div>
+
+            <h2 className="text-xl font-black text-white">
+              {state.transcript ? `"${state.transcript}"` : 'Press Microphone or Type to Speak'}
+            </h2>
+            <p className="text-xs text-zinc-400 font-semibold">
+              Speak naturally in any language. Gemini will analyze intent, query travel intelligence, and respond out loud.
+            </p>
           </div>
 
-          <div className="space-y-3 min-h-[220px] max-h-[360px] overflow-y-auto p-2">
-            {state.messages.map((msg) => (
-              <div key={msg.id} className={`flex ${msg.sender === 'assistant' ? 'justify-start' : 'justify-end'}`}>
-                <div
-                  className={`max-w-[80%] p-3.5 rounded-2xl text-xs leading-relaxed ${
-                    msg.sender === 'assistant' ? 'bg-muted/30 border border-border/30 text-foreground' : 'bg-cyan-600 text-white font-semibold'
-                  }`}
-                >
-                  <p>{msg.text}</p>
-                  {msg.targetModule && (
-                    <span className="mt-1 inline-block text-[9px] uppercase font-extrabold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300">
-                      Module: {msg.targetModule}
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="relative">
-            <input
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Ask naturally: 'Find vegetarian ramen' or 'Plan 3 days in Amritsar'..."
-              className="w-full pl-4 pr-12 py-3 rounded-2xl bg-card/60 border border-border/40 text-xs font-semibold text-foreground focus:outline-none"
-            />
-            <button onClick={handleSend} className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-cyan-600 text-white">
-              <Send className="w-3.5 h-3.5" />
-            </button>
+          {/* Large Animated Microphone Action Button */}
+          <div className="flex items-center gap-4 shrink-0">
+            {state.isListening ? (
+              <button
+                onClick={stopListening}
+                className="w-20 h-20 rounded-full bg-rose-600 hover:bg-rose-500 text-white shadow-2xl shadow-rose-600/50 animate-pulse flex items-center justify-center transition-all cursor-pointer ring-8 ring-rose-600/30"
+                title="Stop Recording"
+              >
+                <MicOff className="w-8 h-8" />
+              </button>
+            ) : (
+              <button
+                onClick={startListening}
+                className="w-20 h-20 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-2xl shadow-emerald-500/30 hover:scale-105 active:scale-95 flex items-center justify-center transition-all cursor-pointer ring-8 ring-emerald-500/20"
+                title="Start Voice Recording"
+              >
+                <Mic className="w-8 h-8" />
+              </button>
+            )}
           </div>
         </div>
 
+        {/* Audio Waveform Visualization Bar */}
+        {(state.isListening || state.isSpeaking) && (
+          <div className="flex items-center justify-center gap-1.5 pt-6">
+            {[40, 70, 30, 90, 50, 80, 100, 60, 95, 45, 75, 35, 85, 55, 90, 65].map((height, idx) => (
+              <div
+                key={idx}
+                className={`w-1.5 rounded-full animate-pulse ${state.isListening ? 'bg-rose-500' : 'bg-emerald-400'}`}
+                style={{
+                  height: `${Math.max(12, Math.round(height * Math.random()))}px`,
+                  animationDuration: `${0.3 + idx * 0.05}s`,
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </AppCard>
+
+      {/* Main Conversation & Config Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Left Conversation Log Stream (2 Columns) */}
+        <div className="md:col-span-2 space-y-4">
+          <AppCard hoverEffect={false} className="space-y-4">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
+                <Bot className="w-4 h-4 text-emerald-400" /> Conversational Audio Stream
+              </h3>
+              <AppBadge variant="emerald">{state.selectedProvider}</AppBadge>
+            </div>
+
+            <div className="space-y-3 min-h-[260px] max-h-[420px] overflow-y-auto p-1 scrollbar-thin">
+              {state.messages.map((msg) => (
+                <div key={msg.id} className={`flex ${msg.sender === 'assistant' ? 'justify-start' : 'justify-end'}`}>
+                  <div
+                    className={`max-w-[85%] p-4 rounded-2xl text-xs leading-relaxed space-y-2 ${
+                      msg.sender === 'assistant'
+                        ? 'bg-zinc-900 border border-zinc-800 text-zinc-100'
+                        : 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md'
+                    }`}
+                  >
+                    <div className="whitespace-pre-wrap">{msg.text}</div>
+                    <div className="flex items-center justify-between gap-2 pt-1 text-[10px] text-zinc-400 font-mono">
+                      <span>{msg.timestamp}</span>
+                      {msg.sender === 'assistant' && (
+                        <button
+                          onClick={() => handleReplayAudio(msg.text)}
+                          className="hover:text-emerald-400 flex items-center gap-1 font-bold transition-colors"
+                        >
+                          <RotateCcw className="w-3 h-3" /> Replay Audio
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {state.loading && (
+                <div className="flex items-center gap-2.5 p-4 rounded-2xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-400 w-44">
+                  <Sparkles className="w-4 h-4 text-emerald-400 animate-spin" />
+                  <span>Gemini Reasoning...</span>
+                </div>
+              )}
+            </div>
+
+            {/* Input Form */}
+            <div className="relative flex items-center pt-2">
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                placeholder="Ask naturally: 'Find vegetarian ramen' or 'Plan 3 days in Tokyo'..."
+                className="w-full pl-4 pr-14 py-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 text-xs font-bold text-white placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500"
+              />
+              <button
+                onClick={handleSend}
+                disabled={!inputText.trim() || state.loading}
+                className="absolute right-2 p-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white disabled:opacity-50 hover:scale-105 transition-all cursor-pointer"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
+          </AppCard>
+        </div>
+
+        {/* Right Voice Controls & Intent Shortcuts (1 Column) */}
         <div className="space-y-6">
-          <div className="p-6 rounded-3xl bg-card/45 backdrop-blur-xl border border-border/40 space-y-4 shadow-xl">
-            <h3 className="text-sm font-extrabold text-foreground flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-400" /> Voice Commands & Intents
+          <AppCard hoverEffect={false} className="space-y-4">
+            <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-400" /> Voice Commands & Shortcuts
             </h3>
             <div className="space-y-2">
               {VOICE_INTENTS.map((item, idx) => (
                 <button
                   key={idx}
                   onClick={() => sendMessage(item.sampleUtterance)}
-                  className="w-full p-2.5 rounded-2xl bg-muted/20 border border-border/20 text-left text-xs font-semibold text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-all flex items-center justify-between"
+                  className="w-full p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800 text-left text-xs font-bold text-zinc-300 hover:bg-zinc-800 hover:text-white transition-all flex items-center justify-between cursor-pointer group"
                 >
-                  <span>"{item.sampleUtterance}"</span>
-                  <span className="text-[9px] uppercase font-bold text-cyan-400">{item.targetModule}</span>
+                  <span className="group-hover:text-emerald-300 truncate">"{item.sampleUtterance}"</span>
+                  <AppBadge variant="teal" className="shrink-0">{item.targetModule}</AppBadge>
                 </button>
               ))}
             </div>
-          </div>
+          </AppCard>
 
-          <div className="p-6 rounded-3xl bg-card/45 backdrop-blur-xl border border-border/40 space-y-4 shadow-xl">
-            <h3 className="text-sm font-extrabold text-foreground flex items-center gap-2">
-              <Volume2 className="w-4 h-4 text-cyan-400" /> Voice AI Engine Provider
+          <AppCard hoverEffect={false} className="space-y-4">
+            <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
+              <Volume2 className="w-4 h-4 text-emerald-400" /> Voice AI Engine Provider
             </h3>
             <div className="space-y-2">
               {VOICE_PROVIDERS.map((prov) => (
                 <button
                   key={prov.id}
                   onClick={() => setSelectedProvider(prov.id)}
-                  className={`w-full p-3 rounded-2xl border text-left text-xs transition-all ${
+                  className={`w-full p-3 rounded-2xl border text-left text-xs font-bold transition-all cursor-pointer ${
                     state.selectedProvider === prov.id
-                      ? 'bg-cyan-500/15 border-cyan-500 text-cyan-400 font-extrabold'
-                      : 'bg-muted/20 border-border/20 text-muted-foreground hover:bg-muted/30'
+                      ? 'bg-emerald-500/15 border-emerald-500 text-emerald-400'
+                      : 'bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200'
                   }`}
                 >
                   {prov.name}
                 </button>
               ))}
             </div>
-          </div>
+          </AppCard>
         </div>
       </div>
     </div>
