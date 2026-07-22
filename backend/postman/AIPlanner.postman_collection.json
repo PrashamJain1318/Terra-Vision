@@ -1,0 +1,46 @@
+{
+  "info": {
+    "name": "LocalLens AI - AI Planner APIs",
+    "description": "Postman API Collection for LocalLens AI Phase 8 Planner Endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Generate AI Itinerary",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"destination\": \"Manali, HP, India\",\n  \"travelDays\": 4,\n  \"travelers\": 2,\n  \"travelStyle\": \"adventure\",\n  \"budget\": \"balanced\",\n  \"interests\": [\"nature\", "photography\"]\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5050/api/v1/planner/generate",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5050",
+          "path": ["api", "v1", "planner", "generate"]
+        }
+      }
+    },
+    {
+      "name": "Fetch Planner History",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5050/api/v1/planner/history?page=1&limit=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5050",
+          "path": ["api", "v1", "planner", "history"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    }
+  ]
+}
