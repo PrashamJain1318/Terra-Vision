@@ -2,12 +2,18 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Compass, Send, ShieldCheck, Heart } from 'lucide-react';
 import CoordinatesTag from '@/components/common/CoordinatesTag';
 
 export const Footer = () => {
+  const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+
+  if (pathname?.startsWith('/dashboard')) {
+    return null;
+  }
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
