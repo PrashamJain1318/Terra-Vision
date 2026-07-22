@@ -1,0 +1,16 @@
+{
+  "name": "LocalLens AI",
+  "short_name": "LocalLens",
+  "description": "AI Travel Planner, Interactive Maps, & Vision Landmark Scanner",
+  "start_url": "/dashboard/overview",
+  "display": "standalone",
+  "background_color": "#090D16",
+  "theme_color": "#10B981",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
