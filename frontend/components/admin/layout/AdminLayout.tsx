@@ -6,7 +6,7 @@ import AdminProvider from '@/providers/AdminProvider';
 export const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <AdminProvider>
-      <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      <div className="space-y-6">
         {children}
       </div>
     </AdminProvider>

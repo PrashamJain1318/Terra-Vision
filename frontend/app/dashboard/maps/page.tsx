@@ -402,7 +402,7 @@ export default function MapsPage() {
   });
 
   return (
-    <div className="space-y-6 max-w-[1920px] mx-auto pb-32 relative font-sans text-slate-100 bg-[#09090B] min-h-screen">
+    <div className="space-y-6 max-w-[1920px] mx-auto relative font-sans text-slate-100">
       {/* 1. TOP SAAS CONTROL BAR (SEARCH COMMAND + QUICK TELEMETRY WIDGETS) */}
       <div className="space-y-4">
         {/* Floating Command Search Bar */}

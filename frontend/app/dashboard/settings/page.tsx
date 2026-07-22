@@ -244,7 +244,7 @@ export default function SettingsV2Page() {
   );
 
   return (
-    <div className="space-y-6 max-w-[1800px] mx-auto pb-32 font-sans text-slate-100 bg-[#09090B] min-h-screen">
+    <div className="space-y-6 max-w-[1800px] mx-auto font-sans text-slate-100">
       {/* 1. TOP SAAS HEADER WITH GLOBAL SEARCH & QUICK ACTIONS */}
       <div className="p-6 rounded-3xl bg-gradient-to-r from-[#111827] via-slate-900 to-[#111827] border border-white/[0.08] shadow-2xl backdrop-blur-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1">
@@ -291,7 +291,7 @@ export default function SettingsV2Page() {
       {/* 2. 16-CATEGORY SETTINGS LAYOUT (LEFT SIDEBAR 25% + RIGHT WORKSPACE 75%) */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
         {/* LEFT SETTINGS NAVIGATION SIDEBAR (3 COLUMNS) */}
-        <div className="xl:col-span-3 space-y-2 p-3 rounded-3xl bg-[#111827]/90 border border-white/[0.08] shadow-2xl backdrop-blur-2xl max-h-[820px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/10">
+        <div className="xl:col-span-3 space-y-2 p-3 rounded-3xl bg-[#111827]/90 border border-white/[0.08] shadow-2xl backdrop-blur-2xl">
           <div className="px-3 py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-white/[0.06] mb-2 flex items-center justify-between">
             <span>Settings Categories ({CATEGORIES.length})</span>
             <Sliders className="w-3.5 h-3.5 text-[#7C3AED]" />
