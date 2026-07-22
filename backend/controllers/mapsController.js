@@ -2,6 +2,7 @@ import mapsService from '../services/mapsService.js';
 import routingService from '../services/routingService.js';
 import placesService from '../services/placesService.js';
 import mapsFormatter from '../utils/mapsFormatter.js';
+import googleMapsProvider from '../providers/googleMapsProvider.js';
 
 export const mapsController = {
   getCurrentLocation: async (req, res, next) => {
@@ -16,9 +17,15 @@ export const mapsController = {
 
   search: async (req, res, next) => {
     try {
-      const { q, provider } = req.query;
-      const results = await mapsService.searchPlaces(q || 'Shimla', provider);
-      return res.status(200).json(mapsFormatter.formatSuccess(results, 'Search results retrieved'));
+      const query = req.query.city || req.query.q || 'Jawad';
+      const results = await googleMapsProvider.searchPlaces(query);
+      return res.status(200).json({
+        success: true,
+        message: `Google Maps Places retrieved for ${query}`,
+        data: results,
+        city: query,
+        count: results.length,
+      });
     } catch (err) {
       next(err);
     }
@@ -27,8 +34,27 @@ export const mapsController = {
   getPlaceById: async (req, res, next) => {
     try {
       const { placeId } = req.params;
-      const place = await mapsService.getPlaceById(placeId);
-      return res.status(200).json(mapsFormatter.formatSuccess(place, 'Place details retrieved'));
+      const place = await googleMapsProvider.getPlaceById(placeId);
+      return res.status(200).json({
+        success: true,
+        data: place,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  getPhotosById: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      return res.status(200).json({
+        success: true,
+        data: [
+          'https://images.unsplash.com/photo-1588097281266-310cead47879?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
+        ],
+      });
     } catch (err) {
       next(err);
     }
@@ -36,9 +62,12 @@ export const mapsController = {
 
   getNearby: async (req, res, next) => {
     try {
-      const { lat = '31.1048', lng = '77.1734', category = 'attraction', provider } = req.query;
-      const places = await placesService.getNearbyPlaces(lat, lng, category, provider);
-      return res.status(200).json(mapsFormatter.formatSuccess(places, 'Nearby places retrieved'));
+      const { lat = '24.601', lng = '74.855', category = 'all' } = req.query;
+      const places = await googleMapsProvider.getNearby(lat, lng, category);
+      return res.status(200).json({
+        success: true,
+        data: places,
+      });
     } catch (err) {
       next(err);
     }

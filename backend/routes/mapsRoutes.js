@@ -11,8 +11,9 @@ router.get('/current-location', mapsController.getCurrentLocation);
 // Search places
 router.get('/search', mapsRateLimiter, mapsController.search);
 
-// Place details
+// Place details & photos
 router.get('/place/:placeId', mapsController.getPlaceById);
+router.get('/photos/:id', mapsController.getPhotosById);
 
 // Nearby places
 router.get('/nearby', validateNearbyQuery, mapsController.getNearby);
@@ -22,6 +23,7 @@ router.post('/route', mapsRateLimiter, validateRouteGeneration, mapsController.g
 
 // Saved Places APIs
 router.post('/save-place', mapsController.savePlace);
+router.post('/saved', mapsController.savePlace);
 router.get('/saved', mapsController.getSavedPlaces);
 router.put('/saved/:id', mapsController.updateSavedPlace);
 router.delete('/saved/:id', mapsController.deleteSavedPlace);
