@@ -1,9 +1,10 @@
-# LocalLens AI / Terra Vision — Phase 17 Security Audit Checklist
+# LocalLens AI / Terra Vision — Phase 18 Security Audit Checklist
 
 QA Lead: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- [x] RBAC JWT Role enforcement on all `/api/v1/admin/*` routes.
-- [x] Immutable security audit trail logging (`AdminAuditLog`).
-- [x] Rate limiting & brute-force protection on admin login workflows.
+- [x] Zero-Trust Security headers (HSTS, CSP, X-Frame-Options).
+- [x] Rate limiting protection: 100 requests / minute per IP.
+- [x] TOTP Multi-Factor Authentication (MFA) enforcement.
+- [x] WORM Audit Log Storage compliance.
