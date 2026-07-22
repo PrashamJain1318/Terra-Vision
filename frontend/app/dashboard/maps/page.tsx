@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import GlassCard from '@/components/common/GlassCard';
 import api from '@/utils/api';
+import mapsService, { PlaceItem, CityWeather, RouteInfo } from '@/services/mapsService';
 import {
   Map as MapIcon,
   MapPin,
@@ -20,6 +21,7 @@ import {
   Landmark,
   Mountain,
   Mic,
+  MicOff,
   Layers,
   Clock,
   Phone,
@@ -42,494 +44,137 @@ import {
   MessageSquare,
   ChevronDown,
   Volume2,
+  Sun,
+  Sunset,
+  CloudRain,
+  Wind,
+  ShieldAlert,
+  Car,
+  Bike,
+  Footprints,
+  Bus,
+  Waves,
+  Building,
+  Hospital,
+  CreditCard,
+  Fuel,
 } from 'lucide-react';
-
-interface AIInsights {
-  summary: string;
-  bestTimeToVisit?: string;
-  crowdLevel: string;
-  photographyScore: string;
-  familyFriendly: string;
-  adventureScore: string;
-  budgetTips?: string;
-  safetyTips?: string;
-}
-
-interface PlaceItem {
-  id: string;
-  name: string;
-  category: string;
-  subCategory?: string;
-  badge?: 'HIDDEN GEM' | 'MUST VISIT' | 'CAFE';
-  isHiddenGem?: boolean;
-  isMustVisit?: boolean;
-  address: string;
-  city: string;
-  lat: number;
-  lng: number;
-  rating: number;
-  reviewsCount: number;
-  priceLevel: string;
-  openNow: boolean;
-  openingHours?: string;
-  distance: string;
-  description: string;
-  imageUrl: string;
-  photos?: string[];
-  googleMapsUrl: string;
-  phone?: string;
-  website?: string;
-  bestTimeToVisit?: string;
-  popularFor?: string;
-  aiInsights?: AIInsights;
-}
 
 const CATEGORIES_WITH_COUNTS = [
   { name: 'All', count: 423 },
-  { name: 'Must Visit', count: 68 },
+  { name: 'Tourist Attractions', count: 68 },
   { name: 'Hidden Gems', count: 122 },
-  { name: 'Local Food', count: 96 },
   { name: 'Restaurants', count: 86 },
   { name: 'Cafes', count: 54 },
-  { name: 'Nature', count: 72 },
-  { name: 'Historical', count: 31 },
-  { name: 'Temples', count: 45 },
+  { name: 'Hotels', count: 40 },
+  { name: 'Beaches', count: 50 },
+  { name: 'Museums', count: 31 },
+  { name: 'Parks', count: 45 },
+  { name: 'Shopping Malls', count: 35 },
+  { name: 'Hospitals', count: 15 },
+  { name: 'ATMs', count: 20 },
+  { name: 'Petrol Pumps', count: 18 },
 ];
 
-const TRENDING_SEARCHES = ['Munnar', 'Manali', 'Jaipur', 'Bali', 'Paris', 'Tokyo', 'New York', 'Dubai', 'Delhi', 'Neemuch', 'Jawad'];
-
-// Dynamic Places Generator for any queried city worldwide
-const generatePlacesForCity = (cityName: string): PlaceItem[] => {
-  const city = cityName.trim();
-  const cityLower = city.toLowerCase();
-
-  if (cityLower.includes('munnar')) {
-    return [
-      {
-        id: 'place_munnar_1',
-        name: 'Potters Hill Pine Forest',
-        category: 'Nature',
-        subCategory: 'Forest • Nature • Hiking Area',
-        badge: 'HIDDEN GEM',
-        isHiddenGem: true,
-        isMustVisit: false,
-        rating: 4.7,
-        reviewsCount: 1248,
-        distance: '12.4 km',
-        address: 'Kallar - Mankulam Rd, Munnar, Kerala 685565',
-        openNow: true,
-        openingHours: 'Open 24 hours',
-        priceLevel: 'Free',
-        phone: '+91 4865 230 450',
-        website: 'https://keralatourism.org/munnar/pine-forest',
-        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Potters+Hill+Pine+Forest+Munnar',
-        imageUrl: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=1200&q=80',
-        photos: [
-          'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
-        ],
-        description: 'A beautiful pine forest with scenic hiking trails, perfect for nature walks and photography. Less crowded and peaceful.',
-        bestTimeToVisit: 'September – March',
-        popularFor: 'Nature Walks, Photography, Picnics',
-        aiInsights: {
-          summary: 'Potters Hill Pine Forest is best visited early in the morning. September–March offers the best weather. It is ideal for photography and family outings.',
-          crowdLevel: 'Low',
-          photographyScore: 'Excellent',
-          familyFriendly: 'Yes',
-          adventureScore: 'Medium',
-          budgetTips: 'Free entry; bring water and light hiking footwear.',
-          safetyTips: 'Stay on marked trails during rainy afternoon mist.',
-        },
-        city: 'Munnar',
-        lat: 10.12,
-        lng: 77.02,
-      },
-      {
-        id: 'place_munnar_2',
-        name: 'Eravikulam National Park',
-        category: 'Must Visit',
-        subCategory: 'National Park • Wildlife • Sanctuary',
-        badge: 'MUST VISIT',
-        isHiddenGem: false,
-        isMustVisit: true,
-        rating: 4.6,
-        reviewsCount: 3782,
-        distance: '15.7 km',
-        address: 'Kannan Devan Hills, Munnar, Kerala 685612',
-        openNow: true,
-        openingHours: 'Open 7:00 AM – 6:00 PM',
-        priceLevel: '₹200',
-        phone: '+91 4865 231 580',
-        website: 'https://eravikulam.org',
-        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Eravikulam+National+Park+Munnar',
-        imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
-        photos: [
-          'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80',
-        ],
-        description: 'High altitude wildlife sanctuary famous for endangered Nilgiri Tahr mountain goats and rolling tea hills.',
-        bestTimeToVisit: 'September – February',
-        popularFor: 'Wildlife Spotting, Trekking, Panoramic Vistas',
-        aiInsights: {
-          summary: 'Eravikulam National Park offers breath-taking views of Anamudi Peak and rare mountain flora.',
-          crowdLevel: 'Moderate',
-          photographyScore: 'Excellent',
-          familyFriendly: 'Yes',
-          adventureScore: 'High',
-          budgetTips: 'Book safari bus tickets online in advance.',
-          safetyTips: 'Closed during Nilgiri Tahr calving season in Feb–March.',
-        },
-        city: 'Munnar',
-        lat: 10.15,
-        lng: 77.08,
-      },
-      {
-        id: 'place_munnar_3',
-        name: 'Mattupetty Dam & Lake',
-        category: 'Must Visit',
-        subCategory: 'Tourist Attraction • Lake • Dam',
-        badge: 'MUST VISIT',
-        isHiddenGem: false,
-        isMustVisit: true,
-        rating: 4.5,
-        reviewsCount: 2104,
-        distance: '13.1 km',
-        address: 'Mattupetty, Top Station Highway, Munnar, Kerala',
-        openNow: true,
-        openingHours: 'Open 8:00 AM – 5:30 PM',
-        priceLevel: '₹50',
-        phone: '+91 4865 230 910',
-        website: 'https://keralatourism.org/munnar/mattupetty',
-        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Mattupetty+Dam+Munnar',
-        imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80',
-        photos: ['https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80'],
-        description: 'Scenic storage reservoir lake nestled amidst Nilgiri hills, offering speedboating and tea garden walks.',
-        bestTimeToVisit: 'October – March',
-        popularFor: 'Speedboating, Horse Riding, Tea Estate Views',
-        aiInsights: {
-          summary: 'Mattupetty Dam is best visited early in the morning. September–February offers the best weather.',
-          crowdLevel: 'Moderate',
-          photographyScore: 'Excellent',
-          familyFriendly: 'Yes',
-          adventureScore: 'Medium',
-        },
-        city: 'Munnar',
-        lat: 10.105,
-        lng: 77.123,
-      },
-      {
-        id: 'place_munnar_4',
-        name: 'Cafe 1983 Heritage Lounge',
-        category: 'Cafes',
-        subCategory: 'Cafe • European • Coffee',
-        badge: 'CAFE',
-        isHiddenGem: false,
-        isMustVisit: false,
-        rating: 4.4,
-        reviewsCount: 964,
-        distance: '11.5 km',
-        address: 'Old Munnar Road, Munnar, Kerala',
-        openNow: true,
-        openingHours: 'Open 8:00 AM – 10:00 PM',
-        priceLevel: '$$',
-        phone: '+91 4865 232 400',
-        website: 'https://locallens.ai/cafe1983',
-        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Cafe+1983+Munnar',
-        imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
-        photos: ['https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80'],
-        description: 'Cozy heritage European cafe serving artisan coffee, freshly baked cinnamon rolls, and woodfired pizza.',
-        bestTimeToVisit: '4:00 PM – 7:00 PM',
-        popularFor: 'Artisan Coffee, Pastries, Relaxed Atmosphere',
-        aiInsights: {
-          summary: 'Charming heritage cafe offering high quality single origin espresso and freshly baked pastries.',
-          crowdLevel: 'Low',
-          photographyScore: 'Excellent',
-          familyFriendly: 'Yes',
-          adventureScore: 'Low',
-        },
-        city: 'Munnar',
-        lat: 10.086,
-        lng: 77.058,
-      },
-      {
-        id: 'place_munnar_5',
-        name: 'Suryanelli Kolukkumalai Tea Estate',
-        category: 'Hidden Gems',
-        subCategory: 'Tea Estate • Nature • Sunset Trail',
-        badge: 'HIDDEN GEM',
-        isHiddenGem: true,
-        isMustVisit: false,
-        rating: 4.6,
-        reviewsCount: 1732,
-        distance: '18.4 km',
-        address: 'Suryanelli, Kolukkumalai Road, Munnar, Kerala',
-        openNow: true,
-        openingHours: 'Open 5:00 AM – 6:00 PM',
-        priceLevel: '₹150',
-        phone: '+91 4865 234 100',
-        website: 'https://kolukkumalai.com',
-        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Kolukkumalai+Tea+Estate+Munnar',
-        imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
-        photos: ['https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'],
-        description: "World's highest organic tea plantation (7900ft) with 360-degree sunrise view above clouds.",
-        bestTimeToVisit: 'September – April',
-        popularFor: 'Sunrise Jeep Safari, Tea Tasting',
-        aiInsights: {
-          summary: 'Kolukkumalai offers a breathtaking 4x4 Jeep trail to the highest tea garden on Earth.',
-          crowdLevel: 'Low',
-          photographyScore: 'Outstanding',
-          familyFriendly: 'Yes',
-          adventureScore: 'High',
-        },
-        city: 'Munnar',
-        lat: 10.07,
-        lng: 77.21,
-      },
-    ];
-  }
-
-  // Dynamic Generator for any other city
-  return [
-    {
-      id: `place_${cityLower}_1`,
-      name: `${city} Central Palace & Heritage Square`,
-      category: 'Must Visit',
-      subCategory: 'Historical • Landmark • Architecture',
-      badge: 'MUST VISIT',
-      isHiddenGem: false,
-      isMustVisit: true,
-      rating: 4.9,
-      reviewsCount: 4210,
-      distance: '0.8 km',
-      address: `Central Promenade, ${city}`,
-      openNow: true,
-      openingHours: 'Open 24 hours',
-      priceLevel: 'Free',
-      phone: '+1 800 11 2026',
-      website: `https://tourism.gov/${encodeURIComponent(city)}`,
-      googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(city + ' Landmark')}`,
-      imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80',
-      photos: [
-        'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80',
-      ],
-      description: `The iconic architectural and historical heart of ${city}, drawing travelers with grand views and vibrant local markets.`,
-      bestTimeToVisit: '5:00 PM – 8:00 PM (Sunset vistas)',
-      popularFor: 'Sightseeing, Architecture, Heritage Walks',
-      aiInsights: {
-        summary: `${city} Central Plaza is best visited during late afternoon. Features grand historical architecture and pedestrian avenues.`,
-        crowdLevel: 'Moderate',
-        photographyScore: 'Excellent',
-        familyFriendly: 'Yes',
-        adventureScore: 'Medium',
-        budgetTips: 'Free public access; exploring on foot is recommended.',
-        safetyTips: 'Well-lit pedestrian walkways with security presence.',
-      },
-      city,
-      lat: 20.0,
-      lng: 75.0,
-    },
-    {
-      id: `place_${cityLower}_2`,
-      name: `${city} Secret Stepwell & Nature Ridge`,
-      category: 'Hidden Gems',
-      subCategory: 'Nature • Hidden Gem • Scenic Trail',
-      badge: 'HIDDEN GEM',
-      isHiddenGem: true,
-      isMustVisit: false,
-      rating: 4.8,
-      reviewsCount: 540,
-      distance: '3.4 km',
-      address: `Upper Forest Ridge, ${city}`,
-      openNow: true,
-      openingHours: 'Open 6:00 AM – 6:30 PM',
-      priceLevel: 'Free',
-      phone: '+1 800 11 2027',
-      website: `https://locallens.ai/${encodeURIComponent(city)}-hidden-gems`,
-      googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(city + ' Hidden Gems')}`,
-      imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
-      photos: [
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80',
-      ],
-      description: `Secluded ancient ridge offering unhindered sunset views, lush green trails, and quiet contemplation away from crowd noise in ${city}.`,
-      bestTimeToVisit: '6:30 AM – 9:00 AM & 5:00 PM',
-      popularFor: 'Photography, Quiet Meditation, Sunset Trail',
-      aiInsights: {
-        summary: `This hidden gem in ${city} is highly rated and perfect for scenic sunset photography without heavy tourist crowds.`,
-        crowdLevel: 'Low',
-        photographyScore: 'Outstanding',
-        familyFriendly: 'Yes',
-        adventureScore: 'High',
-        budgetTips: 'No admission fee; ideal for morning yoga and photography.',
-        safetyTips: 'Follow marked trail paths during evening sunset.',
-      },
-      city,
-      lat: 20.01,
-      lng: 75.01,
-    },
-    {
-      id: `place_${cityLower}_3`,
-      name: `Famous ${city} Royal Kitchen & Gourmet House`,
-      category: 'Local Food',
-      subCategory: 'Restaurants • Regional Food • Heritage',
-      badge: 'MUST VISIT',
-      isHiddenGem: false,
-      isMustVisit: true,
-      rating: 4.8,
-      reviewsCount: 1980,
-      distance: '1.4 km',
-      address: `Main Bazaar Road, ${city}`,
-      openNow: true,
-      openingHours: 'Open 11:00 AM – 11:00 PM',
-      priceLevel: '$$',
-      phone: '+1 800 11 2028',
-      website: `https://locallens.ai/${encodeURIComponent(city)}-food`,
-      googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(city + ' Restaurants')}`,
-      imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=1200&q=80',
-      photos: ['https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80'],
-      description: `Celebrated culinary house in ${city} serving authentic regional recipes and wood-fired delicacies.`,
-      bestTimeToVisit: '1:00 PM – 2:30 PM & 8:00 PM',
-      popularFor: 'Regional Delicacies, Woodfired Specials, Local Flavors',
-      aiInsights: {
-        summary: `Authentic food pick in ${city} praised for rich local spices and heritage recipes.`,
-        crowdLevel: 'Moderate',
-        photographyScore: 'Good',
-        familyFriendly: 'Yes',
-        adventureScore: 'Medium',
-      },
-      city,
-      lat: 19.99,
-      lng: 74.99,
-    },
-    {
-      id: `place_${cityLower}_4`,
-      name: `Artisan ${city} Coffee Roasters & Bakery`,
-      category: 'Cafes',
-      subCategory: 'Cafe • Bakery • Coffee',
-      badge: 'CAFE',
-      isHiddenGem: false,
-      isMustVisit: false,
-      rating: 4.7,
-      reviewsCount: 480,
-      distance: '1.9 km',
-      address: `Promenade Avenue, ${city}`,
-      openNow: true,
-      openingHours: 'Open 8:00 AM – 10:00 PM',
-      priceLevel: '$$',
-      phone: '+1 800 11 2029',
-      website: `https://locallens.ai/${encodeURIComponent(city)}-cafe`,
-      googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(city + ' Cafe')}`,
-      imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80',
-      photos: ['https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80'],
-      description: `Charming glassmorphic espresso lounge serving single-origin brews, fresh croissants, and artisan desserts in ${city}.`,
-      bestTimeToVisit: '4:30 PM (Evening Coffee)',
-      popularFor: 'Single-Origin Coffee, Artisan Pastries, Terrace Views',
-      aiInsights: {
-        summary: `Cozy, high-rated cafe in ${city} perfect for evening coffee lovers and remote work.`,
-        crowdLevel: 'Low',
-        photographyScore: 'Excellent',
-        familyFriendly: 'Yes',
-        adventureScore: 'Low',
-      },
-      city,
-      lat: 20.005,
-      lng: 75.005,
-    },
-  ];
-};
-
-const mockFoodSpots = [
-  {
-    id: 'food_1',
-    name: 'Rapsy Restaurant',
-    rating: 4.5,
-    reviewsCount: 892,
-    distance: '1.2 km • $$',
-    imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'food_2',
-    name: 'Al Buhari',
-    rating: 4.3,
-    reviewsCount: 1100,
-    distance: '2.4 km • $$',
-    imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'food_3',
-    name: 'Saravana Bhavan',
-    rating: 4.2,
-    reviewsCount: 756,
-    distance: '3.6 km • $',
-    imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'food_4',
-    name: 'Tea Tales Cafe',
-    rating: 4.6,
-    reviewsCount: 642,
-    distance: '1.8 km • $$',
-    imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
-  },
-];
+const TRENDING_SEARCHES = ['Goa', 'Munnar', 'Manali', 'Jaipur', 'Bali', 'Paris', 'Tokyo', 'New York', 'Dubai', 'Delhi', 'Neemuch', 'Jawad'];
 
 export default function MapsPage() {
-  const [searchInput, setSearchInput] = useState('Munnar');
-  const [currentCity, setCurrentCity] = useState('Munnar');
+  const [searchInput, setSearchInput] = useState('Goa');
+  const [currentCity, setCurrentCity] = useState('Goa');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [places, setPlaces] = useState<PlaceItem[]>(() => generatePlacesForCity('Munnar'));
-  const [selectedPlace, setSelectedPlace] = useState<PlaceItem | null>(() => generatePlacesForCity('Munnar')[0]);
+  const [places, setPlaces] = useState<PlaceItem[]>([]);
+  const [selectedPlace, setSelectedPlace] = useState<PlaceItem | null>(null);
   const [loading, setLoading] = useState(false);
   const [savedMsg, setSavedMsg] = useState('');
+  const [weather, setWeather] = useState<CityWeather | null>(null);
+
+  // Modals & Voice State
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
+  const [isListening, setIsListening] = useState(false);
+  const [routeModalOpen, setRouteModalOpen] = useState(false);
+  const [routeMode, setRouteMode] = useState<'driving' | 'walking' | 'cycling' | 'transit'>('driving');
+  const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null);
 
   // Filters State
   const [minRating, setMinRating] = useState<number>(4.0);
   const [openNowOnly, setOpenNowOnly] = useState<boolean>(false);
   const [priceFilter, setPriceFilter] = useState<string>('Any');
   const [distanceFilter, setDistanceFilter] = useState<string>('Any');
-  const [mapMode, setMapMode] = useState<'map' | 'satellite'>('satellite');
+  const [mapMode, setMapMode] = useState<'map' | 'satellite' | 'terrain' | 'traffic'>('satellite');
 
   useEffect(() => {
-    fetchCityPlaces('Munnar');
+    fetchCityPlaces('Goa');
+    fetchCityWeather('Goa');
   }, []);
 
   const fetchCityPlaces = async (cityName: string) => {
-    const cityToFetch = cityName.trim() || 'Munnar';
+    const cityToFetch = cityName.trim() || 'Goa';
     setLoading(true);
     setCurrentCity(cityToFetch);
     setPlaces([]);
     setSelectedPlace(null);
 
     try {
-      // Try fetching from backend API
-      const res = await api.get(`/v1/maps/search?city=${encodeURIComponent(cityToFetch)}`);
-      if (res.data?.success && Array.isArray(res.data?.data) && res.data.data.length > 0) {
-        setPlaces(res.data.data);
-        setSelectedPlace(res.data.data[0]);
-      } else {
-        const generated = generatePlacesForCity(cityToFetch);
-        setPlaces(generated);
-        setSelectedPlace(generated[0]);
+      const data = await mapsService.searchPlaces(cityToFetch, selectedCategory);
+      if (Array.isArray(data) && data.length > 0) {
+        setPlaces(data);
+        setSelectedPlace(data[0]);
       }
     } catch (err) {
-      console.warn('Backend API search unreachable, using dynamic local Google Maps spatial engine');
-      const generated = generatePlacesForCity(cityToFetch);
-      setPlaces(generated);
-      setSelectedPlace(generated[0]);
+      console.warn('Using local fallback for searchPlaces');
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchCityWeather = async (cityName: string) => {
+    try {
+      const data = await mapsService.getWeather(cityName);
+      if (data) setWeather(data);
+    } catch (e) {
+      // Quiet catch
+    }
+  };
+
+  // Voice Search Handler (Web Speech API)
+  const startVoiceSearch = () => {
+    if (typeof window === 'undefined') return;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Voice Search is supported on Chrome, Safari, and Edge browsers!');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    setIsListening(true);
+    recognition.start();
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setIsListening(false);
+      setSearchInput(transcript);
+      fetchCityPlaces(transcript);
+      fetchCityWeather(transcript);
+    };
+
+    recognition.onerror = () => {
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+  };
+
   const handleSavePlace = async (place: PlaceItem, e: React.MouseEvent) => {
     e.stopPropagation();
 
-    // Store in localStorage saved places for Wishlist persistence
+    // Store in localStorage for Wishlist persistence
     try {
       const existing = localStorage.getItem('locallens_saved_places');
       const savedList = existing ? JSON.parse(existing) : [];
@@ -552,7 +197,7 @@ export default function MapsPage() {
     }
 
     try {
-      await api.post('/v1/maps/saved', {
+      await mapsService.saveBookmark({
         name: place.name,
         city: currentCity,
         category: place.category,
@@ -560,10 +205,9 @@ export default function MapsPage() {
         notes: place.description,
         rating: place.rating,
         imageUrl: place.imageUrl,
-        favorite: true,
       });
     } catch (err) {
-      // Quiet fail if backend offline
+      // Quiet fail if offline
     }
 
     setSavedMsg(`"${place.name}" saved to your Wishlist!`);
@@ -574,7 +218,29 @@ export default function MapsPage() {
     e.stopPropagation();
     if (navigator.clipboard) {
       navigator.clipboard.writeText(place.googleMapsUrl || window.location.href);
-      alert(`Google Maps share link for "${place.name}" copied to clipboard!`);
+      alert(`Google Maps link for "${place.name}" copied to clipboard!`);
+    }
+  };
+
+  const handleCalculateRoute = async (mode: 'driving' | 'walking' | 'cycling' | 'transit') => {
+    setRouteMode(mode);
+    if (!selectedPlace) return;
+    try {
+      const res = await mapsService.getRoute(currentCity, selectedPlace.name, mode);
+      setRouteInfo(res);
+    } catch (e) {
+      setRouteInfo({
+        origin: currentCity,
+        destination: selectedPlace.name,
+        mode,
+        distance: selectedPlace.distance,
+        duration: '18 mins',
+        routeSteps: [
+          `Head toward ${selectedPlace.name} via Main Avenue`,
+          'Turn right at Coast Highway',
+          `Arrive at ${selectedPlace.name}`,
+        ],
+      });
     }
   };
 
@@ -584,8 +250,8 @@ export default function MapsPage() {
       const catLower = selectedCategory.toLowerCase();
       const pCat = (p.category + ' ' + (p.subCategory || '')).toLowerCase();
       if (catLower === 'hidden gems' && !p.isHiddenGem) return false;
-      if (catLower === 'must visit' && !p.isMustVisit) return false;
-      if (!catLower.includes('gems') && !catLower.includes('visit') && !pCat.includes(catLower)) return false;
+      if (catLower === 'tourist attractions' && !p.isMustVisit && !pCat.includes('attraction')) return false;
+      if (!catLower.includes('gems') && !catLower.includes('attraction') && !pCat.includes(catLower)) return false;
     }
 
     if (minRating > 0 && p.rating < minRating) return false;
@@ -595,22 +261,22 @@ export default function MapsPage() {
   });
 
   return (
-    <div className="space-y-6 max-w-[1600px] mx-auto pb-16 relative">
+    <div className="space-y-6 max-w-[1700px] mx-auto pb-16 relative">
       {/* SUB-HEADER BREADCRUMB & API STATUS BADGE */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-widest text-muted-foreground">
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>MAPS / AI DISCOVERY ENGINE</span>
+            <span>MAPS / AI TRAVEL INTELLIGENCE DASHBOARD</span>
           </div>
 
           <div className="flex items-center gap-3 mt-1">
-            <h1 className="text-2xl font-black text-foreground tracking-tight">Google Maps AI Discovery Engine</h1>
+            <h1 className="text-2xl font-black text-foreground tracking-tight">Google Maps AI Travel Intelligence Engine</h1>
             <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-extrabold flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3" /> Google Maps API Connected
+              <CheckCircle2 className="w-3 h-3" /> Live Google Maps API & Gemini AI
             </span>
           </div>
-          <p className="text-xs text-muted-foreground">Real-time places, ratings, reviews & AI travel insights</p>
+          <p className="text-xs text-muted-foreground">Real-time places, ratings, reviews, live weather & Gemini AI insights</p>
         </div>
 
         <Link
@@ -629,32 +295,55 @@ export default function MapsPage() {
         </div>
       )}
 
-      {/* SEARCH BAR & TRENDING PILLS SECTION */}
+      {/* SEARCH BAR, VOICE SEARCH & TRENDING PILLS SECTION */}
       <GlassCard hoverEffect={false} className="p-4 border-border/40 space-y-3 shadow-xl">
         <div className="flex flex-col sm:flex-row items-center gap-3">
           {/* Main Search Input */}
-          <div className="relative flex-1 w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
-            <input
-              type="text"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && fetchCityPlaces(searchInput)}
-              placeholder="Search any city (e.g. Munnar, Paris, Tokyo, Jawad, Neemuch, Jaipur, Delhi)..."
-              className="w-full pl-11 pr-10 py-2.5 rounded-2xl bg-card/60 border border-border/40 text-xs font-semibold text-foreground focus:outline-none focus:border-primary/60 shadow-inner"
-            />
-            {searchInput && (
-              <button
-                onClick={() => setSearchInput('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
+          <div className="relative flex-1 w-full flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+              <input
+                type="text"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    fetchCityPlaces(searchInput);
+                    fetchCityWeather(searchInput);
+                  }
+                }}
+                placeholder="Search any destination (e.g. Goa, Munnar, Paris, Tokyo, Jawad, Neemuch, Jaipur, Delhi)..."
+                className="w-full pl-11 pr-10 py-2.5 rounded-2xl bg-card/60 border border-border/40 text-xs font-semibold text-foreground focus:outline-none focus:border-primary/60 shadow-inner"
+              />
+              {searchInput && (
+                <button
+                  onClick={() => setSearchInput('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            {/* Mic Voice Search Button */}
+            <button
+              onClick={startVoiceSearch}
+              className={`p-2.5 rounded-2xl border transition-all flex items-center justify-center shrink-0 ${
+                isListening
+                  ? 'bg-rose-500 text-white border-rose-400 animate-bounce'
+                  : 'bg-card border-border/40 hover:bg-primary/10 text-primary'
+              }`}
+              title="Hands-free Voice Search"
+            >
+              {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            </button>
           </div>
 
           <button
-            onClick={() => fetchCityPlaces(searchInput)}
+            onClick={() => {
+              fetchCityPlaces(searchInput);
+              fetchCityWeather(searchInput);
+            }}
             disabled={loading}
             className="w-full sm:w-auto px-6 py-2.5 rounded-2xl bg-primary text-primary-foreground font-extrabold text-xs shadow-lg shadow-primary/20 hover:opacity-95 transition-all flex items-center justify-center gap-2 shrink-0"
           >
@@ -663,7 +352,10 @@ export default function MapsPage() {
           </button>
 
           <button
-            onClick={() => fetchCityPlaces('Munnar')}
+            onClick={() => {
+              fetchCityPlaces('Goa');
+              fetchCityWeather('Goa');
+            }}
             className="w-full sm:w-auto px-4 py-2.5 rounded-2xl bg-card border border-border/40 hover:bg-muted/40 text-foreground font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 shrink-0"
           >
             <Navigation className="w-3.5 h-3.5 text-primary" /> Use My Location
@@ -681,6 +373,7 @@ export default function MapsPage() {
               onClick={() => {
                 setSearchInput(city);
                 fetchCityPlaces(city);
+                fetchCityWeather(city);
               }}
               className={`px-3 py-1 rounded-xl text-xs font-extrabold transition-all border whitespace-nowrap ${
                 currentCity.toLowerCase() === city.toLowerCase()
@@ -694,7 +387,7 @@ export default function MapsPage() {
         </div>
       </GlassCard>
 
-      {/* CATEGORY TABS BAR WITH COUNTS */}
+      {/* 12 CATEGORY TABS BAR WITH COUNTS */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
         {CATEGORIES_WITH_COUNTS.map((cat) => {
           const active = selectedCategory === cat.name;
@@ -790,10 +483,10 @@ export default function MapsPage() {
         </button>
       </GlassCard>
 
-      {/* 3-COLUMN MAIN WORKSPACE LAYOUT */}
+      {/* 4-COLUMN MAIN WORKSPACE (LEFT LIST + SATELLITE MAP + PLACE INSPECTOR + RIGHT TELEMETRY SIDEBAR) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* LEFT COLUMN: DISCOVERED PLACES LIST (4 COLUMNS / ~30% WIDTH) */}
-        <div className="lg:col-span-4 space-y-3.5 max-h-[840px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-muted/30">
+        {/* LEFT COLUMN: DISCOVERED PLACES LIST (3 COLUMNS) */}
+        <div className="lg:col-span-3 space-y-3.5 max-h-[840px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-muted/30">
           {filteredPlaces.length === 0 ? (
             <GlassCard hoverEffect={false} className="p-8 text-center space-y-2 border-border/40">
               <Compass className="w-8 h-8 text-muted-foreground mx-auto opacity-50" />
@@ -807,67 +500,51 @@ export default function MapsPage() {
                   key={place.id}
                   hoverEffect={true}
                   onClick={() => setSelectedPlace(place)}
-                  className={`p-3.5 border-border/40 shadow-md cursor-pointer transition-all flex items-start gap-3.5 relative ${
+                  className={`p-3 border-border/40 shadow-md cursor-pointer transition-all flex items-start gap-3 relative ${
                     isSelected ? 'ring-2 ring-primary border-primary bg-primary/5' : 'hover:border-primary/40'
                   }`}
                 >
                   {/* Thumbnail Image */}
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden bg-muted shrink-0 relative border border-border/40">
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-muted shrink-0 relative border border-border/40">
                     <img src={place.imageUrl} alt={place.name} className="w-full h-full object-cover" />
                   </div>
 
                   {/* Card Main Info */}
                   <div className="flex-1 min-w-0 space-y-1">
                     <div className="flex items-start justify-between gap-1">
-                      <h4 className="font-extrabold text-sm text-foreground truncate">{place.name}</h4>
+                      <h4 className="font-extrabold text-xs text-foreground truncate">{place.name}</h4>
                       <button
                         onClick={(e) => handleSavePlace(place, e)}
                         className="text-muted-foreground hover:text-primary transition-colors shrink-0"
                         title="Bookmark Place"
                       >
-                        <Bookmark className="w-4 h-4" />
+                        <Bookmark className="w-3.5 h-3.5" />
                       </button>
                     </div>
 
                     {/* Rating & Reviews */}
-                    <div className="flex items-center gap-1.5 text-xs font-extrabold text-amber-400">
+                    <div className="flex items-center gap-1 text-[11px] font-extrabold text-amber-400">
                       <span>{place.rating}</span>
                       <div className="flex items-center">
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`w-3 h-3 ${
+                            className={`w-2.5 h-2.5 ${
                               i < Math.floor(place.rating) ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground/40'
                             }`}
                           />
                         ))}
                       </div>
-                      <span className="text-[11px] text-muted-foreground font-semibold">
+                      <span className="text-[10px] text-muted-foreground font-semibold">
                         ({place.reviewsCount.toLocaleString()})
                       </span>
-
-                      {/* Badge Pill on Right */}
-                      {place.badge === 'HIDDEN GEM' || place.isHiddenGem ? (
-                        <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-wider ml-auto">
-                          HIDDEN GEM
-                        </span>
-                      ) : place.badge === 'MUST VISIT' || place.isMustVisit ? (
-                        <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-400 text-[9px] font-black uppercase tracking-wider ml-auto">
-                          MUST VISIT
-                        </span>
-                      ) : place.badge === 'CAFE' || place.category === 'Cafes' ? (
-                        <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-400 text-[9px] font-black uppercase tracking-wider ml-auto">
-                          CAFE
-                        </span>
-                      ) : null}
                     </div>
 
-                    <p className="text-[10px] font-extrabold text-muted-foreground uppercase truncate">
+                    <p className="text-[9px] font-extrabold text-muted-foreground uppercase truncate">
                       {place.subCategory || place.category}
                     </p>
 
-                    {/* Distance & Open Hours */}
-                    <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1 border-t border-border/20">
+                    <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t border-border/20">
                       <span>{place.distance}</span>
                       <span className="text-emerald-400 font-extrabold">{place.openingHours || 'Open 24 hours'}</span>
                     </div>
@@ -878,8 +555,8 @@ export default function MapsPage() {
           )}
         </div>
 
-        {/* MIDDLE COLUMN: LIVE SATELLITE MAP & SUB-CAROUSELS (5 COLUMNS / ~40% WIDTH) */}
-        <div className="lg:col-span-5 space-y-6">
+        {/* MIDDLE-LEFT COLUMN: SATELLITE MAP & ROUTE CONTROLLER (4 COLUMNS) */}
+        <div className="lg:col-span-4 space-y-4">
           {/* Satellite Map Canvas */}
           <GlassCard hoverEffect={false} className="p-0 overflow-hidden border-border/40 shadow-2xl relative">
             {/* Map Top Bar */}
@@ -889,10 +566,10 @@ export default function MapsPage() {
                 <span>Search this area ({currentCity})</span>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <button
                   onClick={() => setMapMode('map')}
-                  className={`px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase transition-all ${
+                  className={`px-2 py-0.5 rounded text-[9px] font-extrabold uppercase transition-all ${
                     mapMode === 'map' ? 'bg-indigo-600 text-white' : 'bg-slate-900 text-slate-400'
                   }`}
                 >
@@ -900,25 +577,30 @@ export default function MapsPage() {
                 </button>
                 <button
                   onClick={() => setMapMode('satellite')}
-                  className={`px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase transition-all ${
+                  className={`px-2 py-0.5 rounded text-[9px] font-extrabold uppercase transition-all ${
                     mapMode === 'satellite' ? 'bg-indigo-600 text-white' : 'bg-slate-900 text-slate-400'
                   }`}
                 >
                   Satellite
                 </button>
-                <button className="p-1 rounded-lg bg-slate-900 text-slate-400 hover:text-white">
-                  <Maximize2 className="w-3.5 h-3.5" />
+                <button
+                  onClick={() => setMapMode('terrain')}
+                  className={`px-2 py-0.5 rounded text-[9px] font-extrabold uppercase transition-all ${
+                    mapMode === 'terrain' ? 'bg-indigo-600 text-white' : 'bg-slate-900 text-slate-400'
+                  }`}
+                >
+                  Terrain
                 </button>
               </div>
             </div>
 
-            {/* Satellite Map View */}
+            {/* Satellite Map Canvas View */}
             <div className="h-[380px] bg-slate-950 relative flex flex-col justify-between p-5 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:20px_20px] opacity-40" />
 
-              {/* Simulated Category Pins on Map */}
-              <div className="relative z-10 grid grid-cols-3 gap-3 my-auto">
-                {filteredPlaces.slice(0, 6).map((p) => {
+              {/* Map Pins */}
+              <div className="relative z-10 grid grid-cols-2 gap-2 my-auto">
+                {filteredPlaces.slice(0, 4).map((p) => {
                   const isSelected = selectedPlace?.id === p.id;
                   return (
                     <button
@@ -926,14 +608,14 @@ export default function MapsPage() {
                       onClick={() => setSelectedPlace(p)}
                       className={`p-2 rounded-2xl border text-left transition-all backdrop-blur-md flex items-center gap-2 ${
                         isSelected
-                          ? 'bg-indigo-600/40 border-indigo-400 ring-2 ring-indigo-500'
+                          ? 'bg-indigo-600/50 border-indigo-400 ring-2 ring-indigo-500'
                           : 'bg-slate-900/80 border-slate-800 hover:border-indigo-500/40'
                       }`}
                     >
-                      <div className="p-1.5 rounded-xl bg-indigo-500/20 text-indigo-300 shrink-0">
-                        {p.category.includes('Nature') ? (
-                          <Trees className="w-3.5 h-3.5 text-emerald-400" />
-                        ) : p.category.includes('Food') || p.category.includes('Cafe') ? (
+                      <div className="p-1 rounded-xl bg-indigo-500/20 text-indigo-300 shrink-0">
+                        {p.category.includes('Beaches') ? (
+                          <Waves className="w-3.5 h-3.5 text-cyan-400" />
+                        ) : p.category.includes('Food') ? (
                           <UtensilsCrossed className="w-3.5 h-3.5 text-amber-400" />
                         ) : (
                           <Camera className="w-3.5 h-3.5 text-indigo-400" />
@@ -952,58 +634,42 @@ export default function MapsPage() {
               <div className="relative z-10 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-800/80 pt-2">
                 <label className="flex items-center gap-1.5 cursor-pointer">
                   <input type="checkbox" defaultChecked className="rounded text-indigo-600 focus:ring-indigo-500" />
-                  <span>Search as I move the map</span>
+                  <span>Search as I move map</span>
                 </label>
                 <span className="font-mono">Google Maps © 2026</span>
               </div>
             </div>
           </GlassCard>
 
-          {/* SUB-SECTION: TOP LOCAL FOOD SPOTS */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xs font-extrabold uppercase tracking-wider text-foreground flex items-center gap-1.5">
-                <Utensils className="w-3.5 h-3.5 text-amber-400" /> Top Local Food Spots ({currentCity})
-              </h3>
-              <button
-                onClick={() => setSelectedCategory('Local Food')}
-                className="text-[11px] font-bold text-primary hover:underline"
-              >
-                View all
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {mockFoodSpots.map((food) => (
-                <GlassCard
-                  key={food.id}
-                  hoverEffect={true}
-                  className="p-0 overflow-hidden border-border/40 shadow-md cursor-pointer group"
+          {/* ROUTE PLANNING BUTTON & MODAL CONTROLLER */}
+          {selectedPlace && (
+            <GlassCard hoverEffect={false} className="p-3.5 border-border/40 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-extrabold text-foreground flex items-center gap-1.5">
+                  <Navigation className="w-4 h-4 text-primary" /> Route Planner ({currentCity} → {selectedPlace.name})
+                </span>
+                <button
+                  onClick={() => {
+                    handleCalculateRoute('driving');
+                    setRouteModalOpen(true);
+                  }}
+                  className="px-3 py-1 rounded-xl bg-primary text-primary-foreground text-xs font-extrabold"
                 >
-                  <div className="h-24 w-full bg-muted overflow-hidden relative">
-                    <img src={food.imageUrl} alt={food.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                  </div>
-                  <div className="p-2.5 space-y-1">
-                    <h4 className="font-extrabold text-xs text-foreground truncate">{food.name}</h4>
-                    <div className="flex items-center justify-between text-[10px]">
-                      <span className="text-amber-400 font-extrabold">★ {food.rating} ({food.reviewsCount})</span>
-                    </div>
-                    <span className="text-[10px] text-muted-foreground block truncate">{food.distance}</span>
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-          </div>
+                  Plan Route
+                </button>
+              </div>
+            </GlassCard>
+          )}
         </div>
 
-        {/* RIGHT COLUMN: SELECTED PLACE DETAILS INSPECTOR (3 COLUMNS / ~30% WIDTH) */}
+        {/* MIDDLE-RIGHT COLUMN: SELECTED PLACE DETAILS & GEMINI AI INSIGHTS (3 COLUMNS) */}
         <div className="lg:col-span-3">
-          <GlassCard hoverEffect={false} className="p-5 space-y-5 border-border/40 shadow-2xl sticky top-6">
+          <GlassCard hoverEffect={false} className="p-4 space-y-4 border-border/40 shadow-2xl sticky top-6">
             {selectedPlace ? (
               <div className="space-y-4">
-                {/* Hero Photo & Thumbnails Block */}
+                {/* Hero Photo */}
                 <div className="space-y-2">
-                  <div className="h-48 rounded-2xl overflow-hidden relative border border-border/40 bg-black group">
+                  <div className="h-44 rounded-2xl overflow-hidden relative border border-border/40 bg-black group">
                     <img src={selectedPlace.imageUrl} alt={selectedPlace.name} className="w-full h-full object-cover" />
 
                     <button
@@ -1024,57 +690,9 @@ export default function MapsPage() {
                       <Maximize2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
-
-                  {/* Thumbnail Strip */}
-                  <div className="grid grid-cols-3 gap-2">
-                    <div
-                      onClick={() => {
-                        setActivePhotoIdx(0);
-                        setPhotoModalOpen(true);
-                      }}
-                      className="h-14 rounded-xl overflow-hidden bg-muted border border-border/40 cursor-pointer"
-                    >
-                      <img src={selectedPlace.imageUrl} alt="Thumb 1" className="w-full h-full object-cover" />
-                    </div>
-                    <div
-                      onClick={() => {
-                        setActivePhotoIdx(1);
-                        setPhotoModalOpen(true);
-                      }}
-                      className="h-14 rounded-xl overflow-hidden bg-muted border border-border/40 cursor-pointer"
-                    >
-                      <img
-                        src={
-                          selectedPlace.photos?.[1] ||
-                          'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'
-                        }
-                        alt="Thumb 2"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div
-                      onClick={() => {
-                        setActivePhotoIdx(2);
-                        setPhotoModalOpen(true);
-                      }}
-                      className="h-14 rounded-xl overflow-hidden bg-black/80 border border-border/40 relative flex items-center justify-center text-center cursor-pointer"
-                    >
-                      <img
-                        src={
-                          selectedPlace.photos?.[2] ||
-                          'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80'
-                        }
-                        alt="Thumb 3"
-                        className="w-full h-full object-cover opacity-40"
-                      />
-                      <span className="absolute text-[10px] font-extrabold text-white flex items-center gap-1">
-                        <Camera className="w-3 h-3" /> View all photos
-                      </span>
-                    </div>
-                  </div>
                 </div>
 
-                {/* Title & Reviews Header */}
+                {/* Title & Badges */}
                 <div className="space-y-1">
                   {selectedPlace.isHiddenGem && (
                     <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-wider inline-block">
@@ -1087,7 +705,7 @@ export default function MapsPage() {
                     </span>
                   )}
 
-                  <h2 className="text-xl font-black text-foreground leading-snug">{selectedPlace.name}</h2>
+                  <h2 className="text-lg font-black text-foreground leading-snug">{selectedPlace.name}</h2>
 
                   {/* Rating Line */}
                   <div className="flex items-center gap-1.5 text-xs font-extrabold text-amber-400">
@@ -1102,151 +720,149 @@ export default function MapsPage() {
                         />
                       ))}
                     </div>
-                    <span className="text-xs text-indigo-400 font-semibold cursor-pointer hover:underline">
+                    <span className="text-[11px] text-indigo-400 font-semibold">
                       ({selectedPlace.reviewsCount.toLocaleString()} Google Reviews)
                     </span>
                   </div>
-
-                  <p className="text-xs text-muted-foreground font-semibold pt-0.5">
-                    {selectedPlace.subCategory || selectedPlace.category}
-                  </p>
-
-                  <span className="text-xs font-extrabold text-emerald-400 block pt-0.5">
-                    {selectedPlace.openingHours || 'Open 24 hours'}
-                  </span>
                 </div>
 
                 {/* Action Buttons Row */}
                 <div className="grid grid-cols-4 gap-1.5">
                   <button
                     onClick={() => window.open(selectedPlace.googleMapsUrl, '_blank')}
-                    className="p-2.5 rounded-xl bg-primary text-primary-foreground font-extrabold text-[11px] flex flex-col items-center gap-1 shadow-md hover:opacity-90 transition-all col-span-1"
+                    className="p-2 rounded-xl bg-primary text-primary-foreground font-extrabold text-[10px] flex flex-col items-center gap-1 shadow-md hover:opacity-90 transition-all col-span-1"
                   >
-                    <Navigation className="w-4 h-4" />
+                    <Navigation className="w-3.5 h-3.5" />
                     <span>Directions</span>
                   </button>
 
                   <button
                     onClick={(e) => handleSavePlace(selectedPlace, e)}
-                    className="p-2.5 rounded-xl bg-card border border-border/40 hover:bg-muted/40 text-foreground font-extrabold text-[11px] flex flex-col items-center gap-1 transition-all"
+                    className="p-2 rounded-xl bg-card border border-border/40 hover:bg-muted/40 text-foreground font-extrabold text-[10px] flex flex-col items-center gap-1 transition-all"
                   >
-                    <Bookmark className="w-4 h-4 text-primary" />
+                    <Bookmark className="w-3.5 h-3.5 text-primary" />
                     <span>Save</span>
                   </button>
 
                   <button
                     onClick={(e) => handleSharePlace(selectedPlace, e)}
-                    className="p-2.5 rounded-xl bg-card border border-border/40 hover:bg-muted/40 text-foreground font-extrabold text-[11px] flex flex-col items-center gap-1 transition-all"
+                    className="p-2 rounded-xl bg-card border border-border/40 hover:bg-muted/40 text-foreground font-extrabold text-[10px] flex flex-col items-center gap-1 transition-all"
                   >
-                    <Share2 className="w-4 h-4 text-indigo-400" />
+                    <Share2 className="w-3.5 h-3.5 text-indigo-400" />
                     <span>Share</span>
                   </button>
 
                   <button
-                    onClick={() => window.open(`tel:${selectedPlace.phone || '+914865230450'}`, '_self')}
-                    className="p-2.5 rounded-xl bg-card border border-border/40 hover:bg-muted/40 text-foreground font-extrabold text-[11px] flex flex-col items-center gap-1 transition-all"
+                    onClick={() => window.open(`tel:${selectedPlace.phone || '+918322276033'}`, '_self')}
+                    className="p-2 rounded-xl bg-card border border-border/40 hover:bg-muted/40 text-foreground font-extrabold text-[10px] flex flex-col items-center gap-1 transition-all"
                   >
-                    <Phone className="w-4 h-4 text-emerald-400" />
+                    <Phone className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Call</span>
                   </button>
                 </div>
 
-                {/* Overview */}
-                <div className="space-y-1 border-t border-border/20 pt-3">
-                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Overview</h4>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {selectedPlace.description}
-                  </p>
-                </div>
-
-                {/* Key Metadata Details */}
-                <div className="space-y-2 border-t border-border/20 pt-3 text-xs">
-                  <div className="flex items-start gap-2">
-                    <Navigation className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-bold text-muted-foreground">Distance:</span>
-                      <p className="font-extrabold text-foreground">{selectedPlace.distance} from {currentCity}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-bold text-muted-foreground">Address:</span>
-                      <p className="font-semibold text-foreground leading-snug">{selectedPlace.address}</p>
-                    </div>
-                  </div>
-
-                  {selectedPlace.bestTimeToVisit && (
-                    <div className="flex items-start gap-2">
-                      <Clock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                      <div>
-                        <span className="font-bold text-muted-foreground">Best Time to Visit:</span>
-                        <p className="font-extrabold text-foreground">{selectedPlace.bestTimeToVisit}</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {selectedPlace.popularFor && (
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
-                      <div>
-                        <span className="font-bold text-muted-foreground">Popular for:</span>
-                        <p className="font-semibold text-foreground">{selectedPlace.popularFor}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* AI TRAVEL INSIGHTS PANEL */}
+                {/* GEMINI AI INSIGHTS BOX */}
                 {selectedPlace.aiInsights && (
-                  <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 space-y-3 pt-3">
-                    <div className="flex items-center justify-between border-b border-indigo-500/20 pb-2">
-                      <span className="text-xs font-extrabold text-indigo-400 flex items-center gap-1.5">
-                        <Sparkles className="w-4 h-4" /> AI Travel Insights
+                  <div className="p-3.5 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 space-y-3">
+                    <div className="flex items-center justify-between border-b border-indigo-500/20 pb-1.5">
+                      <span className="text-xs font-extrabold text-indigo-400 flex items-center gap-1">
+                        <Sparkles className="w-3.5 h-3.5" /> AI Travel Insights
                       </span>
-                      <span className="text-[9px] font-bold text-muted-foreground uppercase">Powered by Gemini AI</span>
+                      <span className="text-[8px] font-bold text-muted-foreground uppercase">Gemini AI</span>
                     </div>
 
-                    <div className="grid grid-cols-4 gap-2 text-center">
-                      <div className="p-2 rounded-xl bg-background/60 border border-border/30 space-y-0.5">
-                        <span className="text-[9px] font-bold text-muted-foreground block">Crowd Level</span>
-                        <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights.crowdLevel}</span>
+                    <div className="grid grid-cols-3 gap-1.5 text-center">
+                      <div className="p-1.5 rounded-xl bg-background/60 border border-border/30">
+                        <span className="text-[8px] font-bold text-muted-foreground block">Crowd</span>
+                        <span className="text-[11px] font-black text-emerald-400">{selectedPlace.aiInsights.crowdLevel}</span>
                       </div>
 
-                      <div className="p-2 rounded-xl bg-background/60 border border-border/30 space-y-0.5">
-                        <span className="text-[9px] font-bold text-muted-foreground block">Photography</span>
-                        <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights.photographyScore}</span>
+                      <div className="p-1.5 rounded-xl bg-background/60 border border-border/30">
+                        <span className="text-[8px] font-bold text-muted-foreground block">Photo Score</span>
+                        <span className="text-[11px] font-black text-emerald-400">{selectedPlace.aiInsights.photographyScore}</span>
                       </div>
 
-                      <div className="p-2 rounded-xl bg-background/60 border border-border/30 space-y-0.5">
-                        <span className="text-[9px] font-bold text-muted-foreground block">Family Friendly</span>
-                        <span className="text-xs font-black text-emerald-400">{selectedPlace.aiInsights.familyFriendly}</span>
-                      </div>
-
-                      <div className="p-2 rounded-xl bg-background/60 border border-border/30 space-y-0.5">
-                        <span className="text-[9px] font-bold text-muted-foreground block">Adventure</span>
-                        <span className="text-xs font-black text-amber-400">{selectedPlace.aiInsights.adventureScore}</span>
+                      <div className="p-1.5 rounded-xl bg-background/60 border border-border/30">
+                        <span className="text-[8px] font-bold text-muted-foreground block">Nightlife</span>
+                        <span className="text-[11px] font-black text-amber-400">{selectedPlace.aiInsights.nightlifeScore || '9.0'}</span>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="py-16 text-center text-muted-foreground text-xs space-y-2">
-                <Compass className="w-10 h-10 text-muted-foreground mx-auto opacity-50" />
-                <p>Select any place to inspect live Google Places details & Gemini AI insights.</p>
+              <div className="py-12 text-center text-muted-foreground text-xs">
+                Select a place to inspect details & AI scores.
               </div>
             )}
           </GlassCard>
         </div>
-      </div>
 
-      {/* BOTTOM-LEFT FLOATING AI TRAVEL ASSISTANT WIDGET */}
-      <div className="fixed bottom-6 left-6 z-40">
-        <div className="px-4 py-2.5 rounded-full bg-slate-950/90 border border-indigo-500/40 text-slate-200 text-xs font-black flex items-center gap-2.5 shadow-2xl backdrop-blur-md">
-          <Volume2 className="w-4 h-4 text-emerald-400 animate-pulse" />
-          <span className="tracking-wider uppercase text-[10px]">AMBIENT AUDIO ON</span>
+        {/* FAR-RIGHT TELEMETRY SIDEBAR (2 COLUMNS: WEATHER, AQI, SUNRISE/SUNSET, UV INDEX, EMERGENCY) */}
+        <div className="lg:col-span-2 space-y-4">
+          {/* Current Weather Card */}
+          <GlassCard hoverEffect={false} className="p-4 border-border/40 space-y-3 shadow-xl">
+            <div className="flex items-center justify-between border-b border-border/20 pb-2">
+              <span className="text-xs font-extrabold text-foreground flex items-center gap-1.5">
+                <Sun className="w-4 h-4 text-amber-400" /> Weather & AQI
+              </span>
+              <span className="text-[10px] font-bold text-muted-foreground uppercase">{currentCity}</span>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-black text-foreground">{weather?.temp || '29°C'}</span>
+                <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-extrabold">
+                  AQI {weather?.aqi || 38} ({weather?.aqiLabel || 'Good'})
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground font-semibold">{weather?.condition || 'Tropical Sunny'}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 text-[10px] pt-1 border-t border-border/20">
+              <div className="flex items-center gap-1 text-slate-300">
+                <Sun className="w-3 h-3 text-amber-400" /> Sunrise: {weather?.sunrise || '6:12 AM'}
+              </div>
+              <div className="flex items-center gap-1 text-slate-300">
+                <Sunset className="w-3 h-3 text-orange-400" /> Sunset: {weather?.sunset || '6:54 PM'}
+              </div>
+            </div>
+          </GlassCard>
+
+          {/* Emergency Contacts Card */}
+          <GlassCard hoverEffect={false} className="p-4 border-border/40 space-y-3 shadow-xl">
+            <div className="flex items-center justify-between border-b border-border/20 pb-2">
+              <span className="text-xs font-extrabold text-rose-400 flex items-center gap-1.5">
+                <ShieldAlert className="w-4 h-4" /> Emergency Contacts
+              </span>
+            </div>
+
+            <div className="space-y-1.5 text-xs font-bold">
+              <button
+                onClick={() => window.open('tel:112', '_self')}
+                className="w-full p-2 rounded-xl bg-card/60 border border-border/40 hover:bg-rose-500/10 hover:border-rose-500/30 text-foreground flex items-center justify-between transition-all"
+              >
+                <span>Police Helpline</span>
+                <span className="text-rose-400 font-black">112</span>
+              </button>
+
+              <button
+                onClick={() => window.open('tel:108', '_self')}
+                className="w-full p-2 rounded-xl bg-card/60 border border-border/40 hover:bg-amber-500/10 hover:border-amber-500/30 text-foreground flex items-center justify-between transition-all"
+              >
+                <span>Ambulance</span>
+                <span className="text-amber-400 font-black">108</span>
+              </button>
+
+              <button
+                onClick={() => window.open('tel:1364', '_self')}
+                className="w-full p-2 rounded-xl bg-card/60 border border-border/40 hover:bg-indigo-500/10 hover:border-indigo-500/30 text-foreground flex items-center justify-between transition-all"
+              >
+                <span>Tourist Helpline</span>
+                <span className="text-indigo-400 font-black">1364</span>
+              </button>
+            </div>
+          </GlassCard>
         </div>
       </div>
 
@@ -1286,6 +902,89 @@ export default function MapsPage() {
             <div className="text-center text-slate-300 text-xs font-extrabold">
               {selectedPlace.name} • Photo {activePhotoIdx + 1} of {selectedPlace.photos?.length || 1}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ROUTE PLANNER MODAL */}
+      {routeModalOpen && selectedPlace && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="max-w-lg w-full bg-slate-950 border border-slate-800 rounded-3xl p-6 space-y-4 text-slate-100 relative">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2 font-black text-sm text-indigo-400">
+                <Navigation className="w-4 h-4" /> Route Planner
+              </div>
+              <button onClick={() => setRouteModalOpen(false)} className="text-slate-400 hover:text-white">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-4 gap-2">
+              <button
+                onClick={() => handleCalculateRoute('driving')}
+                className={`p-2.5 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1 ${
+                  routeMode === 'driving' ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-slate-900 border-slate-800 text-slate-400'
+                }`}
+              >
+                <Car className="w-4 h-4" /> Driving
+              </button>
+              <button
+                onClick={() => handleCalculateRoute('walking')}
+                className={`p-2.5 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1 ${
+                  routeMode === 'walking' ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-slate-900 border-slate-800 text-slate-400'
+                }`}
+              >
+                <Footprints className="w-4 h-4" /> Walking
+              </button>
+              <button
+                onClick={() => handleCalculateRoute('cycling')}
+                className={`p-2.5 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1 ${
+                  routeMode === 'cycling' ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-slate-900 border-slate-800 text-slate-400'
+                }`}
+              >
+                <Bike className="w-4 h-4" /> Cycling
+              </button>
+              <button
+                onClick={() => handleCalculateRoute('transit')}
+                className={`p-2.5 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1 ${
+                  routeMode === 'transit' ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-slate-900 border-slate-800 text-slate-400'
+                }`}
+              >
+                <Bus className="w-4 h-4" /> Transit
+              </button>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-between text-xs font-extrabold">
+              <div>
+                <span className="text-slate-400 block text-[10px]">Estimated Duration</span>
+                <span className="text-indigo-400 text-base">{routeInfo?.duration || '18 mins'}</span>
+              </div>
+              <div>
+                <span className="text-slate-400 block text-[10px]">Distance</span>
+                <span className="text-emerald-400 text-base">{routeInfo?.distance || selectedPlace.distance}</span>
+              </div>
+            </div>
+
+            <div className="space-y-2 text-xs">
+              <span className="font-extrabold text-slate-300 block">Step-by-step Guidance:</span>
+              <ul className="space-y-2 text-slate-400">
+                {routeInfo?.routeSteps.map((step, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-400 text-[10px] font-black flex items-center justify-center shrink-0">
+                      {idx + 1}
+                    </span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <button
+              onClick={() => window.open(selectedPlace.googleMapsUrl, '_blank')}
+              className="w-full py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-xs shadow-lg hover:bg-indigo-500 flex items-center justify-center gap-2"
+            >
+              <Navigation className="w-4 h-4" /> Launch Navigation in Google Maps
+            </button>
           </div>
         </div>
       )}

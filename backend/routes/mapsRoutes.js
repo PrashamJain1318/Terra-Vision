@@ -1,34 +1,33 @@
 import express from 'express';
 import mapsController from '../controllers/mapsController.js';
-import { validateRouteGeneration, validateNearbyQuery } from '../validators/mapsValidator.js';
-import mapsRateLimiter from '../middleware/mapsRateLimiter.js';
 
 const router = express.Router();
 
-// Current location
-router.get('/current-location', mapsController.getCurrentLocation);
+// GET /api/v1/maps/search?city=Goa
+router.get('/search', mapsController.searchPlaces);
 
-// Search places
-router.get('/search', mapsRateLimiter, mapsController.search);
+// GET /api/v1/maps/place/:placeId
+router.get('/place/:placeId', mapsController.getPlaceDetails);
 
-// Place details & photos
-router.get('/place/:placeId', mapsController.getPlaceById);
-router.get('/photos/:id', mapsController.getPhotosById);
+// GET /api/v1/maps/hidden-gems?city=Goa
+router.get('/hidden-gems', mapsController.getHiddenGems);
 
-// Nearby places
-router.get('/nearby', validateNearbyQuery, mapsController.getNearby);
+// GET /api/v1/maps/restaurants?city=Goa
+router.get('/restaurants', mapsController.getRestaurants);
 
-// Route generation
-router.post('/route', mapsRateLimiter, validateRouteGeneration, mapsController.generateRoute);
+// GET /api/v1/maps/weather?city=Goa
+router.get('/weather', mapsController.getWeather);
 
-// Saved Places APIs
-router.post('/save-place', mapsController.savePlace);
-router.post('/saved', mapsController.savePlace);
-router.get('/saved', mapsController.getSavedPlaces);
-router.put('/saved/:id', mapsController.updateSavedPlace);
-router.delete('/saved/:id', mapsController.deleteSavedPlace);
+// GET /api/v1/maps/route?origin=...&destination=...&mode=...
+router.get('/route', mapsController.getRoute);
 
-// Route History
-router.get('/history', mapsController.getRouteHistory);
+// POST /api/v1/maps/bookmark
+router.post('/bookmark', mapsController.saveBookmark);
+
+// DELETE /api/v1/maps/bookmark/:id
+router.delete('/bookmark/:id', mapsController.deleteBookmark);
+
+// Backward compatibility alias for saved places
+router.post('/saved', mapsController.saveBookmark);
 
 export default router;
