@@ -2,65 +2,71 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    --background: 43 27% 93%; /* Warm Ivory #F3F0E8 */
+    --foreground: 135 15% 8%; /* Deep Ink #111713 */
     
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
- 
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
- 
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 20% 98%;
- 
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
- 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
- 
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
- 
+    --card: 43 25% 96%;
+    --card-foreground: 135 15% 8%;
+
+    --popover: 43 25% 96%;
+    --popover-foreground: 135 15% 8%;
+
+    --primary: 157 35% 22%; /* Alpine Green #244B3C */
+    --primary-foreground: 43 27% 96%;
+
+    --secondary: 100 11% 47%; /* Moss #73856B */
+    --secondary-foreground: 43 27% 96%;
+
+    --muted: 43 15% 88%;
+    --muted-foreground: 135 10% 35%;
+
+    --accent: 17 51% 54%; /* Clay #C76D4C */
+    --accent-foreground: 43 27% 96%;
+
+    --glacier: 184 24% 68%; /* Glacier Blue #9BBFC1 */
+    --sand: 40 37% 77%; /* Sand #D9CBAF */
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 262.1 83.3% 57.8%;
- 
-    --radius: 0.75rem;
+    --border: 43 15% 82%;
+    --input: 43 15% 82%;
+    --ring: 157 35% 22%;
+
+    --radius: 1rem;
   }
- 
+
   .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
- 
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
- 
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
- 
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 20% 98%;
- 
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
- 
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
- 
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
- 
+    --background: 135 15% 8%; /* Deep Ink #111713 */
+    --foreground: 43 27% 96%; /* Warm Ivory */
+
+    --card: 135 15% 12%;
+    --card-foreground: 43 27% 96%;
+
+    --popover: 135 15% 12%;
+    --popover-foreground: 43 27% 96%;
+
+    --primary: 157 30% 30%; /* Alpine Green Dark */
+    --primary-foreground: 43 27% 96%;
+
+    --secondary: 100 11% 35%;
+    --secondary-foreground: 43 27% 96%;
+
+    --muted: 135 12% 16%;
+    --muted-foreground: 43 15% 65%;
+
+    --accent: 17 51% 60%;
+    --accent-foreground: 43 27% 96%;
+
+    --glacier: 184 20% 50%;
+    --sand: 40 25% 45%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 20% 98%;
- 
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 263.4 70% 50.4%;
+
+    --border: 135 12% 20%;
+    --input: 135 12% 20%;
+    --ring: 157 30% 30%;
   }
 }
 
@@ -95,49 +101,76 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
+
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
-  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
 }
 
-/* Glassmorphism Classes */
-.glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px) saturate(120%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+/* Topographic & Journal Styling Utilities */
+.font-editorial {
+  font-family: var(--font-serif);
 }
 
-.dark .glass {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+.topographic-pattern {
+  background-image: radial-gradient(circle at 50% 50%, rgba(36, 75, 60, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-/* Aurora Gradients */
-.aurora-bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -20;
-  opacity: 0.15;
-  filter: blur(120px);
+.dark .topographic-pattern {
+  background-image: radial-gradient(circle at 50% 50%, rgba(155, 191, 193, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-.aurora-blob {
-  position: absolute;
-  border-radius: 50%;
-  animation: float 20s infinite alternate ease-in-out;
+.contour-lines {
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent,
+    transparent 15px,
+    rgba(36, 75, 60, 0.04) 16px,
+    transparent 17px
+  );
 }
 
-@keyframes float {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    transform: translate(5vw, 5vh) scale(1.1);
-  }
+.dark .contour-lines {
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent,
+    transparent 15px,
+    rgba(155, 191, 193, 0.04) 16px,
+    transparent 17px
+  );
+}
+
+/* Glass & Field Card Styling */
+.atlas-card {
+  background: hsl(var(--card) / 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border) / 0.6);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+}
+
+.dark .atlas-card {
+  background: hsl(var(--card) / 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid hsl(var(--border) / 0.4);
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.3);
+}
+
+/* Passport & Grid Stamp Detail */
+.passport-stamp {
+  border: 1px dashed hsl(var(--primary) / 0.5);
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.375rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }

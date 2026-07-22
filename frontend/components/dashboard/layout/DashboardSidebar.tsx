@@ -6,11 +6,11 @@ import { usePathname } from 'next/navigation';
 import { useDashboard } from '@/providers/DashboardProvider';
 import { navigationConfig } from '../config/navigation';
 import dashboardThemeConfig from '../config/dashboardTheme';
-import { Compass, ChevronLeft, LogOut } from 'lucide-react';
+import { Compass, LogOut } from 'lucide-react';
 
 export const DashboardSidebar = () => {
   const pathname = usePathname();
-  const { sidebarCollapsed, setSidebarCollapsed, mobileMenuOpen, setMobileMenuOpen } = useDashboard();
+  const { sidebarCollapsed, mobileMenuOpen, setMobileMenuOpen } = useDashboard();
 
   const handleLinkClick = () => {
     if (mobileMenuOpen) {
@@ -24,33 +24,36 @@ export const DashboardSidebar = () => {
 
   return (
     <>
-      {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
         <div
           onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 bg-background/60 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
         />
       )}
 
-      {/* Sidebar Layout */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 h-screen z-50 ${dashboardThemeConfig.sidebar.bg} ${dashboardThemeConfig.sidebar.border} ${sidebarWidth} transition-all duration-300 flex flex-col justify-between overflow-x-hidden ${
+        className={`fixed lg:sticky top-0 left-0 h-screen z-50 bg-card/70 border-r border-border/40 ${sidebarWidth} transition-all duration-300 flex flex-col justify-between overflow-x-hidden ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        {/* Header/Logo */}
         <div>
-          <div className="h-16 flex items-center px-6 gap-3 border-b border-border/10">
-            <Compass className="w-6 h-6 text-primary flex-shrink-0" />
+          <div className="h-16 flex items-center px-5 gap-3 border-b border-border/40">
+            <div className="p-1.5 rounded-xl bg-primary/10 text-primary border border-primary/20">
+              <Compass className="w-5 h-5 flex-shrink-0 animate-pulse" />
+            </div>
             {!sidebarCollapsed && (
-              <span className="font-extrabold text-base tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-indigo-500 select-none">
-                LocalLens AI
-              </span>
+              <div className="flex flex-col">
+                <span className="font-editorial text-lg font-extrabold tracking-tight text-foreground select-none">
+                  TERRA VISION
+                </span>
+                <span className="text-[9px] font-mono font-bold tracking-widest text-primary uppercase -mt-1">
+                  Explorer Workspace
+                </span>
+              </div>
             )}
           </div>
 
-          {/* Links list */}
-          <nav className="p-4 space-y-1.5">
+          <nav className="p-3 space-y-1">
             {navigationConfig.map((item, idx) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -59,13 +62,13 @@ export const DashboardSidebar = () => {
                   key={idx}
                   href={item.href}
                   onClick={handleLinkClick}
-                  className={`flex items-center gap-3.5 px-3.5 py-3 rounded-2xl text-xs font-semibold tracking-wide transition-all select-none ${
+                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase transition-all select-none ${
                     isActive
-                      ? 'bg-primary text-primary-foreground shadow-md shadow-primary/10'
+                      ? 'bg-primary text-primary-foreground shadow-lg'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'
                   }`}
                 >
-                  <Icon className="w-4.5 h-4.5 flex-shrink-0" />
+                  <Icon className="w-4 h-4 flex-shrink-0" />
                   {!sidebarCollapsed && <span className="truncate">{item.name}</span>}
                 </Link>
               );
@@ -73,15 +76,14 @@ export const DashboardSidebar = () => {
           </nav>
         </div>
 
-        {/* Footer/Logout Action */}
-        <div className="p-4 border-t border-border/10">
-          <button
-            onClick={() => console.log('Logout triggered')}
-            className="w-full flex items-center gap-3.5 px-3.5 py-3 rounded-2xl text-xs font-semibold text-red-500 hover:bg-red-500/5 transition-all"
+        <div className="p-3 border-t border-border/40">
+          <Link
+            href="/"
+            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-red-500 hover:bg-red-500/10 transition-all"
           >
-            <LogOut className="w-4.5 h-4.5 flex-shrink-0" />
-            {!sidebarCollapsed && <span>Logout</span>}
-          </button>
+            <LogOut className="w-4 h-4 flex-shrink-0" />
+            {!sidebarCollapsed && <span>Exit Workspace</span>}
+          </Link>
         </div>
       </aside>
     </>

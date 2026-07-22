@@ -2,56 +2,45 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-
-import FloatingBadge from '../common/FloatingBadge';
-
-import { useApiQuery } from '@/hooks/useApiQuery';
-import landingService from '@/services/landingService';
-import { QUERY_KEYS } from '@/services/queryKeys';
+import CoordinatesTag from '../common/CoordinatesTag';
+import Eyebrow from '../common/Eyebrow';
 
 export const HeroContent = () => {
-  const { data: heroRes } = useApiQuery(
-    QUERY_KEYS.LANDING.HERO,
-    landingService.getHero
-  );
-
-  const heroData = heroRes?.data;
-  const title = heroData?.title || 'See Beyond the Destination.';
-  const subtitle = heroData?.subtitle || 'LocalLens AI is a premium companion designed to unveil hidden local spots, optimize custom itineraries, and translate vision imagery instantly.';
-
   return (
     <div className="space-y-6 text-center md:text-left max-w-2xl">
-      <FloatingBadge
-        icon={<span className="w-2 h-2 rounded-full bg-primary inline-block" />}
-        text="AI-Powered Local Travel Guide"
-      />
+      <CoordinatesTag lat="31.6340° N" lon="74.8723° E" />
 
-      <motion.h1
-        initial={{ opacity: 0, y: 25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-tight"
-      >
-        {title.includes('Destination.') ? (
-          <>
-            See Beyond the{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-indigo-500">
-              Destination.
-            </span>
-          </>
-        ) : (
-          title
-        )}
-      </motion.h1>
+      <div className="space-y-3">
+        <Eyebrow>YOUR INTELLIGENT TRAVEL FIELD GUIDE</Eyebrow>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="font-editorial text-5xl sm:text-7xl font-extrabold tracking-tight leading-[1.08] text-foreground"
+        >
+          See beyond the <span className="text-primary italic">destination.</span>
+        </motion.h1>
+      </div>
 
       <motion.p
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="text-lg sm:text-xl text-muted-foreground font-light leading-relaxed"
+        className="text-base sm:text-lg text-muted-foreground font-sans leading-relaxed"
       >
-        {subtitle}
+        Plan with intelligence. Explore like a local. Remember every journey. An intelligent field journal from the future combining generative AI planning, 3D cartography, landmark vision, and real-time safety.
       </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+        className="text-[11px] font-mono font-bold text-muted-foreground/80 uppercase tracking-wider pt-2 flex items-center justify-center md:justify-start gap-2"
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+        AI planning · Local discovery · Safety intelligence · Living memories
+      </motion.div>
     </div>
   );
 };
