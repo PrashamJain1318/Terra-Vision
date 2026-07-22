@@ -9,6 +9,7 @@ import {
   Settings,
   Bell,
   Radio,
+  Building2,
 } from 'lucide-react';
 
 export interface NavigationItem {
@@ -26,6 +27,7 @@ export const navigationConfig: NavigationItem[] = [
   { name: 'Saved Places', href: '/dashboard/saved', icon: Heart, category: 'workspace' },
   { name: 'Maps', href: '/dashboard/maps', icon: Map, category: 'workspace' },
   { name: 'Companion Ecosystem', href: '/dashboard/ecosystem', icon: Radio, category: 'workspace' },
+  { name: 'Enterprise Platform', href: '/dashboard/enterprise', icon: Building2, category: 'workspace' },
   { name: 'Community', href: '/dashboard/community', icon: Users, category: 'social' },
   { name: 'Notifications', href: '/dashboard/notifications', icon: Bell, category: 'system' },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings, category: 'system' },
