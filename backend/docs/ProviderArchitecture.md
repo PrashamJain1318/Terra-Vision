@@ -1,25 +1,9 @@
-# LocalLens AI — Maps Provider Architecture
+# LocalLens AI — Hidden Gems Provider Architecture
 
 Developer: Pinank Shah (`pinankshah-Ab`)
 
 ---
 
-## 1. Adapter Design Pattern
-The backend uses a Factory/Adapter pattern to decouple mapping services from specific GIS APIs:
-
-```
-                  ┌──────────────────────┐
-                  │   ProviderFactory    │
-                  └──────────┬───────────┘
-                             │
-       ┌─────────────────────┼─────────────────────┐
-       ▼                     ▼                     ▼
-┌──────────────┐      ┌──────────────┐      ┌──────────────┐
-│ Google Adapter│      │ Mapbox Adapter│      │  OSM Adapter │
-└──────────────┘      └──────────────┘      └──────────────┘
-```
-
----
-
-## 2. Dynamic Provider Switching
-Switching providers is handled by passing `?provider=mapbox` or `?provider=osm` query string parameters, allowing the application to utilize fallback engines seamlessly.
+- `GeminiProvider`: Google Gemini 1.5 Pro Flash experience recommendation adapter.
+- `OpenAIProvider`: OpenAI GPT-4o intelligent recommendation adapter.
+- `ClaudeProvider`: Anthropic Claude 3.5 Sonnet heritage discovery adapter.
