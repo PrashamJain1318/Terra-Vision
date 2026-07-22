@@ -10,6 +10,7 @@ import {
   Bell,
   Radio,
   Building2,
+  Cpu,
 } from 'lucide-react';
 
 export interface NavigationItem {
@@ -21,6 +22,7 @@ export interface NavigationItem {
 
 export const navigationConfig: NavigationItem[] = [
   { name: 'Overview', href: '/dashboard/overview', icon: LayoutDashboard, category: 'workspace' },
+  { name: 'LocalLens OS', href: '/dashboard/os', icon: Cpu, category: 'workspace' },
   { name: 'AI Planner', href: '/dashboard/planner', icon: Compass, category: 'workspace' },
   { name: 'Trips', href: '/dashboard/trips', icon: MapPin, category: 'workspace' },
   { name: 'Memories', href: '/dashboard/memories', icon: Camera, category: 'workspace' },
