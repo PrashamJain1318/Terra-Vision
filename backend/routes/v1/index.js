@@ -11,6 +11,7 @@ import safetyRouter from '../safetyRoutes.js';
 import voiceRouter from '../voiceRoutes.js';
 import communityRouter from '../communityRoutes.js';
 import adminRouter from '../adminRoutes.js';
+import securityRouter from '../securityRoutes.js';
 
 const router = express.Router();
 
@@ -27,5 +28,6 @@ router.use('/safety', safetyRouter);
 router.use('/voice', voiceRouter);
 router.use('/community', communityRouter);
 router.use('/admin', adminRouter);
+router.use('/security', securityRouter);
 
 export default router;
