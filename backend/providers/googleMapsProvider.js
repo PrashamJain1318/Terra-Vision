@@ -4,8 +4,99 @@
  */
 
 export const googleMapsProvider = {
-  searchPlaces: async (query = 'Munnar') => {
-    const qLower = query.toLowerCase();
+  searchPlaces: async (query = 'Neemuch') => {
+    const qTrim = query.trim();
+    const qLower = qTrim.toLowerCase();
+
+    // Neemuch, Madhya Pradesh Places
+    if (qLower.includes('neemuch') || qLower.includes('malwa')) {
+      return [
+        {
+          id: 'g_neemuch_1',
+          name: 'Bhadwamata Temple & Holy Springs',
+          category: 'Must-Visit Place',
+          address: 'Bhadwamata Temple Road, Neemuch District, MP 458441',
+          lat: 24.468,
+          lng: 74.872,
+          rating: 4.9,
+          reviewsCount: 3120,
+          description: 'Famous ancient 9th-century temple complex and sacred water springs in Neemuch, MP.',
+          imageUrl: 'https://images.unsplash.com/photo-1588097281266-310cead47879?auto=format&fit=crop&w=800&q=80',
+          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bhadwamata+Temple+Neemuch',
+        },
+        {
+          id: 'g_neemuch_2',
+          name: 'Kileshwar Mahadev Hillock Fort',
+          category: 'Hidden Gem',
+          address: 'Kileshwar Hill, Neemuch, Madhya Pradesh 458441',
+          lat: 24.47,
+          lng: 74.88,
+          rating: 4.8,
+          reviewsCount: 1450,
+          description: 'Historic hilltop fort and Mahadev temple offering panoramic sunset vistas over Malwa.',
+          imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Kileshwar+Mahadev+Neemuch',
+        },
+        {
+          id: 'g_neemuch_3',
+          name: 'Shri Ram Bhojanalaya (Malwa Dal Baati)',
+          category: 'Food Spot',
+          address: 'Station Road, Central Neemuch Market, MP 458441',
+          lat: 24.465,
+          lng: 74.875,
+          rating: 4.9,
+          reviewsCount: 1820,
+          description: 'Authentic woodfired Malwa Dal Baati Churma cooked with pure desi ghee.',
+          imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
+          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Shri+Ram+Bhojanalaya+Neemuch',
+        },
+      ];
+    }
+
+    // Jaipur, Rajasthan Places
+    if (qLower.includes('jaipur') || qLower.includes('rajasthan')) {
+      return [
+        {
+          id: 'g_jp_1',
+          name: 'Amber Palace & Sheesh Mahal',
+          category: 'Must-Visit Place',
+          address: 'Devisinghpura, Amer, Jaipur, Rajasthan 302001',
+          lat: 26.9855,
+          lng: 75.8513,
+          rating: 4.9,
+          reviewsCount: 42100,
+          description: 'Majestic 16th-century hilltop palace fort with intricate mirror mosaic hall.',
+          imageUrl: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80',
+          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Amber+Fort+Jaipur',
+        },
+        {
+          id: 'g_jp_2',
+          name: 'Panna Meena ka Kund Stepwell',
+          category: 'Hidden Gem',
+          address: 'Amer, Jaipur, Rajasthan 302028',
+          lat: 26.989,
+          lng: 75.854,
+          rating: 4.8,
+          reviewsCount: 3890,
+          description: 'Geometric symmetrical stepwell with criss-cross staircase architecture.',
+          imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Panna+Meena+ka+Kund+Jaipur',
+        },
+        {
+          id: 'g_jp_3',
+          name: 'Rawat Misthan Bhandar (Pyaaz Kachori)',
+          category: 'Food Spot',
+          address: 'Station Road, Jaipur, Rajasthan 302006',
+          lat: 26.921,
+          lng: 75.795,
+          rating: 4.9,
+          reviewsCount: 15400,
+          description: 'Legendary halwai famous for crispy Pyaaz Kachori & saffron Ghevar.',
+          imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
+          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Rawat+Misthan+Bhandar+Jaipur',
+        },
+      ];
+    }
 
     // Munnar, Kerala Places
     if (qLower.includes('munnar') || qLower.includes('kerala')) {
@@ -49,32 +140,6 @@ export const googleMapsProvider = {
           imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
           googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Saravana+Bhavan+Munnar',
         },
-        {
-          id: 'g_munnar_4',
-          name: 'Kolukkumalai Sunrise Viewpoint (Highest Tea Estate)',
-          category: 'Hidden Gem',
-          address: 'Kolukkumalai Estate, Munnar-Tamil Nadu Border',
-          lat: 10.07,
-          lng: 77.21,
-          rating: 4.9,
-          reviewsCount: 1480,
-          description: "World's highest organic tea plantation (7900ft) offering 360-degree sunrise views above clouds.",
-          imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Kolukkumalai+Tea+Estate+Munnar',
-        },
-        {
-          id: 'g_munnar_5',
-          name: 'Rapsy Restaurant (Malabar Parotta & Stew)',
-          category: 'Food Spot',
-          address: 'Main Market, Munnar, Kerala',
-          lat: 10.082,
-          lng: 77.062,
-          rating: 4.7,
-          reviewsCount: 1890,
-          description: 'Famous local food joint renowned for crispy Malabar Parottas & Kerala duck roast.',
-          imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
-          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Rapsy+Restaurant+Munnar',
-        },
       ];
     }
 
@@ -96,7 +161,7 @@ export const googleMapsProvider = {
         },
         {
           id: 'g_amr_2',
-          name: 'Potters Hill & Town Hall Partition Museum',
+          name: 'Town Hall Partition Museum',
           category: 'Hidden Gem',
           address: 'Town Hall, Heritage Street, Amritsar, Punjab 143001',
           lat: 31.625,
@@ -120,62 +185,49 @@ export const googleMapsProvider = {
           imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
           googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Kesar+Da+Dhaba+Amritsar',
         },
-        {
-          id: 'g_amr_4',
-          name: 'All India Famous Amritsari Kulcha',
-          category: 'Food Spot',
-          address: 'Maqbool Road, Amritsar, Punjab',
-          lat: 31.63,
-          lng: 74.87,
-          rating: 4.8,
-          reviewsCount: 4210,
-          description: 'Clay tandoor stuffed potato & onion kulcha served with tangy chole & tamarind chutney.',
-          imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
-          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=All+India+Famous+Amritsari+Kulcha',
-        },
       ];
     }
 
-    // Generic Google Places for any searched city/query
+    // Generic Dynamic Google Places for ANY searched city
     return [
       {
-        id: `g_${query}_1`,
-        name: `${query} Central Heritage Plaza`,
+        id: `g_${qTrim}_1`,
+        name: `${qTrim} Heritage Fort & Central Square`,
         category: 'Must-Visit Place',
-        address: `Main Square, ${query}`,
-        lat: 31.1048,
-        lng: 77.1734,
+        address: `Central Plaza, ${qTrim}`,
+        lat: 24.468,
+        lng: 74.872,
         rating: 4.9,
-        reviewsCount: 1420,
-        description: `Iconic central heritage monument and historic walking district in ${query}.`,
+        reviewsCount: 1840,
+        description: `Historic central monument and walking precinct in ${qTrim}.`,
         imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
-        googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + ' Tourist Attractions')}`,
+        googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(qTrim + ' Tourist Attractions')}`,
       },
       {
-        id: `g_${query}_2`,
-        name: `${query} Secret Stepwell & Valley Viewpoint`,
+        id: `g_${qTrim}_2`,
+        name: `${qTrim} Secret Valley & Stepwell Shrine`,
         category: 'Hidden Gem',
-        address: `East Ridge, ${query}`,
-        lat: 31.106,
-        lng: 77.175,
+        address: `East Hill Precinct, ${qTrim}`,
+        lat: 24.47,
+        lng: 74.88,
         rating: 4.8,
-        reviewsCount: 890,
-        description: `Lesser-known ancient stepwell and panoramic cliffside sunset view over ${query}.`,
+        reviewsCount: 920,
+        description: `Secluded architectural gem and sunset viewpoint in ${qTrim}.`,
         imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-        googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + ' Hidden Gems')}`,
+        googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(qTrim + ' Hidden Gems')}`,
       },
       {
-        id: `g_${query}_3`,
-        name: `Legendary ${query} Food Bazaar & Dhaba`,
+        id: `g_${qTrim}_3`,
+        name: `Famous ${qTrim} Heritage Food Corner`,
         category: 'Food Spot',
-        address: `Bazaar Road, ${query}`,
-        lat: 31.107,
-        lng: 77.178,
+        address: `Main Market Road, ${qTrim}`,
+        lat: 24.465,
+        lng: 74.875,
         rating: 4.9,
-        reviewsCount: 2310,
-        description: `Famous culinary spot renowned for authentic regional dishes & spiced chai in ${query}.`,
+        reviewsCount: 2150,
+        description: `Authentic local culinary spot renowned for traditional regional specialties in ${qTrim}.`,
         imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
-        googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + ' Restaurants')}`,
+        googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(qTrim + ' Restaurants')}`,
       },
     ];
   },
@@ -185,7 +237,7 @@ export const googleMapsProvider = {
       {
         id: 'g_near_1',
         name: `Popular ${category} Spot`,
-        address: 'Ridge Road, Shimla',
+        address: 'Main Market Road',
         lat: parseFloat(lat) + 0.002,
         lng: parseFloat(lng) + 0.002,
         category,

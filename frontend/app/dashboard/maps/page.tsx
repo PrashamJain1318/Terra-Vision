@@ -21,74 +21,48 @@ interface MapMarker {
 
 const mockDefaultMarkers: MapMarker[] = [
   {
-    id: 'g_munnar_1',
-    name: 'Eravikulam National Park (Nilgiri Tahr Sanctuary)',
+    id: 'g_neemuch_1',
+    name: 'Bhadwamata Temple & Holy Springs',
     category: 'Must-Visit Place',
-    address: 'Kannan Devan Hills, Munnar, Kerala 685612',
+    address: 'Bhadwamata Temple Road, Neemuch District, MP 458441',
     rating: 4.9,
-    reviewsCount: 3840,
-    description: 'High-altitude sanctuary home to the endangered Nilgiri Tahr and blooming Neelakurinji flowers.',
-    imageUrl: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80',
-    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Eravikulam+National+Park+Munnar',
-    lat: 10.15,
-    lng: 77.08,
+    reviewsCount: 3120,
+    description: 'Famous ancient 9th-century temple complex and sacred water springs in Neemuch, MP.',
+    imageUrl: 'https://images.unsplash.com/photo-1588097281266-310cead47879?auto=format&fit=crop&w=800&q=80',
+    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bhadwamata+Temple+Neemuch',
+    lat: 24.468,
+    lng: 74.872,
   },
   {
-    id: 'g_munnar_2',
-    name: 'KDHP Tea Museum & Factory',
+    id: 'g_neemuch_2',
+    name: 'Kileshwar Mahadev Hillock Fort',
     category: 'Hidden Gem',
-    address: 'Nullatanni Estate, Munnar, Kerala 685612',
-    rating: 4.9,
-    reviewsCount: 1920,
-    description: '19th-century British tea processing machinery demonstration & fresh cardamom tea tasting.',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=KDHP+Tea+Museum+Munnar',
-    lat: 10.0889,
-    lng: 77.0597,
-  },
-  {
-    id: 'g_munnar_3',
-    name: 'Saravana Bhavan & Kerala Sadya House',
-    category: 'Food Spot',
-    address: 'Main Bazaar Road, Munnar Town, Kerala',
+    address: 'Kileshwar Hill, Neemuch, Madhya Pradesh 458441',
     rating: 4.8,
-    reviewsCount: 2450,
-    description: 'Authentic Kerala Banana Leaf Sadya, Appam with vegetable stew, and spiced chai.',
-    imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
-    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Saravana+Bhavan+Munnar',
-    lat: 10.08,
-    lng: 77.06,
-  },
-  {
-    id: 'g_munnar_4',
-    name: 'Kolukkumalai Sunrise Viewpoint (Highest Tea Estate)',
-    category: 'Hidden Gem',
-    address: 'Kolukkumalai Estate, Munnar-Tamil Nadu Border',
-    rating: 4.9,
-    reviewsCount: 1480,
-    description: "World's highest organic tea plantation (7900ft) offering 360-degree sunrise views above clouds.",
+    reviewsCount: 1450,
+    description: 'Historic hilltop fort and Mahadev temple offering panoramic sunset vistas over Malwa.',
     imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Kolukkumalai+Tea+Estate+Munnar',
-    lat: 10.07,
-    lng: 77.21,
+    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Kileshwar+Mahadev+Neemuch',
+    lat: 24.47,
+    lng: 74.88,
   },
   {
-    id: 'g_munnar_5',
-    name: 'Rapsy Restaurant (Malabar Parotta & Stew)',
+    id: 'g_neemuch_3',
+    name: 'Shri Ram Bhojanalaya (Malwa Dal Baati)',
     category: 'Food Spot',
-    address: 'Main Market, Munnar, Kerala',
-    rating: 4.7,
-    reviewsCount: 1890,
-    description: 'Famous local food joint renowned for crispy Malabar Parottas & Kerala duck roast.',
+    address: 'Station Road, Central Neemuch Market, MP 458441',
+    rating: 4.9,
+    reviewsCount: 1820,
+    description: 'Authentic woodfired Malwa Dal Baati Churma cooked with pure desi ghee.',
     imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
-    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Rapsy+Restaurant+Munnar',
-    lat: 10.082,
-    lng: 77.062,
+    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Shri+Ram+Bhojanalaya+Neemuch',
+    lat: 24.465,
+    lng: 74.875,
   },
 ];
 
 export default function MapsPage() {
-  const [query, setQuery] = useState('Munnar, Kerala');
+  const [query, setQuery] = useState('Neemuch, MP');
   const [categoryFilter, setCategoryFilter] = useState<string>('All');
   const [markers, setMarkers] = useState<MapMarker[]>(mockDefaultMarkers);
   const [selectedMarker, setSelectedMarker] = useState<MapMarker | null>(mockDefaultMarkers[0]);
@@ -135,8 +109,8 @@ export default function MapsPage() {
             description: place.description || `Iconic destination spot in ${query}.`,
             imageUrl: place.imageUrl || 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80',
             googleMapsUrl: place.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ' ' + query)}`,
-            lat: place.lat || 10.0889,
-            lng: place.lng || 77.0597,
+            lat: place.lat || 24.468,
+            lng: place.lng || 74.872,
           });
         });
       }
@@ -153,8 +127,8 @@ export default function MapsPage() {
             description: gem.description || `Secret hidden gem discovered by AI in ${query}.`,
             imageUrl: gem.imageUrl || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
             googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gem.name + ' ' + query)}`,
-            lat: 10.08,
-            lng: 77.06,
+            lat: 24.47,
+            lng: 74.88,
           });
         });
       }
@@ -163,16 +137,16 @@ export default function MapsPage() {
         foodData.data.forEach((food: any, idx: number) => {
           combined.push({
             id: `food-${idx}-${Date.now()}`,
-            name: `${food.restaurantName || food.name}`,
+            name: food.restaurantName ? `${food.restaurantName} (${food.name})` : food.name,
             category: 'Food Spot',
             address: food.location || `Food Hub, ${query}`,
             rating: food.rating || 4.8,
             reviewsCount: food.reviewsCount || 1850,
-            description: `Signature local food pick: ${food.name} in ${query}.`,
+            description: food.description || `Signature local food pick: ${food.name} in ${query}.`,
             imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
             googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((food.restaurantName || food.name) + ' ' + query)}`,
-            lat: 10.082,
-            lng: 77.062,
+            lat: 24.465,
+            lng: 74.875,
           });
         });
       }
@@ -298,7 +272,7 @@ export default function MapsPage() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && fetchMapMarkers()}
-                  placeholder="Search city (e.g. Munnar, Amritsar, Shimla, Kyoto, Paris)..."
+                  placeholder="Search city (e.g. Neemuch, Jaipur, Munnar, Kyoto, Paris)..."
                   className="bg-transparent text-xs text-slate-200 focus:outline-none w-full"
                 />
               </div>
