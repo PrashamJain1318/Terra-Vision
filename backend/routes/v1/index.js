@@ -16,6 +16,7 @@ import personalizationRouter from '../personalizationRoutes.js';
 import ecosystemRouter from '../ecosystemRoutes.js';
 import enterpriseRouter from '../enterpriseRoutes.js';
 import platformRouter from '../platformRoutes.js';
+import betaRouter from '../betaRoutes.js';
 
 const router = express.Router();
 
@@ -37,5 +38,6 @@ router.use('/personalization', personalizationRouter);
 router.use('/ecosystem', ecosystemRouter);
 router.use('/enterprise', enterpriseRouter);
 router.use('/platform', platformRouter);
+router.use('/beta', betaRouter);
 
 export default router;
