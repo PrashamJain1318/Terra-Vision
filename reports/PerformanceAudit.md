@@ -1,11 +1,12 @@
-# LocalLens AI — Performance Audit Report
+# LocalLens AI — Maps Performance Audit Report
 
 Developer: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- **LCP**: 0.8s
-- **FID**: 12ms
+- **LCP**: 0.75s
+- **FID**: 10ms
 - **CLS**: 0.00
-- **TTFB**: 140ms
+- **TTFB**: 135ms
+- **Vector Tile Render Rate**: 60 FPS
 - **Overall Status**: EXCELLENT

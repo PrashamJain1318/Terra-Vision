@@ -1,11 +1,10 @@
-# LocalLens AI — Security Checklist
+# LocalLens AI — Phase 9 Security Checklist
 
 Developer: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- [x] JWT Token authentication verified
-- [x] Express rate limiting active on `/v1/planner/generate`
-- [x] Input sanitization via `express-validator`
-- [x] Security HTTP Headers enabled via `helmet`
-- [x] Prompt Injection protection structured via rigid JSON schema output
+- [x] Rate limiting active on `/api/v1/maps/*`
+- [x] Input validation for latitude (-90 to 90) and longitude (-180 to 180)
+- [x] JWT Token protection on user saved places
+- [x] No hardcoded map provider secret keys in client bundle

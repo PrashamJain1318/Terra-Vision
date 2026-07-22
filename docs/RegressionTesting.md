@@ -1,11 +1,11 @@
-# LocalLens AI — Regression Test Report
+# LocalLens AI — Phase 9 Regression Test Report
 
 Developer: Debharghya Misra (`debarghyamisra09`)
 
 ---
 
-- Authentication Flow (`/login`, `/signup`): **PASSED**
 - Landing Page (`/`): **PASSED**
 - Dashboard Overview (`/dashboard/overview`): **PASSED**
 - AI Travel Planner (`/dashboard/planner`): **PASSED**
+- Interactive Maps (`/dashboard/maps`): **PASSED**
 - Build Static Compilation: **PASSED (25 routes prerendered)**
