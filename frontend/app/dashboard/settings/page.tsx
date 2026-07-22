@@ -248,14 +248,14 @@ export default function SettingsV2Page() {
       {/* 1. TOP SAAS HEADER WITH GLOBAL SEARCH & QUICK ACTIONS */}
       <div className="p-6 rounded-3xl bg-gradient-to-r from-[#111827] via-slate-900 to-[#111827] border border-white/[0.08] shadow-2xl backdrop-blur-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#7C3AED]">
-            <Settings className="w-4 h-4 text-[#7C3AED]" />
+          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-400">
+            <Settings className="w-4 h-4 text-emerald-400" />
             <span>LocalLens AI Operating System / Settings V2</span>
           </div>
           <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
             Settings & Control Hub
           </h1>
-          <p className="text-xs text-slate-400 font-semibold">
+          <p className="text-xs text-zinc-400 font-semibold">
             Manage your profile, AI models, spatial maps, notifications, security, and connected apps.
           </p>
         </div>
@@ -264,16 +264,16 @@ export default function SettingsV2Page() {
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => setSearchModalOpen(true)}
-            className="px-4 py-3 rounded-2xl bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] text-xs font-bold text-slate-300 flex items-center gap-2 transition-all shadow-md"
+            className="px-4 py-3 rounded-2xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-zinc-300 flex items-center gap-2 transition-all shadow-md"
           >
-            <Search className="w-4 h-4 text-[#7C3AED]" />
+            <Search className="w-4 h-4 text-emerald-400" />
             <span>Search Settings...</span>
-            <span className="px-2 py-0.5 rounded-md bg-black/60 border border-white/10 text-[10px] font-mono text-slate-400">⌘ K</span>
+            <span className="px-2 py-0.5 rounded-md bg-black/60 border border-white/10 text-[10px] font-mono text-zinc-400">⌘ K</span>
           </button>
 
           <button
             onClick={handleSyncNow}
-            className="px-5 py-3 rounded-2xl bg-[#7C3AED] hover:bg-[#A855F7] text-white font-black text-xs shadow-lg shadow-[#7C3AED]/30 transition-all flex items-center gap-2 hover:scale-105"
+            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-lg shadow-emerald-500/20 transition-all flex items-center gap-2 hover:scale-105"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Sync Now
           </button>
@@ -291,10 +291,10 @@ export default function SettingsV2Page() {
       {/* 2. 16-CATEGORY SETTINGS LAYOUT (LEFT SIDEBAR 25% + RIGHT WORKSPACE 75%) */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
         {/* LEFT SETTINGS NAVIGATION SIDEBAR (3 COLUMNS) */}
-        <div className="xl:col-span-3 space-y-2 p-3 rounded-3xl bg-[#111827]/90 border border-white/[0.08] shadow-2xl backdrop-blur-2xl">
-          <div className="px-3 py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-white/[0.06] mb-2 flex items-center justify-between">
+        <div className="xl:col-span-3 space-y-2 p-3 rounded-3xl bg-zinc-950/90 border border-emerald-500/20 shadow-2xl backdrop-blur-2xl">
+          <div className="px-3 py-2 text-[10px] font-black text-zinc-400 uppercase tracking-widest border-b border-zinc-800/80 mb-2 flex items-center justify-between">
             <span>Settings Categories ({CATEGORIES.length})</span>
-            <Sliders className="w-3.5 h-3.5 text-[#7C3AED]" />
+            <Sliders className="w-3.5 h-3.5 text-emerald-400" />
           </div>
 
           {CATEGORIES.map((cat) => {
@@ -306,16 +306,16 @@ export default function SettingsV2Page() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`w-full p-3 rounded-2xl text-left transition-all duration-200 flex items-start gap-3 border ${
                   active
-                    ? 'bg-[#7C3AED] text-white border-purple-400 shadow-lg shadow-[#7C3AED]/30 scale-[1.02]'
-                    : 'bg-white/[0.02] text-slate-400 border-transparent hover:bg-white/[0.06] hover:text-slate-100'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border-emerald-400 shadow-lg shadow-emerald-500/20 scale-[1.02]'
+                    : 'bg-zinc-900/30 text-zinc-400 border-transparent hover:bg-zinc-900 hover:text-zinc-100'
                 }`}
               >
-                <div className={`p-2 rounded-xl shrink-0 ${active ? 'bg-white/20 text-white' : 'bg-white/[0.04] text-[#7C3AED]'}`}>
+                <div className={`p-2 rounded-xl shrink-0 ${active ? 'bg-white/20 text-white' : 'bg-zinc-900 text-emerald-400'}`}>
                   <IconComp className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
                   <span className="font-black text-xs block truncate">{cat.label}</span>
-                  <span className={`text-[10px] font-semibold block truncate ${active ? 'text-purple-200' : 'text-slate-500'}`}>
+                  <span className={`text-[10px] font-semibold block truncate ${active ? 'text-emerald-100' : 'text-zinc-500'}`}>
                     {cat.desc}
                   </span>
                 </div>
@@ -328,29 +328,29 @@ export default function SettingsV2Page() {
         <div className="xl:col-span-9 space-y-6">
           {/* 1. PROFILE SECTION */}
           {activeCategory === 'profile' && (
-            <div className="p-6 rounded-3xl bg-[#111827]/90 border border-white/[0.08] shadow-2xl backdrop-blur-2xl space-y-6 animate-in fade-in">
-              <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+            <div className="p-6 rounded-3xl bg-zinc-950/90 border border-emerald-500/20 shadow-2xl backdrop-blur-2xl space-y-6 animate-in fade-in">
+              <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
                 <div>
                   <h2 className="text-xl font-black text-white flex items-center gap-2">
-                    <User className="w-5 h-5 text-[#7C3AED]" /> Profile & Identity Settings
+                    <User className="w-5 h-5 text-emerald-400" /> Profile & Identity Settings
                   </h2>
-                  <p className="text-xs text-slate-400 font-semibold">Manage your public avatar, bio, and travel credentials.</p>
+                  <p className="text-xs text-zinc-400 font-semibold">Manage your public avatar, bio, and travel credentials.</p>
                 </div>
                 <button
                   onClick={() => handleSaveSection('profile', settings.profile)}
-                  className="px-5 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#A855F7] text-white font-black text-xs shadow-md transition-all flex items-center gap-1.5"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-md transition-all flex items-center gap-1.5"
                 >
                   <Save className="w-4 h-4" /> Save Profile
                 </button>
               </div>
 
               {/* Avatar Upload Banner */}
-              <div className="p-5 rounded-2xl bg-black/40 border border-white/[0.06] flex items-center justify-between gap-4">
+              <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <img
                     src={settings.profile.avatarUrl}
                     alt={settings.profile.name}
-                    className="w-16 h-16 rounded-2xl object-cover border-2 border-[#7C3AED] shadow-xl"
+                    className="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-500 shadow-xl"
                   />
                   <div>
                     <h3 className="font-black text-sm text-white">{settings.profile.name}</h3>
@@ -358,60 +358,60 @@ export default function SettingsV2Page() {
                   </div>
                 </div>
 
-                <button className="px-4 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] text-xs font-black text-slate-200 transition-all flex items-center gap-2">
-                  <Upload className="w-4 h-4 text-[#7C3AED]" /> Upload Avatar
+                <button className="px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-xs font-black text-zinc-200 transition-all flex items-center gap-2">
+                  <Upload className="w-4 h-4 text-emerald-400" /> Upload Avatar
                 </button>
               </div>
 
               {/* Form Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-black text-slate-400 uppercase">Full Name</label>
+                  <label className="text-[11px] font-black text-zinc-400 uppercase">Full Name</label>
                   <input
                     type="text"
                     value={settings.profile.name}
                     onChange={(e) => setSettings({ ...settings, profile: { ...settings.profile, name: e.target.value } })}
-                    className="w-full p-3.5 rounded-2xl bg-black/40 border border-white/[0.08] text-xs font-bold text-slate-100 focus:outline-none focus:border-[#7C3AED]"
+                    className="w-full p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 text-xs font-bold text-zinc-100 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-black text-slate-400 uppercase">Username</label>
+                  <label className="text-[11px] font-black text-zinc-400 uppercase">Username</label>
                   <input
                     type="text"
                     value={settings.profile.username}
                     onChange={(e) => setSettings({ ...settings, profile: { ...settings.profile, username: e.target.value } })}
-                    className="w-full p-3.5 rounded-2xl bg-black/40 border border-white/[0.08] text-xs font-bold text-slate-100 focus:outline-none focus:border-[#7C3AED]"
+                    className="w-full p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 text-xs font-bold text-zinc-100 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
 
                 <div className="space-y-1.5 md:col-span-2">
-                  <label className="text-[11px] font-black text-slate-400 uppercase">Bio / Travel Philosophy</label>
+                  <label className="text-[11px] font-black text-zinc-400 uppercase">Bio / Travel Philosophy</label>
                   <textarea
                     rows={2}
                     value={settings.profile.bio}
                     onChange={(e) => setSettings({ ...settings, profile: { ...settings.profile, bio: e.target.value } })}
-                    className="w-full p-3.5 rounded-2xl bg-black/40 border border-white/[0.08] text-xs font-bold text-slate-100 focus:outline-none focus:border-[#7C3AED]"
+                    className="w-full p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 text-xs font-bold text-zinc-100 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-black text-slate-400 uppercase">Email</label>
+                  <label className="text-[11px] font-black text-zinc-400 uppercase">Email</label>
                   <input
                     type="email"
                     value={settings.profile.email}
                     onChange={(e) => setSettings({ ...settings, profile: { ...settings.profile, email: e.target.value } })}
-                    className="w-full p-3.5 rounded-2xl bg-black/40 border border-white/[0.08] text-xs font-bold text-slate-100 focus:outline-none focus:border-[#7C3AED]"
+                    className="w-full p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 text-xs font-bold text-zinc-100 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-black text-slate-400 uppercase">Phone Number</label>
+                  <label className="text-[11px] font-black text-zinc-400 uppercase">Phone Number</label>
                   <input
                     type="text"
                     value={settings.profile.phone}
                     onChange={(e) => setSettings({ ...settings, profile: { ...settings.profile, phone: e.target.value } })}
-                    className="w-full p-3.5 rounded-2xl bg-black/40 border border-white/[0.08] text-xs font-bold text-slate-100 focus:outline-none focus:border-[#7C3AED]"
+                    className="w-full p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 text-xs font-bold text-zinc-100 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
