@@ -1,4 +1,4 @@
-# LocalLens AI — Phase 9 Maps Known Issues
+# LocalLens AI — Phase 10 AI Vision Known Issues
 
 Developer: Debharghya Misra (`debarghyamisra09`)
 
@@ -9,4 +9,4 @@ Developer: Debharghya Misra (`debarghyamisra09`)
 - ✅ Resolved backend `express-validator` package dependency.
 
 ## Open Considerations
-- Real-time turn-by-turn voice directions will be attached in **Phase 10 (Voice Navigation)**.
+- Real-time OCR plaque translation will be attached in future translation modules.

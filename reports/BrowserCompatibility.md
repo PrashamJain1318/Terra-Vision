@@ -1,4 +1,4 @@
-# LocalLens AI — Maps Browser Compatibility Matrix
+# LocalLens AI — AI Vision Browser Compatibility Matrix
 
 Developer: Debharghya Misra (`debarghyamisra09`)
 
