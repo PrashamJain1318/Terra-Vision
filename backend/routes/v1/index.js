@@ -17,6 +17,7 @@ import ecosystemRouter from '../ecosystemRoutes.js';
 import enterpriseRouter from '../enterpriseRoutes.js';
 import platformRouter from '../platformRoutes.js';
 import betaRouter from '../betaRoutes.js';
+import mobileRouter from '../mobileRoutes.js';
 
 const router = express.Router();
 
@@ -39,5 +40,6 @@ router.use('/ecosystem', ecosystemRouter);
 router.use('/enterprise', enterpriseRouter);
 router.use('/platform', platformRouter);
 router.use('/beta', betaRouter);
+router.use('/mobile', mobileRouter);
 
 export default router;

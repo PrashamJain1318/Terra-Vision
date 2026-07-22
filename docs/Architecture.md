@@ -1,42 +1,39 @@
-# LocalLens AI — System Architecture Overview
-
-Architect: Prasham Jain (`PrashamJain1318`)
+# LocalLens AI — System Architecture Specification
 
 ---
 
-## 1. Executive Summary
-LocalLens AI is a modular, high-performance web platform for AI-powered travel planning, interactive GIS mapping, and computer vision landmark recognition. The architecture decouples client presentation from backend processing while standardizing provider abstractions across LLMs, Map SDKs, and Vision models.
+## 🏗️ High-Level System Architecture
 
----
-
-## 2. High-Level Architecture Diagram
-
-```mermaid
-graph TD
-    Client[Next.js 16 Frontend SPA] -->|HTTP / JSON| API[Node.js / Express Backend Engine]
-    API -->|Mongoose ORM| DB[(MongoDB)]
-    
-    subgraph Frontend Subsystems
-        Client --> ContextLayer[Provider & Context Layer]
-        ContextLayer --> PlannerModule[AI Travel Planner Module]
-        ContextLayer --> MapsModule[GIS & Maps Module]
-        ContextLayer --> VisionModule[AI Vision Scanner Module]
-    end
-
-    subgraph Backend Adapters
-        API --> VisionAdapters[Vision Provider Factory]
-        API --> MapsAdapters[Maps Provider Factory]
-        VisionAdapters --> GeminiVision[Gemini Vision]
-        VisionAdapters --> OpenAIVision[OpenAI GPT-4o]
-        MapsAdapters --> Mapbox[Mapbox API]
-        MapsAdapters --> GoogleMaps[Google Maps API]
-    end
+```
+                                    ┌──────────────────────────────────────────────┐
+                                    │    LocalLens AI Web & PWA Client             │
+                                    │  Next.js 16 • React 19 • Tailwind CSS        │
+                                    └──────────────────────┬───────────────────────┘
+                                                           │
+                                                           ▼
+                                    ┌──────────────────────────────────────────────┐
+                                    │       Express.js REST API Gateway           │
+                                    │         Port 5050 • CORS • Helmet            │
+                                    └──────┬───────────────┬───────────────┬───────┘
+                                           │               │               │
+                     ┌─────────────────────┘               │               └────────────────────┐
+                     ▼                                     ▼                                    ▼
+       ┌───────────────────────────┐         ┌───────────────────────────┐        ┌───────────────────────────┐
+       │   Google Maps Platform    │         │     Gemini AI Engine      │        │    MongoDB Atlas Database │
+       │  Places • Geocoding • Map │         │  Enrichment • Ratings • AI│        │  PlaceCache • Analytics   │
+       └───────────────────────────┘         └───────────────────────────┘        └───────────────────────────┘
 ```
 
 ---
 
-## 3. Core Design Principles
-1. **Provider Abstraction**: Unified interface factories wrapping external AI and GIS APIs.
-2. **Context-Driven State**: Decoupled domain state handlers isolating page views from API fetching logic.
-3. **Type Safety**: Strictly typed TypeScript data models preventing runtime mutations.
-4. **Resilient Error Handling**: Centralized rate limiting, fallback UI, and standardized JSON error formatters.
+## 🤖 Multi-Agent AI System Architecture (`LocalLens OS`)
+
+LocalLens AI employs an orchestrated multi-agent network:
+- **PlannerAgent**: Generates dynamic multi-day itineraries with time allocations.
+- **DiscoveryAgent**: Identifies secret hidden gems and uncrowded travel spots.
+- **SafetyAgent**: Monitors regional security advisories, scam shield databases, and emergency helplines.
+- **FoodAgent**: Matches authentic regional cuisines with dietary restrictions.
+- **MemoryAgent**: Compiles photo memories into interactive journey replays.
+- **CommunityAgent**: Integrates verified traveler ratings and social journals.
+- **EnterpriseAgent**: Bridges hotel & restaurant booking APIs.
+- **PersonalizationAgent**: Computes custom traveler HSL style vectors.
