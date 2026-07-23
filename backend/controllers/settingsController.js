@@ -81,8 +81,8 @@ export const getSettings = async (req, res) => {
 export const updateSettingsSection = async (req, res) => {
   try {
     const { section, data } = req.body;
-    if (section && data && (inMemorySettings as any)[section]) {
-      (inMemorySettings as any)[section] = { ...(inMemorySettings as any)[section], ...data };
+    if (section && data && inMemorySettings[section]) {
+      inMemorySettings[section] = { ...inMemorySettings[section], ...data };
     }
     res.json({ success: true, message: `${section} updated successfully`, data: inMemorySettings });
   } catch (error) {
