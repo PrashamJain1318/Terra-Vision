@@ -19,7 +19,8 @@ import platformRouter from '../platformRoutes.js';
 import betaRouter from '../betaRoutes.js';
 import mobileRouter from '../mobileRoutes.js';
 import settingsRouter from '../settingsRoutes.js';
-
+import mapsRouter from '../mapsRoutes.js';
+import plannerRouter from '../plannerRoutes.js';
 import aiBrainRouter from '../aiBrainRoutes.js';
 
 const router = express.Router();
@@ -46,5 +47,7 @@ router.use('/platform', platformRouter);
 router.use('/beta', betaRouter);
 router.use('/mobile', mobileRouter);
 router.use('/settings', settingsRouter);
+router.use('/maps', mapsRouter);
+router.use('/planner', plannerRouter);
 
 export default router;
