@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import GlassCard from '@/components/common/GlassCard';
 import { Compass, Sparkles, MapPin, Calendar, Clock, Bookmark, RefreshCw, Lightbulb, Package } from 'lucide-react';
+import api from '@/utils/api';
 
 interface ItineraryDay {
   day: number;
@@ -159,16 +160,12 @@ export default function PlannerPage() {
 
   const fetchSavedTrips = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5050/api/v1/dashboard/recent-trips', {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
-      const data = await res.json();
-      if (data.success && data.data) {
-        setRecentTrips(data.data);
+      const res = await api.get('/v1/dashboard/recent-trips');
+      if (res.data?.success && res.data?.data) {
+        setRecentTrips(res.data.data);
       }
     } catch (e) {
-      console.log('Using default trips fallback');
+      // Fallback
     }
   };
 
@@ -179,27 +176,19 @@ export default function PlannerPage() {
     const requestedDays = parseInt(days, 10) || 3;
 
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5050/api/v1/planner/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify({
-          destination,
-          travelDays: requestedDays,
-          travelStyle: style,
-          budget: 'balanced',
-        }),
+      const res = await api.post('/v1/planner/generate', {
+        destination,
+        travelDays: requestedDays,
+        travelStyle: style,
+        budget: 'balanced',
       });
 
-      const responseData = await res.json();
+      const responseData = res.data;
 
       let targetResponse: FullItineraryResponse | null = null;
-      if (responseData.success && responseData.data?.generatedResponse) {
+      if (responseData?.success && responseData.data?.generatedResponse) {
         targetResponse = responseData.data.generatedResponse;
-      } else if (responseData.success && responseData.data?.itinerary) {
+      } else if (responseData?.success && responseData.data?.itinerary) {
         targetResponse = responseData.data;
       }
 
@@ -234,6 +223,30 @@ export default function PlannerPage() {
       fetchSavedTrips();
     } catch (err) {
       console.error('Error generating AI itinerary:', err);
+      // Generate offline fallback for requested destination
+      const generatedDays: ItineraryDay[] = Array.from({ length: requestedDays }, (_, idx) => {
+        const dayNum = idx + 1;
+        const dayContent = getUniqueDayContentFrontend(destination, dayNum);
+        return {
+          day: dayNum,
+          title: `Day ${dayNum}: ${dayContent.title}`,
+          morning: dayContent.morning,
+          afternoon: dayContent.afternoon,
+          evening: dayContent.evening,
+          foodSuggestions: dayContent.foodSuggestions,
+        };
+      });
+
+      setFullItinerary({
+        tripTitle: `AI Expedition: ${destination}`,
+        destination,
+        days: requestedDays,
+        summary: `A curated ${requestedDays}-day travel experience in ${destination} tailored for ${style}.`,
+        estimatedBudget: '$150 - $350',
+        itinerary: generatedDays,
+        travelTips: ['Carry local cash for small vendors.', 'Download offline maps before valley trips.'],
+        packingChecklist: ['Comfortable walking shoes', 'Layered clothing', 'Universal power adapter'],
+      });
     } finally {
       setLoading(false);
     }
@@ -272,7 +285,7 @@ export default function PlannerPage() {
               setDestination(promptItem.dest);
               setDays(promptItem.days);
             }}
-            className="p-3.5 rounded-2xl bg-zinc-950/80 hover:bg-emerald-500/10 border border-zinc-800 hover:border-emerald-500/40 text-left transition group space-y-1"
+            className="p-3.5 rounded-2xl bg-zinc-950/80 hover:bg-emerald-500/10 border border-zinc-800 hover:border-emerald-500/40 text-left transition group space-y-1 cursor-pointer"
           >
             <span className="text-xs font-extrabold text-white group-hover:text-emerald-300 block truncate">
               ⚡ {promptItem.title}
@@ -341,11 +354,11 @@ export default function PlannerPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-2xl bg-primary text-primary-foreground font-extrabold text-xs shadow-lg shadow-primary/20 hover:opacity-90 transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-2xl bg-primary text-primary-foreground font-extrabold text-xs shadow-lg shadow-primary/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               {loading ? (
                 <>
-                  <RefreshCw className="w-4 h-4 animate-spin" /> Querying ChatGPT AI Engine...
+                  <RefreshCw className="w-4 h-4 animate-spin" /> Querying Gemini AI Engine...
                 </>
               ) : (
                 <>
@@ -362,13 +375,13 @@ export default function PlannerPage() {
             <GlassCard hoverEffect={false} className="p-6 space-y-6 border-border/40 shadow-xl">
               <div className="flex items-center justify-between border-b border-border/30 pb-4">
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary">ChatGPT AI Itinerary</span>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary">Gemini AI Itinerary</span>
                   <h2 className="text-xl font-extrabold text-foreground">{fullItinerary.tripTitle || `${fullItinerary.itinerary.length}-Day Experience in ${destination}`}</h2>
                   <p className="text-xs text-muted-foreground">{fullItinerary.summary}</p>
                 </div>
                 <button
                   onClick={() => alert('Itinerary saved to your active profile!')}
-                  className="px-4 py-2 rounded-2xl bg-primary/10 text-primary border border-primary/30 text-xs font-extrabold flex items-center gap-1.5 hover:bg-primary/20 transition-all shrink-0"
+                  className="px-4 py-2 rounded-2xl bg-primary/10 text-primary border border-primary/30 text-xs font-extrabold flex items-center gap-1.5 hover:bg-primary/20 transition-all shrink-0 cursor-pointer"
                 >
                   <Bookmark className="w-4 h-4" /> Save Itinerary
                 </button>
@@ -420,8 +433,8 @@ export default function PlannerPage() {
               {/* Travel Tips & Packing */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-border/30">
                 {fullItinerary.travelTips && (
-                  <div className="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/20 space-y-2">
-                    <h4 className="text-xs font-extrabold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <div className="p-4 rounded-2xl bg-teal-500/5 border border-teal-500/20 space-y-2">
+                    <h4 className="text-xs font-extrabold text-teal-400 uppercase tracking-wider flex items-center gap-1.5">
                       <Lightbulb className="w-4 h-4" /> Expert Travel Tips
                     </h4>
                     <ul className="space-y-1 pl-4 list-disc text-xs text-muted-foreground">
@@ -454,7 +467,7 @@ export default function PlannerPage() {
               <div className="space-y-1">
                 <h3 className="text-base font-extrabold text-foreground">Ready to Generate Your Travel Plan</h3>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Select your destination and travel style on the left to fetch AI recommendations connected directly to our ChatGPT backend service.
+                  Select your destination and travel style on the left to fetch AI recommendations connected directly to our Gemini AI backend service.
                 </p>
               </div>
             </GlassCard>

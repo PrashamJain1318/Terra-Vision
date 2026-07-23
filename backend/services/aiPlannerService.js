@@ -3,7 +3,7 @@ import promptBuilderService from './promptBuilderService.js';
 const getUniqueDayContent = (destination, dayNum, travelStyle) => {
   const destLower = destination.toLowerCase();
 
-  // Munnar / Kerala knowledge
+  // Munnar / Kerala
   if (destLower.includes('munnar') || destLower.includes('kerala')) {
     const munnarData = [
       {
@@ -59,49 +59,105 @@ const getUniqueDayContent = (destination, dayNum, travelStyle) => {
     return munnarData[(dayNum - 1) % munnarData.length];
   }
 
-  // Amritsar / Punjab knowledge
-  if (destLower.includes('amritsar') || destLower.includes('punjab')) {
-    const amritsarData = [
+  // Tokyo / Japan
+  if (destLower.includes('tokyo') || destLower.includes('japan')) {
+    const tokyoData = [
       {
-        title: 'Golden Temple (Harmandir Sahib) & Langar Immersion',
-        morning: 'Pavitra Sarovar morning walk & spiritual Darshan at Golden Temple.',
-        afternoon: 'Participate in Guru Ka Langar community kitchen service & lunch.',
-        evening: 'Jallianwala Bagh historic memorial visit & evening illuminated Golden Temple view.',
-        foodSuggestions: ['Kesar Da Dhaba Dal Makhani', 'Amritsari Kulcha', 'Fresh Lassi'],
+        title: 'Asakusa Historic District & Senso-ji Temple',
+        morning: 'Morning Darshan & incense ritual at Senso-ji Temple and Nakamise Shopping Street.',
+        afternoon: 'Panoramic Tokyo Skytree observation deck view & Sumida Park stroll.',
+        evening: 'Traditional Izakaya dinner & lantern-lit alley walk in Hoppy Street.',
+        foodSuggestions: ['Asakusa Unatoto Unagi', 'Matcha Gelato at Suzukien', 'Tempura Daikokuya'],
       },
       {
-        title: 'Partition Museum & Wagah Border Beating Retreat',
-        morning: 'Guided tour of Town Hall Partition Museum & Old City Heritage Walk.',
-        afternoon: 'Gobindgarh Fort exploration & 7D freedom movement show.',
-        evening: 'Excursion to Wagah Border for the thrilling India-Pakistan Beating Retreat Ceremony.',
-        foodSuggestions: ['Bharawan Da Dhaba Stuffed Paratha', 'Makhan Fish Tikka', 'Phirni in Earthen Pot'],
+        title: 'Shibuya Crossing & Harajuku Youth Culture',
+        morning: 'Walk through Meiji Jingu Shrine forest & Harajuku Takeshita Street.',
+        afternoon: 'Iconic Shibuya Scramble Crossing photo-op & Shibuya Sky rooftop deck.',
+        evening: 'Omoide Yokocho Memory Lane yakitori tasting in Shinjuku.',
+        foodSuggestions: ['Ichiran Ramen Shibuya', 'Harajuku Crepes', 'Shinjuku Tsunahachi Tempura'],
       },
       {
-        title: 'Durgiana Temple & Heritage Craft Bazaars',
-        morning: 'Durgiana Temple (Lakshmi Narayan) visit & Ram Bagh Gardens stroll.',
-        afternoon: 'Pul Kanjri historic outpost visit near international border.',
-        evening: 'Shopping for Phulkari embroidery & hand-stitched Punjabi Juttis at Hall Bazaar.',
-        foodSuggestions: ['Ahuja Milk Bhandar Malai Lassi', 'All India Famous Amritsari Kulcha', 'Jalebi & Rabri'],
+        title: 'Akihabara Tech District & Imperial Palace Gardens',
+        morning: 'Serene morning walk around East Gardens of Tokyo Imperial Palace.',
+        afternoon: 'Explore anime, electronics & gaming culture in Akihabara Electric Town.',
+        evening: 'TeamLab Planets immersive digital art museum experience in Toyosu.',
+        foodSuggestions: ['Kanda Yabu Soba', 'Akihabara Maid Cafe Treat', 'Tsukiji Outer Market Sushi'],
       },
       {
-        title: 'Sadda Pind Cultural Village & Folk Traditions',
-        morning: 'Visit Khalsa College grand Sikh Gothic architecture.',
-        afternoon: 'Full afternoon at Sadda Pind authentic Punjabi cultural resort.',
-        evening: 'Live Bhangra performance, traditional pottery making, and bonfire.',
-        foodSuggestions: ['Sarson Ka Saag & Makki Di Roti', 'Amritsari Paneer Tikka', 'Gur Halwa'],
+        title: 'Roppongi Art Triangle & Tokyo Tower Night Lights',
+        morning: 'Mori Art Museum exhibition & Roppongi Hills view.',
+        afternoon: 'Stroll through Tokyo Midtown gardens & National Art Center.',
+        evening: 'Tokyo Tower illuminated photo view & Azabudai Hills dinner.',
+        foodSuggestions: ['Roppongi Tonteki', 'Tofu Ya Ukai', 'Azabu Juban Monjayaki'],
       },
       {
-        title: 'Tarn Taran Expedition & Gurdwara Circuit',
-        morning: 'Morning road trip to Tarn Taran Sahib & giant holy Sarovar lake.',
-        afternoon: 'Explore Katra Jaimal Singh textile markets.',
-        evening: 'Golden Temple night Palki Sahib ceremony procession.',
-        foodSuggestions: ['Gian Chand Lassi', 'Chole Bhature', 'Badam Milk'],
+        title: 'Ginza High-Street Luxury & Kabuki Theater',
+        morning: 'Morning walk along Ginza Chuo-dori pedestrian paradise & Ginza Six.',
+        afternoon: 'Watch traditional Kabuki performance at Kabukiza Theatre.',
+        evening: 'Gourmet dinner at Michelin-starred ramen eatery.',
+        foodSuggestions: ['Ginza Kagari Tori Paitan Ramen', 'Ginza Ukai-tei Teppanyaki', 'Wako Cake Shop'],
       },
     ];
-    return amritsarData[(dayNum - 1) % amritsarData.length];
+    return tokyoData[(dayNum - 1) % tokyoData.length];
   }
 
-  // General Dynamic Generator for any city/destination
+  // Goa
+  if (destLower.includes('goa')) {
+    const goaData = [
+      {
+        title: 'North Goa Heritage Forts & Anjuna Sunset',
+        morning: 'Explore 17th-century Aguada Fort & lighthouse panoramic sea views.',
+        afternoon: 'Water sports at Baga Beach & seaside shacks lunch.',
+        evening: 'Golden hour sunset music at Anjuna Flea Market & Curlies Beach Shack.',
+        foodSuggestions: ['Britto\'s Fish Curry Rice', 'Goan Bebinca Dessert', 'Prawn Balchao'],
+      },
+      {
+        title: 'Old Goa Latin Quarter & UNESCO Cathedrals',
+        morning: 'Visit Basilica of Bom Jesus & Se Cathedral historic architecture.',
+        afternoon: 'Guided walk through Fontainhas Latin Quarter colorful heritage homes.',
+        evening: 'Mandovi River sunset cruise with live Goan folk dance.',
+        foodSuggestions: ['Viva Panjim Goan Fish Thali', 'Pork Vindaloo', 'Fresh Sugarcane Juice'],
+      },
+      {
+        title: 'Spice Plantation Tour & Waterfall Dip',
+        morning: 'Excursion to Sahakari Spice Farm with traditional welcome & banana leaf buffet.',
+        afternoon: 'Jeep safari to Dudhsagar Waterfalls & natural pool swimming.',
+        evening: 'Relaxed beachside seafood barbecue at Palolem Beach.',
+        foodSuggestions: ['Farm-to-Table Spice Lunch', 'Crab Xec Xec', 'Tender Coconut Feni'],
+      },
+    ];
+    return goaData[(dayNum - 1) % goaData.length];
+  }
+
+  // Paris / France
+  if (destLower.includes('paris') || destLower.includes('france')) {
+    const parisData = [
+      {
+        title: 'Eiffel Tower & Seine River Cruise',
+        morning: 'Morning photo tour at Trocadéro Gardens & Eiffel Tower summit ascension.',
+        afternoon: 'Stroll through Champ de Mars & leisurely lunch at a Latin Quarter Bistro.',
+        evening: 'Illuminated 1-hour Seine River boat cruise past Notre-Dame Cathedral.',
+        foodSuggestions: ['Classic French Croissant & Cafe', 'Boeuf Bourguignon', 'Laduree Macarons'],
+      },
+      {
+        title: 'Louvre Museum & Tuileries Garden Stroll',
+        morning: 'Priority entry tour of Louvre Museum (Mona Lisa, Venus de Milo).',
+        afternoon: 'Walk through Tuileries Garden & Place de la Concorde.',
+        evening: 'Montmartre hilltop walk & Sacré-Cœur sunset panorama.',
+        foodSuggestions: ['French Onion Soup at Le Procope', 'Duck Confit', 'Crêpe Suzette'],
+      },
+      {
+        title: 'Palace of Versailles Day Expedition',
+        morning: 'Morning train to Palace of Versailles & Hall of Mirrors tour.',
+        afternoon: 'Explore Versailles Gardens, Grand Trianon & Musical Fountains.',
+        evening: 'Return to Paris for dinner in Le Marais fashion district.',
+        foodSuggestions: ['Angelina Hot Chocolate', 'Steak Frites', 'Eclair au Chocolat'],
+      },
+    ];
+    return parisData[(dayNum - 1) % parisData.length];
+  }
+
+  // General Dynamic Generator for any city/destination worldwide
   const genericThemes = [
     {
       title: 'Arrival, Historic Center & Landmark Introduction',
@@ -171,13 +227,14 @@ export const aiPlannerService = {
     const budget = params.budget || 'balanced';
     const travelStyle = params.travelStyle || 'Heritage & Food';
 
-    const apiKey = process.env.OPENAI_API_KEY;
+    const geminiApiKey = process.env.GEMINI_API_KEY;
+    const openaiApiKey = process.env.OPENAI_API_KEY;
 
-    // Connect to ChatGPT OpenAI API if API Key is available
-    if (apiKey && apiKey !== 'mock_openai_key' && !apiKey.startsWith('mock_')) {
+    // Call Google Gemini API if GEMINI_API_KEY is available
+    if (geminiApiKey && !geminiApiKey.startsWith('mock_')) {
       try {
-        const systemPrompt = `You are LocalLens AI, an expert travel planner. Generate a complete multi-day JSON itinerary for destination "${destination}" lasting EXACTLY ${travelDays} days (Day 1 through Day ${travelDays}) for a "${travelStyle}" style trip with "${budget}" budget. 
-CRITICAL RULE: EVERY SINGLE DAY MUST HAVE 100% UNIQUE MORNING, AFTERNOON, EVENING ACTIVITIES AND FOOD PICKS SPECIFIC TO ${destination}. DO NOT REPEAT TEXT ACROSS DAYS.
+        const promptText = `You are TerraVision AI, an expert global travel architect. Generate a complete multi-day JSON itinerary for destination "${destination}" lasting EXACTLY ${travelDays} days (Day 1 through Day ${travelDays}) for a "${travelStyle}" style trip with "${budget}" budget.
+EVERY SINGLE DAY MUST HAVE 100% UNIQUE MORNING, AFTERNOON, EVENING ACTIVITIES AND REAL RESTAURANT/FOOD RECOMMENDATIONS SPECIFIC TO ${destination}.
 Return ONLY a valid JSON object matching this exact schema:
 {
   "tripTitle": "AI Expedition: ${destination}",
@@ -188,11 +245,11 @@ Return ONLY a valid JSON object matching this exact schema:
   "itinerary": [
     {
       "day": 1,
-      "title": "Day 1 Unique Title",
-      "morning": "Unique morning activity in ${destination}",
-      "afternoon": "Unique afternoon activity in ${destination}",
-      "evening": "Unique evening activity in ${destination}",
-      "foodSuggestions": ["Unique Food Pick 1", "Unique Food Pick 2"]
+      "title": "Day 1 Title",
+      "morning": "Morning activity in ${destination}",
+      "afternoon": "Afternoon activity in ${destination}",
+      "evening": "Evening activity in ${destination}",
+      "foodSuggestions": ["Food Pick 1", "Food Pick 2"]
     }
   ],
   "travelTips": ["Tip 1", "Tip 2"],
@@ -200,23 +257,50 @@ Return ONLY a valid JSON object matching this exact schema:
   "bestTimeToVisit": "Best season details"
 }`;
 
+        const geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: promptText }] }],
+              generationConfig: { responseMimeType: 'application/json' },
+            }),
+          }
+        );
+
+        if (geminiRes.ok) {
+          const rawData = await geminiRes.json();
+          const jsonText = rawData?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (jsonText) {
+            const parsed = JSON.parse(jsonText);
+            if (parsed && Array.isArray(parsed.itinerary) && parsed.itinerary.length > 0) {
+              return parsed;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Gemini API call failed, using TerraVision AI engine:', err.message);
+      }
+    }
+
+    // Call OpenAI API if OPENAI_API_KEY is available
+    if (openaiApiKey && !openaiApiKey.startsWith('mock_')) {
+      try {
+        const systemPrompt = `You are TerraVision AI, an expert travel planner. Generate a complete multi-day JSON itinerary for destination "${destination}" lasting EXACTLY ${travelDays} days (Day 1 through Day ${travelDays}) for a "${travelStyle}" style trip. Return ONLY valid JSON matching schema with fields: tripTitle, destination, days, summary, estimatedBudget, itinerary (array with day, title, morning, afternoon, evening, foodSuggestions), travelTips, packingChecklist.`;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${apiKey}`,
+            Authorization: `Bearer ${openaiApiKey}`,
           },
           body: JSON.stringify({
             model: 'gpt-4o-mini',
             messages: [
               { role: 'system', content: systemPrompt },
-              {
-                role: 'user',
-                content: `Create an itinerary for ${destination} lasting EXACTLY ${travelDays} days. Every day from Day 1 to Day ${travelDays} must have completely distinct morning, afternoon, evening activities and real landmark/restaurant names.`,
-              },
+              { role: 'user', content: `Itinerary for ${destination}, ${travelDays} days.` },
             ],
             response_format: { type: 'json_object' },
-            temperature: 0.7,
           }),
         });
 
@@ -228,11 +312,11 @@ Return ONLY a valid JSON object matching this exact schema:
           }
         }
       } catch (err) {
-        console.warn('ChatGPT API call failed, using LocalLens AI engine:', err.message);
+        console.warn('OpenAI API call failed:', err.message);
       }
     }
 
-    // Dynamic LocalLens AI itinerary generator engine for exact requested travelDays with 100% unique day content
+    // Dynamic TerraVision AI itinerary generator engine for exact requested travelDays
     const generatedDays = Array.from({ length: travelDays }, (_, idx) => {
       const dayNum = idx + 1;
       const dayContent = getUniqueDayContent(destination, dayNum, travelStyle);
@@ -255,9 +339,9 @@ Return ONLY a valid JSON object matching this exact schema:
         budget === 'luxury' ? '$500 - $1200' : budget === 'backpack' ? '$50 - $120' : '$150 - $350',
       itinerary: generatedDays,
       travelTips: [
-        'Carry local cash for small street vendors.',
-        'Keep digital copies of identification stored offline.',
-        'Download offline navigation maps before exploring remote areas.',
+        'Carry local currency cash for small street food vendors.',
+        'Keep digital copies of identification stored offline on your device.',
+        'Download offline navigation maps before exploring remote trails.',
       ],
       packingChecklist: ['Comfortable walking shoes', 'Layered clothing', 'Universal power adapter', 'Travel first aid kit'],
       bestTimeToVisit: 'October to March',
